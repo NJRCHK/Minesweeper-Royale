@@ -1,7 +1,11 @@
 import React from 'react';
 
-export default function MainMenu() {
+export default function MainMenu(props) {
     return (
-        <h1>Main Menu</h1>
+        <div>
+            <div onClick={props.handleClickMultiplayer}>Play Multiplayer</div>
+            <div onClick={props.handleClickSingleplayer}>Play Singleplayer</div>
+            <div onClick={props.handleClickLogin}>Login</div>
+        </div>
     );
 };
