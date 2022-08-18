@@ -15,11 +15,17 @@ export default function App() {
                     handleClickLogin={() => setMode('Login')}
                 />;
             case 'SinglePlayerMenu':
-                return <SinglePlayerMenu />
+                return <SinglePlayerMenu 
+                    handleClickBack={() => setMode('MainMenu')}
+                />
             case 'Game':
-                return <Game />
+                return <Game 
+                    handleClickBack={() => setMode('MainMenu')}
+                />
             case 'Login':
-                return <Login />
+                return <Login 
+                    handleClickBack={() => setMode('MainMenu')}
+                />
             default:
                 return <h1>An Error Occurred</h1>;
         }

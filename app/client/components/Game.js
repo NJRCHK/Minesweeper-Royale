@@ -2,6 +2,9 @@ import React from "react";
 
 export default function Game(props){
     return(
-        <h1>Game</h1>
+        <div>
+            <h1>Game</h1>
+            <div onClick={props.handleClickBack}>Back</div>
+        </div>
     );
 };
