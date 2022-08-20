@@ -24,8 +24,15 @@ const config = {
                     }
                 }
             },
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ]
+            },
         ]
-    },
+    },     
     plugins: [
         new HtmlWebpackPlugin({
             template: path.join(__dirname, "app/client/", "index.html"),
