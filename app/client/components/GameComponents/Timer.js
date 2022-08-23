@@ -9,6 +9,6 @@ export default function Timer() {
         return () => clearInterval(interval);
     }, [])
     return (
-        <div>{time}</div>
+        <div className="game-bar-item">{("000" + time).slice(-4)}</div>
     )
 }
