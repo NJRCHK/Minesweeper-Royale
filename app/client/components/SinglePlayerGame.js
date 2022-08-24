@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-import Board from '../../shared/Board.js';
+import React from 'react';
 import Timer from './GameComponents/Timer.js';
 import ResetButton from './GameComponents/ResetButton.js';
 import Counter from './GameComponents/Counter.js';
