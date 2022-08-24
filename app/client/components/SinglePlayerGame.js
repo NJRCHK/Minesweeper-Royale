@@ -9,6 +9,10 @@ export default function(props) {
     const [board ,setBoard] = useState(new Board(props.config.height, props.config.width, props.config.mines));
     const [minesRemaining, setMinesRemaining] = useState(props.config.mines);
 
+    function tileClicked (x, y){
+        console.log("Tile Clicked. POS: " + x + " " + y);
+    }
+
     return (
         <div className="singleplayer-game">
             <div className="game-bar">
@@ -16,7 +20,7 @@ export default function(props) {
                 <ResetButton />
                 <Timer />
             </div>
-            <BoardDisplay height={board.height} width={board.width}/>
+            <BoardDisplay height={board.height} width={board.width} tileClicked={tileClicked}/>
         </div>                
     );
 }

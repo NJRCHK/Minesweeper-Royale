@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Tile from './Tile.js';
 
 export default function BoardDisplay(props) {
@@ -8,7 +8,7 @@ export default function BoardDisplay(props) {
         for(let i = 0; i < rows.length; i++){
             let row = new Array(props.width);
             for(let j = 0; j < props.height; j++){
-                row[j] = <Tile key={Number(String(i) + j)}/>
+                row[j] = <Tile tileClicked={props.tileClicked} key={Number(String(i) + j)} x={j}y={i}/>
             }
             rows[i] = <div className="game-row" key={i}>{row}</div>;
         }
