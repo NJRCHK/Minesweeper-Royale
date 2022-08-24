@@ -38,17 +38,17 @@ export default function(props) {
             return;
         }
         let tempBoard = new Board(board.height, board.width, board.mines, board.seed);
-        let value = tempBoard.checkCoordinates(x, y);
-
-        setBoard(prevBoard => {
-            let temp = {
-                ...prevBoard,
-            }
-            temp.tiles[x][y] = value;
-            return temp;
-        });
-
-        if(value === -1){
+        let values = tempBoard.checkCoordinates(x, y);
+        for(let i = 0; i < values.length; i++){
+            setBoard(prevBoard => {
+                let temp = {
+                    ...prevBoard,
+                }
+                temp.tiles[values[i].x][values[i].y] = values[i].val;
+                return temp;
+            });
+        }
+        if(values[0].val === -1){
             setBoard(prevBoard => {
                 return {
                     ...prevBoard,

@@ -12,8 +12,53 @@ export default class Board{
         return this.width * this.height;
     }
 
+    #isVisited(x, y, visited){
+        for(let i = 0; i < visited.length; i++){
+            if(visited[i].x === x && visited[i].y === y){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    getCoordinatesToReveal(x, y, board, visited) {        
+        let pointsToReveal = [];
+
+        if(this.#isVisited(x,y,visited)){
+            return pointsToReveal;
+        }
+        visited.push({
+            x:x,
+            y:y
+        });
+        if((x<0 || x>=board.length) || (y<0 || y>=board.height)){
+            return pointsToReveal;
+        }
+
+        pointsToReveal.push({
+            x:x,
+            y:y,
+            val:board[x][y],
+        });
+
+        if(board[x][y] !== 0){
+            return pointsToReveal;
+        }
+
+        pointsToReveal = pointsToReveal.concat(this.getCoordinatesToReveal(x+1, y, board, visited));
+        pointsToReveal = pointsToReveal.concat(this.getCoordinatesToReveal(x-1, y, board, visited));
+        pointsToReveal = pointsToReveal.concat(this.getCoordinatesToReveal(x, y+1, board, visited));
+        pointsToReveal = pointsToReveal.concat(this.getCoordinatesToReveal(x, y-1, board, visited));
+        pointsToReveal = pointsToReveal.concat(this.getCoordinatesToReveal(x+1, y+1, board, visited));
+        pointsToReveal = pointsToReveal.concat(this.getCoordinatesToReveal(x+1, y-1, board, visited));
+        pointsToReveal = pointsToReveal.concat(this.getCoordinatesToReveal(x-1, y+1, board, visited));
+        pointsToReveal = pointsToReveal.concat(this.getCoordinatesToReveal(x-1, y-1, board, visited));
+        return pointsToReveal;
+    }
+
     checkCoordinates(x, y) {
-        return this.#generateBoard()[x][y];
+        let board = this.#generateBoard();
+        return this.getCoordinatesToReveal(x, y, board, []);
     }
 
     #generateBoard() {
