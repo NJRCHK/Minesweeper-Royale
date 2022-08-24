@@ -5,12 +5,15 @@ export default class Board{
         this.height = height;
         this.width = width;
         this.mines = mines;
-        this.seed = (seed === undefined) ? this.#generateSeed() : seed;
-        this.board = this.#generateBoard();
+        this.seed = (seed === undefined) ? this.generateSeed() : seed;
     }
 
     get area() {
         return this.width * this.height;
+    }
+
+    checkCoordinates(x, y) {
+        return this.#generateBoard()[x][y];
     }
 
     #generateBoard() {
@@ -89,7 +92,7 @@ export default class Board{
         return arr1;
     }
 
-    #generateSeed() {
+    static generateSeed() {
         let randomNumber = Math.random();
         randomNumber = randomNumber* Math.pow(10, 8);
         randomNumber = Math.trunc(randomNumber); 

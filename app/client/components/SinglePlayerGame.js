@@ -6,21 +6,24 @@ import Counter from './GameComponents/Counter.js';
 import BoardDisplay from './GameComponents/BoardDisplay.js';
 
 export default function(props) {
-    const [board ,setBoard] = useState(new Board(props.config.height, props.config.width, props.config.mines));
-    const [minesRemaining, setMinesRemaining] = useState(props.config.mines);
 
-    function tileClicked (x, y){
-        console.log("Tile Clicked. POS: " + x + " " + y);
+    function gameOver() {
+        console.log("Game Over");
     }
 
     return (
         <div className="singleplayer-game">
             <div className="game-bar">
-                <Counter minesRemaining={minesRemaining}/>
+                <Counter mines={props.config.mines}/>
                 <ResetButton />
                 <Timer />
             </div>
-            <BoardDisplay height={board.height} width={board.width} tileClicked={tileClicked}/>
+            <BoardDisplay 
+                height={props.config.height} 
+                width={props.config.width} 
+                mines={props.config.mines}
+                gameOver={gameOver}
+            />
         </div>                
     );
 }
