@@ -1,8 +1,11 @@
+import seedrandom from 'seedrandom';
+
 export default class Board{
-    constructor(height, width, mines){
+    constructor(height, width, mines, seed){
         this.height = height;
         this.width = width;
         this.mines = mines;
+        this.seed = (seed === undefined) ? this.#generateSeed() : seed;
         this.board = this.#generateBoard();
     }
 
@@ -11,7 +14,8 @@ export default class Board{
     }
 
     #generateBoard() {
-        
+        const rng = seedrandom(this.seed);
+
         let arr1 = new Array(this.width);
 
         for(let i = 0; i < arr1.length; i++){
@@ -27,7 +31,7 @@ export default class Board{
 
         for(let i = 0; i < arr1.length; i++){
             for(let j = 0; j < arr1[i].length; j++){
-                if(Math.random() <= minesToPlace/spacesLeft){
+                if(rng() <= minesToPlace/spacesLeft){
                     arr1[i][j] = -1;
                     minesToPlace--;
                 }
@@ -81,6 +85,14 @@ export default class Board{
 
             }
         }
+        console.log(arr1);
         return arr1;
+    }
+
+    #generateSeed() {
+        let randomNumber = Math.random();
+        randomNumber = randomNumber* Math.pow(10, 8);
+        randomNumber = Math.trunc(randomNumber); 
+        return randomNumber;
     }
 }
