@@ -5,7 +5,7 @@ export default class Board{
         this.height = height;
         this.width = width;
         this.mines = mines;
-        this.seed = (seed === undefined) ? this.generateSeed() : seed;
+        this.seed = (seed === undefined) ? Board.generateSeed() : seed;
     }
 
     get area() {
@@ -88,7 +88,6 @@ export default class Board{
 
             }
         }
-        console.log(arr1);
         return arr1;
     }
 
