@@ -30,7 +30,12 @@ export default function App() {
                     handleClickBack={() => setMode('MainMenu')}
                 />
             case 'SinglePlayerGame':
-                return <SinglePlayerGame config={config}/>
+                return <SinglePlayerGame 
+                startSinglePlayerGame={config => {
+                    setMode('SinglePlayerGame')
+                    setConfig(config);
+                }}
+                config={config}/>
             case 'Login':
                 return <Login 
                     handleClickBack={() => setMode('MainMenu')}
