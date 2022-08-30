@@ -24,6 +24,10 @@ export default class Board{
     getCoordinatesToReveal(x, y, board, visited) {        
         let pointsToReveal = [];
 
+        if((x<0 || x>=this.height) || (y<0 || y>=this.width)){
+            return pointsToReveal;
+        }
+
         if(this.#isVisited(x,y,visited)){
             return pointsToReveal;
         }
@@ -31,9 +35,6 @@ export default class Board{
             x:x,
             y:y
         });
-        if((x<0 || x>=board.length) || (y<0 || y>=board.height)){
-            return pointsToReveal;
-        }
 
         pointsToReveal.push({
             x:x,

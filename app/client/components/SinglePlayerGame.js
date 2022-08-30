@@ -18,7 +18,6 @@ export default function(props) {
         squaresRemaining: (props.config.height * props.config.width) - props.config.mines,
         tiles: createTiles(props.config.height, props.config.width),
     }
-
     const [board, setBoard] = useState(boardStartState);
 
     function createTiles(height, width) {
@@ -34,17 +33,26 @@ export default function(props) {
     }
 
     function tileClicked (x, y){
-        if(board.gameState==="gameover"){
+        if(board.gameState === "gameover"){
             return;
         }
+        if(board.tiles[x][y] > -2){
+            return;
+        }
+
         let tempBoard = new Board(board.height, board.width, board.mines, board.seed);
         let values = tempBoard.checkCoordinates(x, y);
+
         for(let i = 0; i < values.length; i++){
             setBoard(prevBoard => {
                 let temp = {
                     ...prevBoard,
+                    squaresRemaining: prevBoard.squaresRemaining- 1,
                 }
                 temp.tiles[values[i].x][values[i].y] = values[i].val;
+                if(temp.squaresRemaining === 0){
+                    temp.gameState ="gamewon";
+                }
                 return temp;
             });
         }
