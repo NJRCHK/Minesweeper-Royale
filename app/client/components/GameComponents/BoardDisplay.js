@@ -8,8 +8,8 @@ export default function BoardDisplay(props) {
         let rows = new Array(props.board.height);
         for(let i = 0; i < rows.length; i++){
             let row = new Array(props.board.width);
-            for(let j = 0; j < props.board.height; j++){
-                row[j] = <Tile revealed={props.board.tiles[j][i]} tileClicked={props.tileClicked} tileRightClicked={props.tileRightClicked} key={Number(String(i) + j)} x={j}y={i}/>
+            for(let j = 0; j < row.length; j++){
+                row[j] = <Tile revealed={props.board.tiles[i][j]} tileClicked={props.tileClicked} tileRightClicked={props.tileRightClicked} key={Number(String(i) + j)} x={i}y={j}/>
             }
             rows[i] = <div className="game-row" key={i}>{row}</div>;
         }

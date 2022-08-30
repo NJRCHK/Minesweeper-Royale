@@ -64,10 +64,10 @@ export default class Board{
     #generateBoard() {
         const rng = seedrandom(this.seed);
 
-        let arr1 = new Array(this.width);
+        let arr1 = new Array(this.height);
 
         for(let i = 0; i < arr1.length; i++){
-            let arr2 = new Array(this.height);
+            let arr2 = new Array(this.width);
             arr1[i] = arr2;
             for(let j = 0; j < arr2.length; j++){
                 arr2[j] = 0;
