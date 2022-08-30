@@ -33,7 +33,7 @@ export default function(props) {
     }
 
     function tileClicked (x, y){
-        if(board.gameState === "gameover"){
+        if(board.gameState !== "inprogress"){
             return;
         }
         if(board.tiles[x][y] > -2){
