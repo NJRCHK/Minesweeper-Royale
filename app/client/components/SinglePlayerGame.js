@@ -67,7 +67,7 @@ export default function(props) {
     }
 
     function tileRightClicked (x, y) {
-        if(board.gameState === "gameover"){
+        if(board.gameState !== "inprogress"){
             return;
         }
         let tile = board.tiles[x][y];

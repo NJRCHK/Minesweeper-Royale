@@ -25,6 +25,10 @@ body {
     border-bottom: 2px solid darkgray;
 }
 
+.singleplayer-game:hover{
+    cursor: default;
+}
+
 .game-tile-hidden{
     width: 15px;
     height: 15px;
