@@ -25,7 +25,7 @@ body {
     border-bottom: 2px solid darkgray;
 }
 
-.game-tile{
+.game-tile-hidden{
     width: 15px;
     height: 15px;
     border-left: 2px solid white;
@@ -33,6 +33,19 @@ body {
     border-right: 2px solid darkgray;
     border-bottom: 2px solid darkgray;
     background-color: lightgray;
+    padding: 0;
+    text-align:center;
+    font-weight: 600;
+}
+
+.game-tile-shown{
+    width: 15px;
+    height: 15px;
+    border-left: 2px solid #808080;
+    border-top: 2px solid #808080;
+    border-right: 2px solid #808080;
+    border-bottom: 2px solid #808080;
+    background-color: #C0C0C0;
     padding: 0;
     text-align:center;
     font-weight: 600;

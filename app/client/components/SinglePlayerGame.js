@@ -9,7 +9,7 @@ import Board from '../../shared/Board.js';
 export default function(props) {
 
     const boardStartState = {
-        gameOver: false,
+        gameState: "inprogress",
         height: props.config.height,
         width: props.config.width,
         mines: props.config.mines,
@@ -34,7 +34,7 @@ export default function(props) {
     }
 
     function tileClicked (x, y){
-        if(board.gameOver){
+        if(board.gameState==="gameover"){
             return;
         }
         let tempBoard = new Board(board.height, board.width, board.mines, board.seed);
@@ -52,8 +52,51 @@ export default function(props) {
             setBoard(prevBoard => {
                 return {
                     ...prevBoard,
-                    gameOver: true
+                    gameState: "gameover"
                 }
+            });
+        }
+    }
+
+    function tileRightClicked (x, y) {
+        if(board.gameState === "gameover"){
+            return;
+        }
+        let tile = board.tiles[x][y];
+        //if tile is shown do nothing
+        if(tile > 0){
+            return;
+        }
+        //if tile is covered put a flag on it and decrement the mines counter
+        else if(tile === -2){
+            setBoard(prevBoard => {
+                let temp = {
+                    ...prevBoard
+                };
+                temp.tiles[x][y] = -3;
+                temp.minesRemaining--;
+                return temp;
+            });
+        }
+        // if tile has flag put a question mark on it and increment the mines counter
+        else if(tile === -3){
+            setBoard(prevBoard => {
+                let temp = {
+                    ...prevBoard
+                };
+                temp.tiles[x][y] = -4;
+                temp.minesRemaining++;
+                return temp;
+            });
+        }
+        //if tile has question mark on it remove it 
+        else if(tile === -4){
+            setBoard(prevBoard => {
+                let temp = {
+                    ...prevBoard
+                };
+                temp.tiles[x][y] = -2;
+                return temp;
             });
         }
     }
@@ -63,19 +106,24 @@ export default function(props) {
 
     }
 
+    function contextMenu(e) {
+        e.preventDefault();
+    }
+
     return (
-        <div className="singleplayer-game">
+        <div className="singleplayer-game" onContextMenu={contextMenu}>
             <div className="game-bar">
-                <Counter mines={props.config.mines}/>
+                <Counter mines={board.minesRemaining}/>
                 <ResetButton 
                     clickEvent={restartGame}
-                    gameOver={board.gameOver}
+                    gameState={board.gameState}
                 />
                 <Timer />
             </div>
             <BoardDisplay 
                 board={board}
                 tileClicked={tileClicked}
+                tileRightClicked={tileRightClicked}
             />
         </div>                
     );

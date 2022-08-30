@@ -9,7 +9,7 @@ export default function BoardDisplay(props) {
         for(let i = 0; i < rows.length; i++){
             let row = new Array(props.board.width);
             for(let j = 0; j < props.board.height; j++){
-                row[j] = <Tile revealed={props.board.tiles[j][i]} tileClicked={props.tileClicked} key={Number(String(i) + j)} x={j}y={i}/>
+                row[j] = <Tile revealed={props.board.tiles[j][i]} tileClicked={props.tileClicked} tileRightClicked={props.tileRightClicked} key={Number(String(i) + j)} x={j}y={i}/>
             }
             rows[i] = <div className="game-row" key={i}>{row}</div>;
         }
