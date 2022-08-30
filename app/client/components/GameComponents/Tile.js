@@ -3,7 +3,7 @@ import React from 'react';
 export default function Tile(props) {
 
     function getClassName(){
-        return props.value === -1 ? "game-tile-shown" : "game-tile-hidden";
+        return props.revealed < -1 ? "game-tile-hidden" : "game-tile-shown";
     }
 
     function getValueToDisplay() {
