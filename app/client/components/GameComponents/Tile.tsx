@@ -10,11 +10,11 @@ type TileProps = {
 
 export default function Tile(props: TileProps) {
 
-    function getClassName(){
+    function getClassName(): string{
         return props.revealed < -1 ? "game-tile-hidden" : "game-tile-shown";
     }
 
-    function getValueToDisplay() {
+    function getValueToDisplay(): string{
         switch(props.revealed){
             case -4: 
                 return "?";
@@ -25,7 +25,7 @@ export default function Tile(props: TileProps) {
             case -1: 
                 return "B";
             default:
-                return props.revealed;
+                return String(props.revealed);
         }
     }
 
