@@ -12,9 +12,9 @@ type BoardDisplayProps = {
 export default function BoardDisplay(props: BoardDisplayProps) {
 
     function renderBoard() {
-        let rows = new Array(props.height);
+        let rows = new Array<JSX.Element>(props.width);
         for(let i = 0; i < rows.length; i++){
-            let row = new Array(props.width);
+            let row = new Array<JSX.Element>(props.height);
             for(let j = 0; j < row.length; j++){
                 row[j] = <Tile revealed={props.tiles[i][j]} tileClicked={props.tileClicked} tileRightClicked={props.tileRightClicked} key={Number(String(i) + j)} x={i}y={j}/>
             }
