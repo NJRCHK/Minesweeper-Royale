@@ -1,15 +1,27 @@
-import React, {useState} from 'react';
-import MainMenu from './Menus/MainMenu.js';
-import SinglePlayerMenu from './Menus/SinglePlayerMenu.js';
-import Game from '../components/Game.js';
-import SinglePlayerGame from '../components/SinglePlayerGame.js';
-import Login from './Login.js'
+import * as React from 'react';
+import {useState} from 'react';
+import MainMenu from './Menus/MainMenu';
+import SinglePlayerMenu from './Menus/SinglePlayerMenu';
+import Game from '../components/Game';
+import SinglePlayerGame from '../components/SinglePlayerGame';
+import Login from './Login'
 
+type Config = {
+    height: number,
+    width: number,
+    mines: number
+}
+
+const defaultConfig: Config = {
+    height: 20,
+    width: 20,
+    mines: 20,
+}
 
 export default function App() {
     const [mode, setMode] = useState('MainMenu');
-    const [config, setConfig] = useState({});
-    function renderSwitch(mode){
+    const [config, setConfig] = useState(defaultConfig);
+    function renderSwitch(mode: string){
         switch(mode){
             case 'MainMenu':
                 return <MainMenu 
@@ -31,11 +43,8 @@ export default function App() {
                 />
             case 'SinglePlayerGame':
                 return <SinglePlayerGame 
-                startSinglePlayerGame={config => {
-                    setMode('SinglePlayerGame')
-                    setConfig(config);
-                }}
-                config={config}/>
+                    config={config}
+                />
             case 'Login':
                 return <Login 
                     handleClickBack={() => setMode('MainMenu')}

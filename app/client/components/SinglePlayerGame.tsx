@@ -1,12 +1,23 @@
-import React, {useState} from 'react';
-import Timer from './GameComponents/Timer.js';
-import ResetButton from './GameComponents/ResetButton.js';
-import Counter from './GameComponents/Counter.js';
-import BoardDisplay from './GameComponents/BoardDisplay.js';
-import Board from '../../shared/Board.js';
+import * as React from 'react';
+import {useState} from 'react';
+import Timer from './GameComponents/Timer';
+import ResetButton from './GameComponents/ResetButton';
+import Counter from './GameComponents/Counter';
+import BoardDisplay from './GameComponents/BoardDisplay';
+import Board from '../../shared/Board';
+
+type Config = {
+    height: number, 
+    width: number,
+    mines: number
+}
+
+type SinglePlayerGameProps = {
+    config: Config
+}
 
 
-export default function(props) {
+export default function(props: SinglePlayerGameProps): JSX.Element {
 
     const boardStartState = {
         gameState: "inprogress",
@@ -18,12 +29,13 @@ export default function(props) {
         squaresRemaining: (props.config.height * props.config.width) - props.config.mines,
         tiles: createTiles(props.config.height, props.config.width),
     }
+
     const [board, setBoard] = useState(boardStartState);
 
-    function createTiles(height, width) {
-        let tilesRows = new Array(height);
+    function createTiles(height: number, width: number): number[][] {
+        let tilesRows = new Array<number[]>(height)
         for(let i = 0; i < height; i++){
-            let row = new Array(width);
+            let row = new Array<number>(width);
             for(let j = 0; j < width; j++){
                 row[j]=-2;
             }
@@ -32,7 +44,7 @@ export default function(props) {
         return tilesRows;
     }
 
-    function tileClicked (x, y){
+    function tileClicked (x: number, y: number): void {
         if(board.gameState !== "inprogress"){
             return;
         }
@@ -49,14 +61,14 @@ export default function(props) {
                     ...prevBoard,
                     squaresRemaining: prevBoard.squaresRemaining- 1,
                 }
-                temp.tiles[values[i].x][values[i].y] = values[i].val;
+                temp.tiles[values[i].x][values[i].y] = values[i].value;
                 if(temp.squaresRemaining === 0){
                     temp.gameState ="gamewon";
                 }
                 return temp;
             });
         }
-        if(values[0].val === -1){
+        if(values[0].value === -1){
             setBoard(prevBoard => {
                 return {
                     ...prevBoard,
@@ -66,7 +78,7 @@ export default function(props) {
         }
     }
 
-    function tileRightClicked (x, y) {
+    function tileRightClicked (x: number, y: number): void {
         if(board.gameState !== "inprogress"){
             return;
         }
@@ -111,10 +123,9 @@ export default function(props) {
 
     function restartGame() {
         setBoard(boardStartState);
-
     }
 
-    function contextMenu(e) {
+    function contextMenu(e: React.MouseEvent<HTMLDivElement>) {
         e.preventDefault();
     }
 
@@ -129,7 +140,9 @@ export default function(props) {
                 <Timer />
             </div>
             <BoardDisplay 
-                board={board}
+                height={board.height}
+                width={board.width}
+                tiles={board.tiles}
                 tileClicked={tileClicked}
                 tileRightClicked={tileRightClicked}
             />

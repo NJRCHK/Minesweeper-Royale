@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {useState} from 'react';
-import Tile from './Tile.js';
+import Tile from './Tile';
 
 type BoardDisplayProps = {
     height: number,

@@ -15,7 +15,7 @@ const config = {
     module: {
         rules: [
             {
-                test: /\.?js$/,
+                test: /\.(js|tsx|ts)$/,
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader",
@@ -31,13 +31,11 @@ const config = {
                     'css-loader'
                 ]
             },
-            { 
-                test: /\.tsx?$/, 
-                exclude: /node_modules/,
-                use: ['ts-loader']
-            },
         ]
-    },     
+    },
+    resolve: {
+        extensions: [".ts", ".tsx", ".js", ".jsx", "..."]
+    },
     plugins: [
         new HtmlWebpackPlugin({
             template: path.join(__dirname, "app/client/", "index.html"),

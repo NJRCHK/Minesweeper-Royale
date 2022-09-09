@@ -29,7 +29,7 @@ export default class Board{
         return this.width * this.height;
     }
 
-    #isVisited(x: number, y: number, visited: Point[]): boolean {
+    isVisited(x: number, y: number, visited: Point[]): boolean {
         for(let i = 0; i < visited.length; i++){
             if(visited[i].x === x && visited[i].y === y){
                 return true;
@@ -39,13 +39,13 @@ export default class Board{
     }
 
     getCoordinatesToReveal(x: number, y: number, board: number[][], visited: Point[] = []): Tile[] {        
-        let tilesToReveal: Tile[];
+        let tilesToReveal = new Array<Tile>;
 
         if((x<0 || x>=this.height) || (y<0 || y>=this.width)){
             return tilesToReveal;
         }
 
-        if(this.#isVisited(x,y,visited)){
+        if(this.isVisited(x,y,visited)){
             return tilesToReveal;
         }
         visited.push({
@@ -76,16 +76,16 @@ export default class Board{
     }
 
     checkCoordinates(x: number, y: number): Tile[] {
-        let board = this.#generateBoard();
+        let board = this.generateBoard();
         return this.getCoordinatesToReveal(x, y, board);
     }
 
-    #generateBoard(): number[][] {
+    generateBoard(): number[][] {
         const rng = seedrandom(String(this.seed));
-        let arr1: number[][];
+        let arr1 = new Array<number[]>(this.height); 
 
         for(let i = 0; i < arr1.length; i++){
-            let arr2 = new Array(this.width);
+            let arr2 = new Array<number>(this.width);
             arr1[i] = arr2;
             for(let j = 0; j < arr2.length; j++){
                 arr2[j] = 0;
