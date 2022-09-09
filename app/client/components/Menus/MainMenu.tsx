@@ -1,6 +1,12 @@
-import React from 'react';
+import * as React from 'react';
 
-export default function MainMenu(props) {
+type MainMenuProps = {
+    handleClickMultiplayer: () => void
+    handleClickSingleplayer: () => void
+    handleClickLogin: () => void
+}
+
+export default function MainMenu(props: MainMenuProps) {
     return (
         <div>
             <div onClick={props.handleClickMultiplayer}>Play Multiplayer</div>

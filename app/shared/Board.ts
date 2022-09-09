@@ -1,18 +1,35 @@
-import seedrandom from 'seedrandom';
+import * as seedrandom from 'seedrandom';
+
+type Point = {
+    x: number;
+    y: number;
+}
+
+type Tile = {
+    x: number,
+    y: number,
+    value: number,
+}
 
 export default class Board{
-    constructor(height, width, mines, seed){
+
+    height: number;
+    width: number;
+    mines: number;
+    seed: number;
+
+    constructor(height: number, width: number, mines: number , seed: number){
         this.height = height;
         this.width = width;
         this.mines = mines;
         this.seed = (seed === undefined) ? Board.generateSeed() : seed;
     }
 
-    get area() {
+    get area(): number {
         return this.width * this.height;
     }
 
-    #isVisited(x, y, visited){
+    isVisited(x: number, y: number, visited: Point[]): boolean {
         for(let i = 0; i < visited.length; i++){
             if(visited[i].x === x && visited[i].y === y){
                 return true;
@@ -21,54 +38,54 @@ export default class Board{
         return false;
     }
 
-    getCoordinatesToReveal(x, y, board, visited) {        
-        let pointsToReveal = [];
+    getCoordinatesToReveal(x: number, y: number, board: number[][], visited: Point[] = []): Tile[] {        
+        let tilesToReveal = new Array<Tile>;
 
         if((x<0 || x>=this.height) || (y<0 || y>=this.width)){
-            return pointsToReveal;
+            return tilesToReveal;
         }
 
-        if(this.#isVisited(x,y,visited)){
-            return pointsToReveal;
+        if(this.isVisited(x,y,visited)){
+            return tilesToReveal;
         }
         visited.push({
             x:x,
             y:y
         });
 
-        pointsToReveal.push({
-            x:x,
-            y:y,
-            val:board[x][y],
+        tilesToReveal.push({
+            x: x,
+            y: y,
+            value: board[x][y],
         });
 
         if(board[x][y] !== 0){
-            return pointsToReveal;
+            return tilesToReveal;
         }
 
-        pointsToReveal = pointsToReveal.concat(this.getCoordinatesToReveal(x+1, y, board, visited));
-        pointsToReveal = pointsToReveal.concat(this.getCoordinatesToReveal(x-1, y, board, visited));
-        pointsToReveal = pointsToReveal.concat(this.getCoordinatesToReveal(x, y+1, board, visited));
-        pointsToReveal = pointsToReveal.concat(this.getCoordinatesToReveal(x, y-1, board, visited));
-        pointsToReveal = pointsToReveal.concat(this.getCoordinatesToReveal(x+1, y+1, board, visited));
-        pointsToReveal = pointsToReveal.concat(this.getCoordinatesToReveal(x+1, y-1, board, visited));
-        pointsToReveal = pointsToReveal.concat(this.getCoordinatesToReveal(x-1, y+1, board, visited));
-        pointsToReveal = pointsToReveal.concat(this.getCoordinatesToReveal(x-1, y-1, board, visited));
-        return pointsToReveal;
+        tilesToReveal = tilesToReveal.concat(this.getCoordinatesToReveal(x+1, y, board, visited));
+        tilesToReveal = tilesToReveal.concat(this.getCoordinatesToReveal(x-1, y, board, visited));
+        tilesToReveal = tilesToReveal.concat(this.getCoordinatesToReveal(x, y+1, board, visited));
+        tilesToReveal = tilesToReveal.concat(this.getCoordinatesToReveal(x, y-1, board, visited));
+        tilesToReveal = tilesToReveal.concat(this.getCoordinatesToReveal(x+1, y+1, board, visited));
+        tilesToReveal = tilesToReveal.concat(this.getCoordinatesToReveal(x+1, y-1, board, visited));
+        tilesToReveal = tilesToReveal.concat(this.getCoordinatesToReveal(x-1, y+1, board, visited));
+        tilesToReveal = tilesToReveal.concat(this.getCoordinatesToReveal(x-1, y-1, board, visited));
+
+        return tilesToReveal;
     }
 
-    checkCoordinates(x, y) {
-        let board = this.#generateBoard();
-        return this.getCoordinatesToReveal(x, y, board, []);
+    checkCoordinates(x: number, y: number): Tile[] {
+        let board = this.generateBoard();
+        return this.getCoordinatesToReveal(x, y, board);
     }
 
-    #generateBoard() {
-        const rng = seedrandom(this.seed);
-
-        let arr1 = new Array(this.height);
+    generateBoard(): number[][] {
+        const rng = seedrandom(String(this.seed));
+        let arr1 = new Array<number[]>(this.height); 
 
         for(let i = 0; i < arr1.length; i++){
-            let arr2 = new Array(this.width);
+            let arr2 = new Array<number>(this.width);
             arr1[i] = arr2;
             for(let j = 0; j < arr2.length; j++){
                 arr2[j] = 0;
@@ -137,7 +154,7 @@ export default class Board{
         return arr1;
     }
 
-    static generateSeed() {
+    static generateSeed(): number {
         let randomNumber = Math.random();
         randomNumber = randomNumber* Math.pow(10, 8);
         randomNumber = Math.trunc(randomNumber); 

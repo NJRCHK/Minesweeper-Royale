@@ -1,6 +1,18 @@
-import React, {useState} from 'react';
+import * as React from 'react';
+import {useState} from 'react';
 
-export default function SinglePlayerMenu(props) {
+type Config = {
+    height: number,
+    width: number,
+    mines: number,
+}
+
+type SinglePlayerMenu = {
+    startSinglePlayerGame: (config: Config) => void
+    handleClickBack: () => void
+}
+
+export default function SinglePlayerMenu(props: SinglePlayerMenu) {
     let defaultConfig = {
         height: 10,
         width: 10,
@@ -9,7 +21,7 @@ export default function SinglePlayerMenu(props) {
 
     const [config, setConfig] = useState(defaultConfig);
 
-    const handleChange = event => {
+    const handleChange = (event:  React.ChangeEvent<HTMLInputElement>): void => {
         setConfig(config => {
             return {
                 ...config, 
@@ -18,7 +30,7 @@ export default function SinglePlayerMenu(props) {
         });
     };
 
-    const onSubmit = event => {
+    const onSubmit = (event:  React.SyntheticEvent): void => {
         event.preventDefault();
         props.startSinglePlayerGame(config);
     };

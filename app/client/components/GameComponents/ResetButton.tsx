@@ -1,8 +1,13 @@
-import React from 'react';
+import * as React from 'react';
 
-export default function ResetButton(props) {
+type ResetButtonProps = {
+    clickEvent: () => void
+    gameState: string
+}
 
-    function calculateSmile(){
+export default function ResetButton(props: ResetButtonProps) {
+
+    function calculateSmile(): string{
         switch(props.gameState){
             case "gameover":
                 return ":(";

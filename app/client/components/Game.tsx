@@ -1,6 +1,10 @@
-import React from "react";
+import * as React from 'react';
 
-export default function Game(props){
+type GameProps = {
+    handleClickBack: () => void
+}
+
+export default function Game(props: GameProps){
     return(
         <div>
             <h1>Game</h1>
