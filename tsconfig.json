@@ -11,13 +11,13 @@
 	  "noImplicitThis": true,
 	  "noImplicitAny": true,
 	  "strictNullChecks": true,
-	  "outDir": "dist"
 	},
 	"include": [
-	  "./app"
+	  "./app/server",
+	  "./app/shared",
 	],
 	"exclude": [
 	  "node_modules",
-	  "build"
+	  "build",
 	]
 }
