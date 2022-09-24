@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {useState} from 'react';
 import MainMenu from './Menus/MainMenu';
-import SinglePlayerMenu from './Menus/SinglePlayerMenu';
 import Game from '../components/Game';
 import SinglePlayerGame from '../components/SinglePlayerGame';
 import Login from './Login'
@@ -28,14 +27,10 @@ export default function App() {
                     handleClickMultiplayer={() => setMode('Game')} 
                     handleClickSingleplayer={() => setMode('SinglePlayerMenu')}
                     handleClickLogin={() => setMode('Login')}
-                />;
-            case 'SinglePlayerMenu':
-                return <SinglePlayerMenu 
                     startSinglePlayerGame={config => {
-                        setMode('SinglePlayerGame')
                         setConfig(config);
+                        setMode('SinglePlayerGame');
                     }}
-                    handleClickBack={() => setMode('MainMenu')}
                 />
             case 'Game':
                 return <Game 
