@@ -5,7 +5,7 @@
   "main": "server/server.js",
   "type": "module",
   "scripts": {
-    "dev": "webpack serve",
+    "dev": "npx webpack build && npx tsc && node dist/server/server.js",
     "build": "webpack"
   },
   "repository": {

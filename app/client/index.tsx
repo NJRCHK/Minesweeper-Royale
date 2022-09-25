@@ -6,7 +6,7 @@ import App from './components/App';
 const rootElement = document.getElementById('root');
 
 if(rootElement === null){
-    throw "Root is null"
+    throw "Root is null";
 }
 
 const root = createRoot(rootElement);
