@@ -18,7 +18,7 @@ export default class Board{
     mines: number;
     seed: number;
 
-    constructor(height: number, width: number, mines: number , seed: number){
+    constructor(height: number, width: number, mines: number , seed?: number){
         this.height = height;
         this.width = width;
         this.mines = mines;
