@@ -1,5 +1,5 @@
 import Player from './Player';
-import Board from '../../shared/Board';
+import Board from '../../shared/Board.js';
 
 export default class Game {
     players: Player[];

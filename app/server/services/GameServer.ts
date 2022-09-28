@@ -1,5 +1,5 @@
 import {WebSocket, WebSocketServer, RawData} from 'ws';
-import Game from './Game';
+import Game from './Game.js';
 
 
 export default class GameServer {
