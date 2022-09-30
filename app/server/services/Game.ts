@@ -1,4 +1,4 @@
-import Player from './Player';
+import Player from './Player.js';
 import Board from '../../shared/Board.js';
 
 export default class Game {

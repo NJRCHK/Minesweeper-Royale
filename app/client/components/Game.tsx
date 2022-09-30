@@ -6,15 +6,25 @@ type GameProps = {
 }
 
 export default function Game(props: GameProps){
-    const [socket, setSocket] = useState(null);
-
     useEffect(() => {
-        const newSocket = new WebSocket('ws://localhost:8080');
-        console.log("connected");
-        newSocket.addEventListener('message', message => {
+        const socket = new WebSocket('ws://localhost:8080');
+
+        socket.addEventListener('open', () => {
+            console.log("Socket is open");
+        });
+
+        socket.addEventListener('close', () => {
+            console.log("Disconnected from server");
+        });
+
+        socket.addEventListener('message', message => {
             console.log(message.data);
         });
-    }, [setSocket]);
+        
+        return () => {
+            socket.close();
+        }
+    }, []);
 
     return(
         <div>
