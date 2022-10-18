@@ -69,10 +69,18 @@ export default class GameServer {
 
     handleNewConnection(id: number, ws: WebSocket) {
         this.game.addPlayer(id);
-        ws.send(JSON.stringify(this.game.getPlayers()));
+        const response = JSON.stringify({
+            "route": "newconnection",
+            "data": {
+                "gamestate": this.game.inProgress,
+                "players": this.game.players    
+            }
+        });
+        ws.send(JSON.stringify(response));
     }
 
     handleChatMessage(id: number, message: Object) {
+        console.log(id);
         let messageString = JSON.stringify({
             route: 'chat',
             data: {
@@ -111,6 +119,16 @@ export default class GameServer {
             return;
         }
         this.game.handlePlayerClick(id, validatedData);
+        const response = JSON.stringify({
+            "route": "updateplayer",
+            "data": {
+                "player": this.game.getPlayerWithId(id),
+                "gamestate": this.game.inProgress
+            }
+        });
+        this.server.clients.forEach(client => {
+            client.send(response);
+        });
     }
 
     handleDisconnection(id: number){
