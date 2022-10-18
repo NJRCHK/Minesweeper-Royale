@@ -1,6 +1,11 @@
-import {WebSocket, WebSocketServer, RawData} from 'ws';
+import {WebSocket, WebSocketServer, RawData, Data} from 'ws';
+import {Point} from '../../shared/types.js';
 import Game from './Game.js';
 
+interface ClientMessage {
+    route: String,
+    data: Object;
+}
 
 export default class GameServer {
     server: WebSocketServer;
@@ -15,7 +20,7 @@ export default class GameServer {
     startServer() {
         this.server.on('connection', ws => {
             const id = this.generateId();
-            this.handleNewConnection(id);
+            this.handleNewConnection(id, ws);
             ws.on('message', data => {
                 this.handleMessage(id, data);
             });
@@ -25,19 +30,87 @@ export default class GameServer {
         });
     }
 
+    validateMessage(data: RawData): ClientMessage {
+        let parsedData = JSON.parse(data.toString());
+        if(!parsedData.hasOwnProperty('route')){
+            throw (`Recieved message that was not parsable to JSON from client. Message: ${data.toString()}`);
+        }
+        if(!parsedData.hasOwnProperty('data')){
+            throw (`Recieved message that was not parsable to JSON from client. Message: ${data.toString()}`);
+        }
+
+        if(Object.keys(parsedData).length !== 2){
+            throw (`Unexpected data recieved. Data should only contain properties 'data' and 'route'. Instead, data looked like : ${data}`);
+        }
+        
+        return parsedData as ClientMessage;
+    }
+    
     handleMessage(id: number, data: RawData) {
-        let parsedData;
+        let parsedData: ClientMessage;
         try {
-            parsedData = JSON.parse(data.toString());
-        } catch {
-            console.log(`Recieved message that was not parsable to JSON from client ${id}. Message: ${data.toString()}`);
+            parsedData = this.validateMessage(data);
+
+        } catch (e) {
+            console.log(e);
             return;
+        }
+
+        switch(String(parsedData.route)){
+            case 'chat':
+                this.handleChatMessage(id, parsedData.data);
+                break;
+            case 'click':
+                this.handleClick(id, parsedData.data);
+                break;
         }
         console.log(parsedData);
     }
 
-    handleNewConnection(id: number) {
+    handleNewConnection(id: number, ws: WebSocket) {
         this.game.addPlayer(id);
+        ws.send(JSON.stringify(this.game.getPlayers()));
+    }
+
+    handleChatMessage(id: number, message: Object) {
+        let messageString = JSON.stringify({
+            route: 'chat',
+            data: {
+                username: 'username',
+                message: message
+            },
+        });
+        this.server.clients.forEach(client => {
+            if(client.readyState === WebSocket.OPEN){
+                client.send(messageString);
+            }
+        });
+    }
+
+    validateClickMessage(data: Object): Point {
+        if(Object.keys(data).length !== 2){
+            throw `Unexpected data recieved. data should be in form x: number y: number`;
+        }
+
+        if(!data.hasOwnProperty('x')){
+            throw `Unexpected data recieved. data missing x coordinate`;
+        }
+
+        if(!data.hasOwnProperty('y')){
+            throw `Unexpected data recieved. data missing x coordinate`;
+        }
+        return data as Point;
+    }
+
+    handleClick(id: number, data: Object){
+        let validatedData: Point;
+        try {
+            validatedData = this.validateClickMessage(data);
+        } catch (e) {
+            console.log(e);
+            return;
+        }
+        this.game.handlePlayerClick(id, validatedData);
     }
 
     handleDisconnection(id: number){
