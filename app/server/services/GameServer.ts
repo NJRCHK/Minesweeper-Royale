@@ -83,11 +83,9 @@ export default class GameServer {
         console.log(id);
         let messageString = JSON.stringify({
             route: "chat",
-            data: {
-                username: "username",
-                message: message
-            },
+            data: message
         });
+        console.log(messageString);
         this.server.clients.forEach(client => {
             if(client.readyState === WebSocket.OPEN){
                 client.send(messageString);

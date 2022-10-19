@@ -145,3 +145,26 @@ body {
 .game-reset-button:hover{
     cursor: pointer;
 }
+
+.chatbox {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 450px;
+    height: 150px;
+    background-color: gray;
+}
+
+.chatbox-message-display{
+    display:flex;
+    flex-direction:row;
+    height: 130px;
+    overflow-y: scroll;
+    width: 100%;
+}
+
+.chatbox-message-enter{
+    width: 100%;
+
+}
+
