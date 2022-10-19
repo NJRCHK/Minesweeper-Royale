@@ -79,11 +79,17 @@ export default class GameServer {
         ws.send(JSON.stringify(response));
     }
 
-    handleChatMessage(id: number, message: Object) {
-        console.log(id);
+    handleChatMessage(id: number, message: any) {
+        if(!('message' in message)){
+            console.log(`Recieved message in improper format.  Message: ${JSON.stringify(message)}`);
+            return;
+        }
         let messageString = JSON.stringify({
             route: "chat",
-            data: message
+            data: {
+                message: message.message,
+                username: id
+            }
         });
         console.log(messageString);
         this.server.clients.forEach(client => {

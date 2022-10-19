@@ -6,15 +6,10 @@ import Timer from './GameComponents/Timer';
 import BoardDisplay from './GameComponents/BoardDisplay';
 import Board from '../../shared/Board';
 import Chat from './Chat';
-import { BoardDisplayProps } from '../../shared/types';
-
+import { BoardDisplayProps, ChatMessage } from '../../shared/types';
 type ServerMessage = {
     route: "newconnection" | "chat" | "updateplayer";
     data: Object;
-}
-type ChatMessage = {
-    username: String;
-    text: String;
 }
 
 type MultiplayerGame = {
@@ -94,7 +89,6 @@ export default function Game(props: GameProps){
     function sendChatMessage(message: string) {
         const dataToSend = JSON.stringify({
             data: {
-                username: id,
                 message: message,
             },
             route: "chat"
@@ -107,10 +101,6 @@ export default function Game(props: GameProps){
         if(typeof parsedMessage === "string"){
             parsedMessage = JSON.parse(parsedMessage);
         }
-        console.log(typeof parsedMessage);
-        console.log(parsedMessage);
-        console.log(Object.keys(parsedMessage));
-        console.log(Object.keys(parsedMessage).length);
         if(Object.keys(parsedMessage).length !== 2){
             throw `Error: Message doesn't contain the correct number of properties.  Properties required: 2 Message: ${JSON.stringify(parsedMessage)}`;
         }

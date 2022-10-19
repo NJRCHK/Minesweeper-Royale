@@ -13,7 +13,7 @@ export type BoardDisplayProps = {
 
 export type ChatMessage = {
     username: String;
-    text: String;
+    message: String;
 }
 
 export type ChatMessageProps = {

@@ -157,7 +157,7 @@ body {
 
 .chatbox-message-display{
     display:flex;
-    flex-direction:row;
+    flex-direction:column;
     height: 130px;
     overflow-y: scroll;
     width: 100%;
@@ -168,3 +168,8 @@ body {
 
 }
 
+.chatbox-message{
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+}
