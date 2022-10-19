@@ -11,20 +11,32 @@ type ServerMessage = {
     route: "newconnection" | "chat" | "updateplayer";
     data: Object;
 }
+type FirstConnectionMessageData = {
+    id: number;
+    gamestate: boolean;
+    players: Player[]
+}
 
-type MultiplayerGame = {
-    minesRemaining: number;
-    gameState: string;
+type Player = {
+    id: number;
+    alive: boolean;
+    board: BoardServerData;
+}
+
+type BoardServerData = {
     height: number;
+    mines: number;
+    minesRemaining: number;
     width: number;
     tiles: number[][];
 }
+
 type GameProps = {
     handleClickBack: () => void
 }
 
 export default function Game(props: GameProps){
-    const [board, setBoard] = useState({} as MultiplayerGame);
+    const [board, setBoard] = useState({} as BoardServerData);
     const [socket, setSocket] = useState({} as WebSocket);
     const [id, setId] = useState(-1);
     const [chatMessages, setChatMessages] = useState([] as ChatMessage[]);
@@ -55,10 +67,58 @@ export default function Game(props: GameProps){
                 handleChatMessage(message.data);
                 break;
             case "newconnection":
+                handleFirstConnection(message.data);
                 break;
             case "updateplayer": 
                 break;
         }
+    }
+
+    function verifyFirstConnectionData(message: any) {
+        if(Object.keys(message).length !== 3){
+            throw `Error: Message doesn't contain the correct number of properties.  Properties required: 2 Message: ${JSON.stringify(message)}`;
+        }
+        if(!('gamestate' in message)){
+            throw `Error: Message doesn't contain correct properties. Message: ${JSON.stringify(message)}`;
+        }
+        if(!('id' in message)){
+            throw `Error: Message doesn't contain correct properties. Message: ${JSON.stringify(message)}`;
+        }
+        if(!('players' in message)){
+            throw `Error: Message doesn't contain correct properties. Message: ${JSON.stringify(message)}`;            
+        }
+        if(!(Array.isArray(message.players))){
+            throw `Error: Message doesn't contain correct properties. Message: ${JSON.stringify(message)}`;
+        }
+
+        for(let i = 0; i < message.players.length; i++){
+            const player = message.players[i];
+            if(!('alive' in player)){
+                throw `Error: Message doesn't contain correct properties. Message: ${JSON.stringify(message)}`;
+            }
+            if(!('board' in player)){
+                throw `Error: Message doesn't contain correct properties. Message: ${JSON.stringify(message)}`;
+            }
+            if(!('id' in player)){
+                throw `Error: Message doesn't contain correct properties. Message: ${JSON.stringify(message)}`;
+            }
+        }
+        return message as FirstConnectionMessageData;
+    }
+
+    function getMyBoardFromPlayers(data: FirstConnectionMessageData) {
+        for(let i = 0; i < data.players.length; i++){
+            if(data.players[i].id === data.id){
+                return data.players[i].board;
+            }
+        }
+        throw `Player data missing from first connection state`;
+    }
+
+    function handleFirstConnection(message: Object) {
+        const data = verifyFirstConnectionData(message);
+        setId(data.id);
+        setBoard(getMyBoardFromPlayers(data));
     }
 
     function validateChatMessage(message: Object) {
@@ -66,10 +126,10 @@ export default function Game(props: GameProps){
             throw `Error: Message doesn't contain the correct number of properties.  Properties required: 2 Message: ${JSON.stringify(message)}`;
         }
         if(!('username' in message)){
-            throw `Error: Message doesn't contain route property. Message: ${JSON.stringify(message)}`;
+            throw `Error: Message doesn't contain correct properties. Message: ${JSON.stringify(message)}`;
         }
         if(!('message' in message)){
-            throw `Error: Message doesn't contain data property. Message: ${JSON.stringify(message)}`;
+            throw `Error: Message doesn't contain correct properties. Message: ${JSON.stringify(message)}`;
         }
         return message as ChatMessage;
     }
@@ -129,9 +189,6 @@ export default function Game(props: GameProps){
     }
 
     function tileRightClicked (x: number, y: number): void {
-        if(board.gameState !== "inprogress"){
-            return;
-        }
         let tile = board.tiles[x][y];
         //if tile is shown do nothing
         if(tile > 0){
@@ -171,15 +228,14 @@ export default function Game(props: GameProps){
         }
     }
 
-    /*
-    function renderBoard(board: MultiplayerBoardDisplay) {
+    function renderBoard() {
         return (
             <div className="singleplayer-game" onContextMenu={contextMenu}>
                 <div className="game-bar">
                     <Counter mines={board.minesRemaining}/>
                     <ResetButton 
                         clickEvent={() => {return}}
-                        gameState={board.gameState}
+                        gameState="gamewon"
                     />
                     <Timer />
                 </div>
@@ -190,15 +246,15 @@ export default function Game(props: GameProps){
                     tileClicked={tileClicked}
                     tileRightClicked={tileRightClicked}
                 />
-            </div>     
+            </div>
 
 
         )
     }
-    */
     return(
         <div>
             <h1>Game</h1>
+            {id !== -1 && renderBoard()}
             <Chat sendChatMessage={sendChatMessage} messages={chatMessages}/>
             <div onClick={props.handleClickBack}>Back</div>
         </div>

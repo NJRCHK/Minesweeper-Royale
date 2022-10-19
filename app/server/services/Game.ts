@@ -40,6 +40,18 @@ export default class Game {
         }
     }
 
+    clientifyPlayers() {
+        let clonedPlayers = JSON.parse(JSON.stringify(this.players));
+        console.log(clonedPlayers);
+        for(let i = 0; i < clonedPlayers.length; i++){
+            let board = clonedPlayers[i].board;
+            delete board.seed;
+            delete board.squaresRemaining;
+            delete board.board;
+        }
+        return clonedPlayers;
+    }
+
     removePlayer(id: number){
         this.players = this.players.filter(player => player.id !== id);
     }

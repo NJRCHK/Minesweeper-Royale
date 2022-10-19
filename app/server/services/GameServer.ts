@@ -72,8 +72,9 @@ export default class GameServer {
         const response = JSON.stringify({
             "route": "newconnection",
             "data": {
+                "id": id,
                 "gamestate": this.game.inProgress,
-                "players": this.game.players    
+                "players": this.game.clientifyPlayers(),  
             }
         });
         ws.send(JSON.stringify(response));
