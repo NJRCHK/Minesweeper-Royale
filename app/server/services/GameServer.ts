@@ -82,9 +82,9 @@ export default class GameServer {
     handleChatMessage(id: number, message: Object) {
         console.log(id);
         let messageString = JSON.stringify({
-            route: 'chat',
+            route: "chat",
             data: {
-                username: 'username',
+                username: "username",
                 message: message
             },
         });
