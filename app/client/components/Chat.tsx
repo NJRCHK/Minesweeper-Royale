@@ -24,8 +24,8 @@ export default function Chat (props: ChatMessageProps) {
             console.log(message.username);
             return (
                 <div key={index} className='chatbox-message'>
-                    <div>{message.username}</div>
-                    <div>{message.message}</div>
+                    <div className='chatbox-message-username'>{message.username + `: `}</div>
+                    <div className='chatbox-message-content'>{message.message}</div>
                 </div>
             )
         });
@@ -36,8 +36,8 @@ export default function Chat (props: ChatMessageProps) {
             <div className='chatbox-message-display'>
                 {renderChatMessages()}
             </div>
-            <form onSubmit={validateAndSendMessage}>
-                <input className='chatbox-message-enter' onChange={handleMessageChange} value={myMessage}/>
+            <form onSubmit={validateAndSendMessage} className='chatbox-form'>
+                <input className='chatbox-message-input' onChange={handleMessageChange} value={myMessage}/>
                 <input type="submit" value="Send" />
             </form>
         </div>

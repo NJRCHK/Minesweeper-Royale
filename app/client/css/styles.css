@@ -163,13 +163,30 @@ body {
     width: 100%;
 }
 
-.chatbox-message-enter{
+.chatbox-message-input{
     width: 100%;
+}
 
+.chatbox-message-submit{
+    background-color: white;
 }
 
 .chatbox-message{
     display:flex;
     flex-direction: row;
     width: 100%;
+}
+
+.chatbox-message-username{
+    font-weight: bold;
+}
+
+.chatbox-message-content{
+    font-weight: normal;
+    margin-left: 8px;
+}
+
+.chatbox-form{
+    display: flex;
+    flex-direction: row;
 }
