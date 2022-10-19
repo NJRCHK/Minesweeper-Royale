@@ -70,6 +70,7 @@ export default function Game(props: GameProps){
                 handleFirstConnection(message.data);
                 break;
             case "updateplayer": 
+                console.log(message);
                 break;
         }
     }
@@ -179,7 +180,7 @@ export default function Game(props: GameProps){
 
     function tileClicked(x: number, y: number) {
         const data = {
-            "route": "tileclicked",
+            "route": "click",
             "data": {
                 "x": x,
                 "y": y,
