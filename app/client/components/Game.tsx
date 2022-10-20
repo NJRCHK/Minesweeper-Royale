@@ -31,35 +31,61 @@ type BoardServerData = {
     tiles: number[][];
 }
 
+type UpdatePlayerMessageData = {
+    gamestate: boolean;
+    player: Player;
+}
+
 type GameProps = {
     handleClickBack: () => void
 }
 
 export default function Game(props: GameProps){
-    const [board, setBoard] = useState({} as BoardServerData);
+
     const [socket, setSocket] = useState({} as WebSocket);
-    const [id, setId] = useState(-1);
+
+    const [myPlayer, setMyPlayer] = useState({} as Player);
+    const [opponents, setOpponents] = useState([] as Player[]);
+
     const [chatMessages, setChatMessages] = useState([] as ChatMessage[]);
 
     useEffect(() => {
         const newSocket = new WebSocket('ws://localhost:8080');
-        newSocket.addEventListener('open', () => {
-            setSocket(newSocket);
-            console.log("socket connection successful");
-        });
-
-        newSocket.addEventListener('close', () => {
-            console.log("Disconnected from server");
-        });
-        newSocket.addEventListener('message', message => {
-            let parsedMessage = validateMessage(message.data);
-            handleMessage(parsedMessage);
-        });
-
+        setSocket(newSocket);
         return () => {
             newSocket.close();
         }
-    }, []);
+    }, [setSocket]);
+
+    useEffect(() => {
+        const openEventListener = () => {
+            console.log("Connected to server");
+        }
+
+        const closeEventListener = () => {
+            console.log("Disconected from server")
+        }
+
+        const messageEventListener = (message: MessageEvent<any>) => {
+            let parsedMessage = validateMessage(message.data);
+            handleMessage(parsedMessage);
+        }
+
+        if('url' in socket){
+            socket.addEventListener("open", openEventListener);
+            socket.addEventListener("close", closeEventListener);
+            socket.addEventListener("message", messageEventListener);
+        }
+
+        return () => {
+            if(!('url' in socket)){
+                return;
+            }
+            socket.removeEventListener("open", openEventListener);
+            socket.removeEventListener("close", closeEventListener);
+            socket.removeEventListener("message", messageEventListener);
+        }
+    }, [myPlayer, opponents, socket, chatMessages]);
 
     function handleMessage(message: ServerMessage) {
         switch(message.route){
@@ -70,9 +96,35 @@ export default function Game(props: GameProps){
                 handleFirstConnection(message.data);
                 break;
             case "updateplayer": 
-                console.log(message);
+                updatePlayer(message.data);
                 break;
         }
+    }
+
+    function verifyPlayerData(data: any) {
+        //TODO: verify that the data recieved matches the structure
+        return data as UpdatePlayerMessageData;
+    }
+
+    function updatePlayer(message: any) {
+        const data = verifyPlayerData(message);
+        if(data.player.id === myPlayer.id){
+            setMyPlayer(oldState => {
+                return {
+                    ...oldState,
+                    board: data.player.board
+                }
+            });
+            return;
+        }
+        opponents.forEach((opponent, index) => {
+            if(!(opponent.id === data.player.id)){
+                return;
+            }
+            let clonedOpponents = [...opponents];
+            clonedOpponents[index] = data.player;
+            setOpponents(clonedOpponents);
+        });
     }
 
     function verifyFirstConnectionData(message: any) {
@@ -118,8 +170,19 @@ export default function Game(props: GameProps){
 
     function handleFirstConnection(message: Object) {
         const data = verifyFirstConnectionData(message);
-        setId(data.id);
-        setBoard(getMyBoardFromPlayers(data));
+        setMyPlayer({
+            alive: true,
+            id: data.id,
+            board: getMyBoardFromPlayers(data)
+        });
+        
+        let tempOpponents = [] as Player[];
+        for(let i = 0; i < data.players.length; i++){
+            if(data.players[i].id !== data.id){
+                tempOpponents.push(data.players[i]);
+            }
+        }
+        setOpponents(tempOpponents);
     }
 
     function validateChatMessage(message: Object) {
@@ -190,40 +253,40 @@ export default function Game(props: GameProps){
     }
 
     function tileRightClicked (x: number, y: number): void {
-        let tile = board.tiles[x][y];
+        let tile = myPlayer.board.tiles[x][y];
         //if tile is shown do nothing
         if(tile > 0){
             return;
         }
         //if tile is covered put a flag on it and decrement the mines counter
         else if(tile === -2){
-            setBoard(prevBoard => {
+            setMyPlayer(prevState => {
                 let temp = {
-                    ...prevBoard
+                    ...prevState
                 };
-                temp.tiles[x][y] = -3;
-                temp.minesRemaining--;
+                temp.board.tiles[x][y] = -3;
+                temp.board.minesRemaining--;
                 return temp;
             });
         }
         // if tile has flag put a question mark on it and increment the mines counter
         else if(tile === -3){
-            setBoard(prevBoard => {
+            setMyPlayer(prevState => {
                 let temp = {
-                    ...prevBoard
+                    ...prevState
                 };
-                temp.tiles[x][y] = -4;
-                temp.minesRemaining++;
+                temp.board.tiles[x][y] = -4;
+                temp.board.minesRemaining++;
                 return temp;
             });
         }
         //if tile has question mark on it remove it 
         else if(tile === -4){
-            setBoard(prevBoard => {
+            setMyPlayer(prevState => {
                 let temp = {
-                    ...prevBoard
+                    ...prevState
                 };
-                temp.tiles[x][y] = -2;
+                temp.board.tiles[x][y] = -2;
                 return temp;
             });
         }
@@ -233,7 +296,7 @@ export default function Game(props: GameProps){
         return (
             <div className="singleplayer-game" onContextMenu={contextMenu}>
                 <div className="game-bar">
-                    <Counter mines={board.minesRemaining}/>
+                    <Counter mines={myPlayer.board.minesRemaining}/>
                     <ResetButton 
                         clickEvent={() => {return}}
                         gameState="gamewon"
@@ -241,9 +304,9 @@ export default function Game(props: GameProps){
                     <Timer />
                 </div>
                 <BoardDisplay 
-                    height={board.height}
-                    width={board.width}
-                    tiles={board.tiles}
+                    height={myPlayer.board.height}
+                    width={myPlayer.board.width}
+                    tiles={myPlayer.board.tiles}
                     tileClicked={tileClicked}
                     tileRightClicked={tileRightClicked}
                 />
@@ -255,7 +318,7 @@ export default function Game(props: GameProps){
     return(
         <div>
             <h1>Game</h1>
-            {id !== -1 && renderBoard()}
+            {myPlayer.id && renderBoard()}
             <Chat sendChatMessage={sendChatMessage} messages={chatMessages}/>
             <div onClick={props.handleClickBack}>Back</div>
         </div>

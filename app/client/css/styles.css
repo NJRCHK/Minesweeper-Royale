@@ -190,3 +190,10 @@ body {
     display: flex;
     flex-direction: row;
 }
+
+.opponent-board-display-wrapper {
+    display: flex;
+    min-width: 300px;
+    min-height: 30px;
+    border: 1px solid black;
+}

@@ -64,7 +64,6 @@ export default class GameServer {
                 this.handleClick(id, parsedData.data);
                 break;
         }
-        console.log(parsedData);
     }
 
     handleNewConnection(id: number, ws: WebSocket) {
@@ -92,7 +91,6 @@ export default class GameServer {
                 username: id
             }
         });
-        console.log(messageString);
         this.server.clients.forEach(client => {
             if(client.readyState === WebSocket.OPEN){
                 client.send(messageString);
@@ -127,7 +125,7 @@ export default class GameServer {
         const response = JSON.stringify({
             "route": "updateplayer",
             "data": {
-                "player": this.game.getPlayerWithId(id),
+                "player": this.game.getPlayerWithId(id).clientifyData(),
                 "gamestate": this.game.inProgress
             }
         });

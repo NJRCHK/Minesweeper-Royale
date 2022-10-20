@@ -42,7 +42,6 @@ export default class Game {
 
     clientifyPlayers() {
         let clonedPlayers = JSON.parse(JSON.stringify(this.players));
-        console.log(clonedPlayers);
         for(let i = 0; i < clonedPlayers.length; i++){
             let board = clonedPlayers[i].board;
             delete board.seed;

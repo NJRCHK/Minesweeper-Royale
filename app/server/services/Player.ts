@@ -12,6 +12,14 @@ export default class Player {
         this.alive = true;
     }
 
+    clientifyData() {
+        let clonedPlayer = JSON.parse(JSON.stringify(this));
+        delete clonedPlayer.board.board;
+        delete clonedPlayer.board.seed;
+        delete clonedPlayer.board.squaresRemaining;
+        return clonedPlayer;
+    }
+
     revealTile(point: Point) {
         if(!this.alive){
             return;
