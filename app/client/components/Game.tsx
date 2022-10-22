@@ -4,10 +4,9 @@ import Counter from './GameComponents/Counter';
 import ResetButton from './GameComponents/ResetButton';
 import Timer from './GameComponents/Timer';
 import BoardDisplay from './GameComponents/BoardDisplay';
-import Board from '../../shared/Board';
 import Chat from './Chat';
 import Leaderboard from './GameComponents/Leaderboard';
-import {BoardDisplayProps, 
+import { 
         ChatMessage, 
         LeaderboardEntry, 
         ServerMessage, 
