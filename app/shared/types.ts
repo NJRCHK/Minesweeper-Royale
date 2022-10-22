@@ -6,7 +6,7 @@ export type Point = {
 export type Tile = {
     x: number,
     y: number,
-    value: number;
+    value: TileValue;
 }
 
 export type Config = {
@@ -18,7 +18,7 @@ export type Config = {
 export type BoardDisplayProps = {
     height: number,
     width: number,
-    tiles: number[][],
+    tiles: TileValue[][],
     tileClicked: (x: number, y: number) => void
     tileRightClicked: (x: number, y: number) => void
 }
@@ -93,7 +93,7 @@ export type BoardServerData = {
     mines: number;
     minesRemaining: number;
     width: number;
-    tiles: number[][];
+    tiles: TileValue[][];
 }
 
 export type UpdatePlayerMessageData = {
