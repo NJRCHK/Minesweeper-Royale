@@ -7,7 +7,7 @@ import BoardDisplay from './GameComponents/BoardDisplay';
 import Board from '../../shared/Board';
 import Chat from './Chat';
 import Leaderboard from './GameComponents/Leaderboard';
-import { BoardDisplayProps, ChatMessage, LeaderboardEntry, ServerMessage } from '../../shared/types';
+import { BoardDisplayProps, ChatMessage, LeaderboardEntry, ServerMessage, ServerToClientRoutes, ClientMessage, ClientToServerRoutes } from '../../shared/types';
 
 type FirstConnectionMessageData = {
     id: number;
@@ -84,16 +84,16 @@ export default function Game(){
 
     function handleMessage(message: ServerMessage) {
         switch(message.route){
-            case "chat":
+            case ServerToClientRoutes.CHAT:
                 handleChatMessage(message.data);
                 break;
-            case "newconnection":
+            case ServerToClientRoutes.NEWCONNECTION:
                 handleFirstConnection(message.data);
                 break;
-            case "updateplayer": 
+            case ServerToClientRoutes.UPDATEPLAYER: 
                 updatePlayer(message.data);
                 break;
-            case "leaderboard":
+            case ServerToClientRoutes.LEADERBOARD:
                 updateLeaderboard(message.data);
         }
     }
@@ -182,8 +182,8 @@ export default function Game(){
             data: {
                 message: message,
             },
-            route: "chat"
-        });
+            route: ClientToServerRoutes.CHAT
+        } as ClientMessage);
         socket.send(dataToSend);
     }
 
@@ -210,12 +210,12 @@ export default function Game(){
 
     function tileClicked(x: number, y: number) {
         const data = {
-            "route": "click",
-            "data": {
+            route: ClientToServerRoutes.CLICK,
+            data: {
                 "x": x,
                 "y": y,
             }
-        }
+        } as ClientMessage;
         socket.send(JSON.stringify(data));
     }
 

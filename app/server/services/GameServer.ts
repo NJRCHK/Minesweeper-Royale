@@ -1,10 +1,10 @@
 import {WebSocket, WebSocketServer, RawData, Data, Server} from 'ws';
-import {Point, ServerMessage} from '../../shared/types.js';
+import {ClientToServerRoutes, Point, ServerMessage, ServerToClientRoutes } from '../../shared/types.js';
 import Game from './Game.js';
 
 
 interface ClientMessage {
-    route: String,
+    route: ClientToServerRoutes,
     data: Object;
 }
 
@@ -57,11 +57,11 @@ export default class GameServer {
             return;
         }
 
-        switch(String(parsedData.route)){
-            case 'chat':
+        switch(parsedData.route){
+            case ClientToServerRoutes.CHAT:
                 this.handleChatMessage(id, parsedData.data);
                 break;
-            case 'click':
+            case ClientToServerRoutes.CLICK:
                 this.handleClick(id, ws, parsedData.data);
                 break;
         }
@@ -70,12 +70,12 @@ export default class GameServer {
     handleNewConnection(id: number, ws: WebSocket) {
         this.game.addPlayer(id);
         const response = JSON.stringify({
-            "route": "newconnection",
-            "data": {
-                "id": id,
-                "gamestate": this.game.inProgress,
-                "leaderboard": this.game.getLeaderboard(),
-                "player": this.game.getPlayerWithId(id),
+            "route": ServerToClientRoutes.NEWCONNECTION,
+            data: {
+                id: id,
+                gamestate: this.game.inProgress,
+                leaderboard: this.game.getLeaderboard(),
+                player: this.game.getPlayerWithId(id),
             }
         } as ServerMessage);
 
@@ -88,12 +88,12 @@ export default class GameServer {
             return;
         }
         let messageString = JSON.stringify({
-            route: "chat",
+            route: ServerToClientRoutes.CHAT,
             data: {
                 message: message.message,
                 username: id
             }
-        });
+        } as ServerMessage);
         this.server.clients.forEach(client => {
             if(client.readyState === WebSocket.OPEN){
                 client.send(messageString);
@@ -126,15 +126,15 @@ export default class GameServer {
         }
         this.game.handlePlayerClick(id, validatedData);
         const response = JSON.stringify({
-            "route": "updateplayer",
-            "data": {
+            route: ServerToClientRoutes.UPDATEPLAYER,
+            data: {
                 "player": this.game.getPlayerWithId(id).clientifyData(),
                 "gamestate": this.game.inProgress
             }
         } as ServerMessage);
         ws.send(response);
         const leaderboard = JSON.stringify({
-            "route": "leaderboard",
+            route: ServerToClientRoutes.LEADERBOARD,
             data: this.game.getLeaderboard()
         } as ServerMessage);
         this.server.clients.forEach(client => {

@@ -24,7 +24,7 @@ export type ChatMessageProps = {
 export type ServerMessageRoute = "newconnection" | "chat" | "leaderboard" | "updateplayer";
 
 export type ServerMessage = {
-    route: ServerMessageRoute;
+    route: ServerToClientRoutes;
     data: Object;
 }
 
@@ -36,4 +36,21 @@ export type LeaderboardEntry = {
 
 export type LeaderboardProps = {
     leaderboardData: LeaderboardEntry[];
+}
+
+export enum ServerToClientRoutes {
+    NEWCONNECTION = 0,
+    CHAT = 1,
+    UPDATEPLAYER = 2,
+    LEADERBOARD = 3,
+}
+
+export enum ClientToServerRoutes {
+    CLICK = 0,
+    CHAT = 1,
+}
+
+export type ClientMessage = {
+    route: ClientToServerRoutes,
+    data: Object;
 }
