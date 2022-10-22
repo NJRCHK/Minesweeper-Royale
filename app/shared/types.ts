@@ -128,3 +128,20 @@ export type ResetButtonProps = {
 export type CounterProps = {
     mines: number
 }
+
+export enum TileValue {
+    EMPTY = 0,
+    BOMB = -1,
+    BLANK = -2, 
+    FLAG = -3,
+    QUESTIONMARK = -4,
+    ONE = 1,
+    TWO = 2,
+    THREE = 3,
+    FOUR = 4,
+    FIVE = 5,
+    SIX = 6,
+    SEVEN = 7,
+    EIGHT = 8
+}
+

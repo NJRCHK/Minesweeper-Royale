@@ -17,6 +17,7 @@ import {BoardDisplayProps,
         FirstConnectionMessageData,
         Player,
         UpdatePlayerMessageData,
+        TileValue
     } from '../../shared/types';
 
 export default function Game(){
@@ -206,38 +207,38 @@ export default function Game(){
     function tileRightClicked (x: number, y: number): void {
         let tile = myPlayer.board.tiles[x][y];
         //if tile is shown do nothing
-        if(tile > 0){
+        if(![TileValue.BLANK, TileValue.QUESTIONMARK, TileValue.FLAG].includes(tile)){
             return;
         }
         //if tile is covered put a flag on it and decrement the mines counter
-        else if(tile === -2){
+        else if(tile === TileValue.BLANK){
             setMyPlayer(prevState => {
                 let temp = {
                     ...prevState
                 };
-                temp.board.tiles[x][y] = -3;
+                temp.board.tiles[x][y] = TileValue.FLAG;
                 temp.board.minesRemaining--;
                 return temp;
             });
         }
         // if tile has flag put a question mark on it and increment the mines counter
-        else if(tile === -3){
+        else if(tile === TileValue.FLAG){
             setMyPlayer(prevState => {
                 let temp = {
                     ...prevState
                 };
-                temp.board.tiles[x][y] = -4;
+                temp.board.tiles[x][y] = TileValue.QUESTIONMARK;
                 temp.board.minesRemaining++;
                 return temp;
             });
         }
         //if tile has question mark on it remove it 
-        else if(tile === -4){
+        else if(tile === TileValue.QUESTIONMARK){
             setMyPlayer(prevState => {
                 let temp = {
                     ...prevState
                 };
-                temp.board.tiles[x][y] = -2;
+                temp.board.tiles[x][y] = TileValue.BLANK;
                 return temp;
             });
         }

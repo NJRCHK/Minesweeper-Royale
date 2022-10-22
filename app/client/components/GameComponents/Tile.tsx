@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TileProps } from '../../../shared/types';
+import { TileProps, TileValue } from '../../../shared/types';
 
 
 export default function Tile(props: TileProps) {
@@ -10,13 +10,13 @@ export default function Tile(props: TileProps) {
 
     function getValueToDisplay(): string{
         switch(props.revealed){
-            case -4: 
+            case TileValue.QUESTIONMARK: 
                 return "?";
-            case -3:
+            case TileValue.FLAG:
                 return "F";
-            case -2:
+            case TileValue.BLANK:
                 return "";
-            case -1: 
+            case TileValue.BOMB: 
                 return "B";
             default:
                 return String(props.revealed);
