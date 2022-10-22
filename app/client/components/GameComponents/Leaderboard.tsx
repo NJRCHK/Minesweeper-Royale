@@ -6,10 +6,10 @@ export default function Leaderboard(props: LeaderboardProps) {
 
     function renderLeaderboard() {
         const leaderboardData = props.leaderboardData;
-        let jsxLeaderboard = leaderboardData.map(leaderboardEntry => {
+        let jsxLeaderboard = leaderboardData.map((leaderboardEntry, index) => {
             return (
-                <div className='leaderboard-entry'>
-                    <div>{leaderboardEntry.username}</div>
+                <div className='leaderboard-entry' key={index}>
+                    <div>{`${index+1} ${leaderboardEntry.username}`}</div>
                     <div>{leaderboardEntry.squaresRemaining}</div>
                     <div>{leaderboardEntry.percentage}%</div>
                 </div>
@@ -22,7 +22,6 @@ export default function Leaderboard(props: LeaderboardProps) {
                 <div>% Complete</div>
             </div>
         ));
-
         return jsxLeaderboard;
     }
 

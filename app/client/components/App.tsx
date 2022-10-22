@@ -33,9 +33,7 @@ export default function App() {
                     }}
                 />
             case 'Game':
-                return <Game 
-                    handleClickBack={() => setMode('MainMenu')}
-                />
+                return <Game />
             case 'SinglePlayerGame':
                 return <SinglePlayerGame 
                     config={config}
@@ -50,6 +48,6 @@ export default function App() {
     }
 
     return (
-        <div>{renderSwitch(mode)}</div>
+        <div className='app-wrapper'>{renderSwitch(mode)}</div>
     );
 };

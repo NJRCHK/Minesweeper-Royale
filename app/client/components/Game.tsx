@@ -35,11 +35,7 @@ type UpdatePlayerMessageData = {
     player: Player;
 }
 
-type GameProps = {
-    handleClickBack: () => void
-}
-
-export default function Game(props: GameProps){
+export default function Game(){
 
     const [socket, setSocket] = useState({} as WebSocket);
 
@@ -289,9 +285,10 @@ export default function Game(props: GameProps){
     return(
         <div className='game-wrapper'>
             {myPlayer.id && renderBoard()}
-            <Chat sendChatMessage={sendChatMessage} messages={chatMessages}/>
-            <Leaderboard leaderboardData={leaderboard}/>
-            <div onClick={props.handleClickBack}>Back</div>
+            <div className='leaderboard-chat-wrapper'>
+                <Leaderboard leaderboardData={leaderboard}/>
+                <Chat sendChatMessage={sendChatMessage} messages={chatMessages}/>
+            </div>
         </div>
     );
 };
