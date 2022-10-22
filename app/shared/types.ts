@@ -33,3 +33,7 @@ export type LeaderboardEntry = {
     squaresRemaining: number, 
     percentage: number
 }
+
+export type LeaderboardProps = {
+    leaderboardData: LeaderboardEntry[];
+}

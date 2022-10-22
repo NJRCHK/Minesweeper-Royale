@@ -6,12 +6,14 @@ import Timer from './GameComponents/Timer';
 import BoardDisplay from './GameComponents/BoardDisplay';
 import Board from '../../shared/Board';
 import Chat from './Chat';
+import Leaderboard from './GameComponents/Leaderboard';
 import { BoardDisplayProps, ChatMessage, LeaderboardEntry, ServerMessage } from '../../shared/types';
 
 type FirstConnectionMessageData = {
     id: number;
     gamestate: boolean;
-    players: Player[]
+    player: Player;
+    leaderboard: LeaderboardEntry[];
 }
 
 type Player = {
@@ -42,7 +44,7 @@ export default function Game(props: GameProps){
     const [socket, setSocket] = useState({} as WebSocket);
 
     const [myPlayer, setMyPlayer] = useState({} as Player);
-    const [opponents, setOpponents] = useState([] as Player[]);
+    const [leaderboard, setLeaderboard] = useState([] as LeaderboardEntry[]);
 
     const [chatMessages, setChatMessages] = useState([] as ChatMessage[]);
 
@@ -82,7 +84,7 @@ export default function Game(props: GameProps){
             socket.removeEventListener("close", closeEventListener);
             socket.removeEventListener("message", messageEventListener);
         }
-    }, [myPlayer, opponents, socket, chatMessages]);
+    }, [myPlayer, leaderboard, socket, chatMessages]);
 
     function handleMessage(message: ServerMessage) {
         switch(message.route){
@@ -101,42 +103,32 @@ export default function Game(props: GameProps){
     }
 
     function verifyLeaderboardData(data: any){
+        //TODO: verify that the data recieved matches the required structure
         return data as LeaderboardEntry[];
     }
 
     function updateLeaderboard(data: any){
         const leaderboardData = verifyLeaderboardData(data);
-        console.log(leaderboardData);
+        setLeaderboard(leaderboardData);
     }
 
     function verifyPlayerData(data: any) {
-        //TODO: verify that the data recieved matches the structure
+        //TODO: verify that the data recieved matches the required structure
         return data as UpdatePlayerMessageData;
     }
 
     function updatePlayer(message: any) {
         const data = verifyPlayerData(message);
-        if(data.player.id === myPlayer.id){
-            setMyPlayer(oldState => {
-                return {
-                    ...oldState,
-                    board: data.player.board
-                }
-            });
-            return;
-        }
-        opponents.forEach((opponent, index) => {
-            if(!(opponent.id === data.player.id)){
-                return;
+        setMyPlayer(oldState => {
+            return {
+                ...oldState,
+               board: data.player.board
             }
-            let clonedOpponents = [...opponents];
-            clonedOpponents[index] = data.player;
-            setOpponents(clonedOpponents);
         });
     }
 
     function verifyFirstConnectionData(message: any) {
-        if(Object.keys(message).length !== 3){
+        if(Object.keys(message).length !== 4){
             throw `Error: Message doesn't contain the correct number of properties.  Properties required: 2 Message: ${JSON.stringify(message)}`;
         }
         if(!('gamestate' in message)){
@@ -145,35 +137,13 @@ export default function Game(props: GameProps){
         if(!('id' in message)){
             throw `Error: Message doesn't contain correct properties. Message: ${JSON.stringify(message)}`;
         }
-        if(!('players' in message)){
+        if(!('player' in message)){
             throw `Error: Message doesn't contain correct properties. Message: ${JSON.stringify(message)}`;            
         }
-        if(!(Array.isArray(message.players))){
-            throw `Error: Message doesn't contain correct properties. Message: ${JSON.stringify(message)}`;
-        }
-
-        for(let i = 0; i < message.players.length; i++){
-            const player = message.players[i];
-            if(!('alive' in player)){
-                throw `Error: Message doesn't contain correct properties. Message: ${JSON.stringify(message)}`;
-            }
-            if(!('board' in player)){
-                throw `Error: Message doesn't contain correct properties. Message: ${JSON.stringify(message)}`;
-            }
-            if(!('id' in player)){
-                throw `Error: Message doesn't contain correct properties. Message: ${JSON.stringify(message)}`;
-            }
+        if(!('leaderboard' in message)){
+            throw `Error: Message doesn't contain correct properties. Message: ${JSON.stringify(message)}`;            
         }
         return message as FirstConnectionMessageData;
-    }
-
-    function getMyBoardFromPlayers(data: FirstConnectionMessageData) {
-        for(let i = 0; i < data.players.length; i++){
-            if(data.players[i].id === data.id){
-                return data.players[i].board;
-            }
-        }
-        throw `Player data missing from first connection state`;
     }
 
     function handleFirstConnection(message: Object) {
@@ -181,16 +151,9 @@ export default function Game(props: GameProps){
         setMyPlayer({
             alive: true,
             id: data.id,
-            board: getMyBoardFromPlayers(data)
+            board: data.player.board,
         });
-        
-        let tempOpponents = [] as Player[];
-        for(let i = 0; i < data.players.length; i++){
-            if(data.players[i].id !== data.id){
-                tempOpponents.push(data.players[i]);
-            }
-        }
-        setOpponents(tempOpponents);
+        setLeaderboard(data.leaderboard);
     }
 
     function validateChatMessage(message: Object) {
@@ -324,10 +287,10 @@ export default function Game(props: GameProps){
         )
     }
     return(
-        <div>
-            <h1>Game</h1>
+        <div className='game-wrapper'>
             {myPlayer.id && renderBoard()}
             <Chat sendChatMessage={sendChatMessage} messages={chatMessages}/>
+            <Leaderboard leaderboardData={leaderboard}/>
             <div onClick={props.handleClickBack}>Back</div>
         </div>
     );
