@@ -4,12 +4,7 @@ import MainMenu from './Menus/MainMenu';
 import Game from '../components/Game';
 import SinglePlayerGame from '../components/SinglePlayerGame';
 import Login from './Login'
-
-type Config = {
-    height: number,
-    width: number,
-    mines: number
-}
+import { Config } from '../../shared/types';
 
 const defaultConfig: Config = {
     height: 20,

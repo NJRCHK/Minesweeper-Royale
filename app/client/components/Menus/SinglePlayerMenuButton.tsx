@@ -1,15 +1,6 @@
 import * as React from 'react';
 import {useState} from 'react';
-
-type Config = {
-    height: number,
-    width: number,
-    mines: number,
-}
-
-type SinglePlayerMenuButtonProps = {
-    startSinglePlayerGame: (arg0: Config) => void; 
-};
+import { Config, SinglePlayerMenuButtonProps } from '../../../shared/types';
 
 export default function SinglePlayerMenuButton(props: SinglePlayerMenuButtonProps) {
 

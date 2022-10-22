@@ -1,15 +1,5 @@
 import seedrandom from 'seedrandom';
-
-type Point = {
-    x: number;
-    y: number;
-}
-
-type Tile = {
-    x: number,
-    y: number,
-    value: number,
-}
+import { Point, Tile } from '../../shared/types';
 
 export default class ServerSideBoard {
     height: number;

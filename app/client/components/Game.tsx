@@ -7,33 +7,17 @@ import BoardDisplay from './GameComponents/BoardDisplay';
 import Board from '../../shared/Board';
 import Chat from './Chat';
 import Leaderboard from './GameComponents/Leaderboard';
-import { BoardDisplayProps, ChatMessage, LeaderboardEntry, ServerMessage, ServerToClientRoutes, ClientMessage, ClientToServerRoutes } from '../../shared/types';
-
-type FirstConnectionMessageData = {
-    id: number;
-    gamestate: boolean;
-    player: Player;
-    leaderboard: LeaderboardEntry[];
-}
-
-type Player = {
-    id: number;
-    alive: boolean;
-    board: BoardServerData;
-}
-
-type BoardServerData = {
-    height: number;
-    mines: number;
-    minesRemaining: number;
-    width: number;
-    tiles: number[][];
-}
-
-type UpdatePlayerMessageData = {
-    gamestate: boolean;
-    player: Player;
-}
+import {BoardDisplayProps, 
+        ChatMessage, 
+        LeaderboardEntry, 
+        ServerMessage, 
+        ServerToClientRoutes, 
+        ClientMessage, 
+        ClientToServerRoutes, 
+        FirstConnectionMessageData,
+        Player,
+        UpdatePlayerMessageData,
+    } from '../../shared/types';
 
 export default function Game(){
 

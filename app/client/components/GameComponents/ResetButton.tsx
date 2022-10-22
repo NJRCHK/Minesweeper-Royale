@@ -1,9 +1,5 @@
 import * as React from 'react';
-
-type ResetButtonProps = {
-    clickEvent: () => void
-    gameState: string
-}
+import { ResetButtonProps } from '../../../shared/types';
 
 export default function ResetButton(props: ResetButtonProps) {
 

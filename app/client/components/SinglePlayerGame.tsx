@@ -5,17 +5,7 @@ import ResetButton from './GameComponents/ResetButton';
 import Counter from './GameComponents/Counter';
 import BoardDisplay from './GameComponents/BoardDisplay';
 import Board from '../../shared/Board';
-
-type Config = {
-    height: number, 
-    width: number,
-    mines: number
-}
-
-type SinglePlayerGameProps = {
-    config: Config
-}
-
+import { Config, SinglePlayerGameProps } from '../../shared/types';
 
 export default function(props: SinglePlayerGameProps): JSX.Element {
 

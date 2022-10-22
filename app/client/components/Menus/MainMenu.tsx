@@ -1,18 +1,6 @@
 import * as React from 'react';
 import SinglePlayerMenuButton from './SinglePlayerMenuButton';
-
-type Config = {
-    height: number,
-    width: number,
-    mines: number
-};
-
-type MainMenuProps = {
-    handleClickMultiplayer: () => void;
-    handleClickSingleplayer: () => void;
-    handleClickLogin: () => void;
-    startSinglePlayerGame: (arg0: Config) => void;
-};
+import { Config, MainMenuProps } from '../../../shared/types';
 
 export default function MainMenu(props: MainMenuProps) {
     return (

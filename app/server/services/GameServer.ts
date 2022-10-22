@@ -1,12 +1,6 @@
 import {WebSocket, WebSocketServer, RawData, Data, Server} from 'ws';
-import {ClientToServerRoutes, Point, ServerMessage, ServerToClientRoutes } from '../../shared/types.js';
+import {ClientToServerRoutes, ClientMessage, Point, ServerMessage, ServerToClientRoutes } from '../../shared/types.js';
 import Game from './Game.js';
-
-
-interface ClientMessage {
-    route: ClientToServerRoutes,
-    data: Object;
-}
 
 export default class GameServer {
     server: WebSocketServer;

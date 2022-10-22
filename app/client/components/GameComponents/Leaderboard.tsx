@@ -2,8 +2,7 @@ import * as React from 'react';
 import { LeaderboardProps } from '../../../shared/types';
 
 export default function Leaderboard(props: LeaderboardProps) {
-
-
+    
     function renderLeaderboard() {
         const leaderboardData = props.leaderboardData;
         let jsxLeaderboard = leaderboardData.map((leaderboardEntry, index) => {

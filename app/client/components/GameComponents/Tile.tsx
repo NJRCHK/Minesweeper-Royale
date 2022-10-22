@@ -1,12 +1,6 @@
 import * as React from 'react';
+import { TileProps } from '../../../shared/types';
 
-type TileProps = {
-    x: number,
-    y: number, 
-    revealed: number,
-    tileClicked: (x: number, y: number) => void,
-    tileRightClicked: (x: number, y: number) => void,
-}
 
 export default function Tile(props: TileProps) {
 
