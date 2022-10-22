@@ -107,6 +107,7 @@ export default class ServerSideBoard {
             revealedValues.push(this.board[x][y]);
             this.tiles[x][y] = this.board[x][y];
         }
+        this.squaresRemaining = this.squaresRemaining - revealedValues.length;
         return revealedValues;
     }
 

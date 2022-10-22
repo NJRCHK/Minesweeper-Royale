@@ -20,3 +20,16 @@ export type ChatMessageProps = {
     messages: ChatMessage[];
     sendChatMessage: (message: string) => void;
 }
+
+export type ServerMessageRoute = "newconnection" | "chat" | "leaderboard" | "updateplayer";
+
+export type ServerMessage = {
+    route: ServerMessageRoute;
+    data: Object;
+}
+
+export type LeaderboardEntry = {
+    username: String,
+    squaresRemaining: number, 
+    percentage: number
+}

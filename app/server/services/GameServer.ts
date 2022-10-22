@@ -1,6 +1,7 @@
 import {WebSocket, WebSocketServer, RawData, Data} from 'ws';
-import {Point} from '../../shared/types.js';
+import {Point, ServerMessage} from '../../shared/types.js';
 import Game from './Game.js';
+
 
 interface ClientMessage {
     route: String,
@@ -22,7 +23,7 @@ export default class GameServer {
             const id = this.generateId();
             this.handleNewConnection(id, ws);
             ws.on('message', data => {
-                this.handleMessage(id, data);
+                this.handleMessage(id,ws, data);
             });
             ws.on('close', () => {
                 this.handleDisconnection(id);
@@ -46,7 +47,7 @@ export default class GameServer {
         return parsedData as ClientMessage;
     }
     
-    handleMessage(id: number, data: RawData) {
+    handleMessage(id: number, ws: WebSocket, data: RawData) {
         let parsedData: ClientMessage;
         try {
             parsedData = this.validateMessage(data);
@@ -61,7 +62,7 @@ export default class GameServer {
                 this.handleChatMessage(id, parsedData.data);
                 break;
             case 'click':
-                this.handleClick(id, parsedData.data);
+                this.handleClick(id, ws, parsedData.data);
                 break;
         }
     }
@@ -75,7 +76,7 @@ export default class GameServer {
                 "gamestate": this.game.inProgress,
                 "players": this.game.clientifyPlayers(),  
             }
-        });
+        } as ServerMessage);
         ws.send(JSON.stringify(response));
     }
 
@@ -113,7 +114,7 @@ export default class GameServer {
         return data as Point;
     }
 
-    handleClick(id: number, data: Object){
+    handleClick(id: number, ws: WebSocket, data: Object){
         let validatedData: Point;
         try {
             validatedData = this.validateClickMessage(data);
@@ -128,9 +129,14 @@ export default class GameServer {
                 "player": this.game.getPlayerWithId(id).clientifyData(),
                 "gamestate": this.game.inProgress
             }
-        });
+        } as ServerMessage);
+        ws.send(response);
+        const leaderboard = JSON.stringify({
+            "route": "leaderboard",
+            data: this.game.getLeaderboard()
+        } as ServerMessage);
         this.server.clients.forEach(client => {
-            client.send(response);
+            client.send(leaderboard);
         });
     }
 

@@ -1,5 +1,5 @@
 import Player from './Player.js';
-import { Point } from '../../shared/types.js';
+import { Point , LeaderboardEntry } from '../../shared/types.js';
 
 export default class Game {
     players: Player[];
@@ -9,10 +9,6 @@ export default class Game {
         this.players = [];
         this.seed = this.generateSeed();
         this.inProgress = true;
-    }
-
-    getPlayers() {
-        return this.players;
     }
 
     getPlayerWithId(id: number): Player {
@@ -49,6 +45,29 @@ export default class Game {
             delete board.board;
         }
         return clonedPlayers;
+    }
+
+    compareMinesremaining(player1: LeaderboardEntry, player2: LeaderboardEntry) {
+        if(player1.squaresRemaining < player2.squaresRemaining){
+            return -1;
+        }
+        else if(player1.squaresRemaining > player2.squaresRemaining){
+            return 1;
+        }
+        return 0;
+    }
+
+    getLeaderboard() {
+        let leaderboard = new Array<LeaderboardEntry>;
+        leaderboard = this.players.map(player => {
+            return ({
+                username: String(player.id),
+                squaresRemaining: player.board.squaresRemaining,
+                percentage: (1 - (player.board.squaresRemaining/(player.board.area - player.board.mines)))*100,
+            }) as LeaderboardEntry;
+        });
+        leaderboard.sort(this.compareMinesremaining);
+        return leaderboard;
     }
 
     removePlayer(id: number){

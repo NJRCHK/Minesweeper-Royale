@@ -6,11 +6,8 @@ import Timer from './GameComponents/Timer';
 import BoardDisplay from './GameComponents/BoardDisplay';
 import Board from '../../shared/Board';
 import Chat from './Chat';
-import { BoardDisplayProps, ChatMessage } from '../../shared/types';
-type ServerMessage = {
-    route: "newconnection" | "chat" | "updateplayer";
-    data: Object;
-}
+import { BoardDisplayProps, ChatMessage, LeaderboardEntry, ServerMessage } from '../../shared/types';
+
 type FirstConnectionMessageData = {
     id: number;
     gamestate: boolean;
@@ -98,7 +95,18 @@ export default function Game(props: GameProps){
             case "updateplayer": 
                 updatePlayer(message.data);
                 break;
+            case "leaderboard":
+                updateLeaderboard(message.data);
         }
+    }
+
+    function verifyLeaderboardData(data: any){
+        return data as LeaderboardEntry[];
+    }
+
+    function updateLeaderboard(data: any){
+        const leaderboardData = verifyLeaderboardData(data);
+        console.log(leaderboardData);
     }
 
     function verifyPlayerData(data: any) {

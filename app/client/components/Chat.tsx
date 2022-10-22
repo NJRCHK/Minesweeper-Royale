@@ -20,8 +20,6 @@ export default function Chat (props: ChatMessageProps) {
 
     function renderChatMessages() {
         return props.messages.map((message, index) => {
-            console.log(message.message);
-            console.log(message.username);
             return (
                 <div key={index} className='chatbox-message'>
                     <div className='chatbox-message-username'>{message.username + `: `}</div>
