@@ -15,7 +15,7 @@ export default function Leaderboard(props: LeaderboardProps) {
             );
         });
         jsxLeaderboard.unshift((
-            <div className='leaderboard-header'>
+            <div className='leaderboard-header' key={leaderboardData.length + 1}>
                 <div>Username</div>
                 <div>Tiles remaining</div>
                 <div>% Complete</div>
