@@ -1,4 +1,4 @@
-import {WebSocket, WebSocketServer, RawData, Data} from 'ws';
+import {WebSocket, WebSocketServer, RawData, Data, Server} from 'ws';
 import {Point, ServerMessage} from '../../shared/types.js';
 import Game from './Game.js';
 
@@ -74,10 +74,12 @@ export default class GameServer {
             "data": {
                 "id": id,
                 "gamestate": this.game.inProgress,
-                "players": this.game.clientifyPlayers(),  
+                "leaderboard": this.game.getLeaderboard(),
+                "player": this.game.getPlayerWithId(id),
             }
         } as ServerMessage);
-        ws.send(JSON.stringify(response));
+
+        ws.send(response);
     }
 
     handleChatMessage(id: number, message: any) {
