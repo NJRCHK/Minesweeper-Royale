@@ -1,5 +1,5 @@
 import ServerSideBoard from './ServerSideBoard.js';
-import { Point } from '../../shared/types.js';
+import { Point, TileValue } from '../../shared/types.js';
 
 export default class Player {
     board: ServerSideBoard;
@@ -26,7 +26,7 @@ export default class Player {
         }
         let revealedValues = this.board.revealTiles(point);
         revealedValues.forEach(value => {
-            if(value === -1){
+            if(value === TileValue.BOMB){
                 this.alive = false;
             }
         });
