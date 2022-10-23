@@ -5,10 +5,16 @@ export default class Game {
     players: Player[];
     seed: number;
     inProgress: boolean;
-    constructor() {
-        this.players = [];
+    constructor(players ?: Player[]) {
         this.seed = this.generateSeed();
         this.inProgress = true;
+        if(players !== undefined){
+            this.players = players.map(player => {
+                return new Player(player.id, this.seed);
+            });
+        } else {
+            this.players = [];
+        }
     }
 
     getPlayerWithId(id: number): Player {
@@ -31,7 +37,7 @@ export default class Game {
         }
         const player = this.getPlayerWithId(id);
         player.revealTile(clickedTile);
-        if(player.board.minesRemaining === 0){
+        if(player.board.squaresRemaining === 0){
             this.inProgress = false;
         }
     }

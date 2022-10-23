@@ -1,1 +1,2 @@
 export const MAX_CHAT_MESSAGE_LENGTH = 256;
+export const TIME_BETWEEN_GAMES_MS = 1000 * 10;

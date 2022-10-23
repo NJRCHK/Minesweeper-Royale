@@ -63,6 +63,7 @@ export enum ServerToClientRoutes {
     CHAT = 1,
     UPDATEPLAYER = 2,
     LEADERBOARD = 3,
+    NEWGAME = 4,
 }
 
 export enum ClientToServerRoutes {
@@ -80,6 +81,11 @@ export type FirstConnectionMessageData = {
     gamestate: boolean;
     player: Player;
     leaderboard: LeaderboardEntry[];
+}
+
+export type LeaderboardMessage = {
+    leaderboard: LeaderboardEntry[],
+    gamestate: boolean    
 }
 
 export type Player = {
@@ -145,3 +151,14 @@ export enum TileValue {
     EIGHT = 8
 }
 
+export type GameOverDisplayProps = {
+    position: number
+    timeTaken: number;
+    winner: String
+};
+
+export type NewGameMessageData = {
+    leaderboard: LeaderboardEntry[];
+    board: BoardServerData;
+    gamestate: boolean
+}

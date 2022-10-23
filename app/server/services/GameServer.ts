@@ -1,6 +1,18 @@
-import {WebSocket, WebSocketServer, RawData, Data, Server} from 'ws';
-import {ClientToServerRoutes, ClientMessage, Point, ServerMessage, ServerToClientRoutes } from '../../shared/types.js';
+import {WebSocket, WebSocketServer, RawData, Server} from 'ws';
 import Game from './Game.js';
+import { TIME_BETWEEN_GAMES_MS } from '../../shared/constants.js';
+import {
+        ClientToServerRoutes, 
+        ChatMessage, 
+        ClientMessage, 
+        Point, 
+        ServerMessage, 
+        ServerToClientRoutes, 
+        LeaderboardMessage, 
+        UpdatePlayerMessageData, 
+        FirstConnectionMessageData,
+        NewGameMessageData,
+    } from '../../shared/types.js';
 
 export default class GameServer {
     server: WebSocketServer;
@@ -25,6 +37,27 @@ export default class GameServer {
         });
     }
 
+    createNewGame(){
+        const newGame = new Game(this.game.players);
+        this.game = newGame;
+        if(this.game.players.length === 0){
+            return;
+        }
+        const player = this.game.players[0];
+        const message = {
+            route: ServerToClientRoutes.NEWGAME,
+            data: {
+                leaderboard: this.game.getLeaderboard(),
+                gamestate: true,
+                board: player.clientifyData().board
+            } as NewGameMessageData
+        } as ServerMessage;
+
+        this.server.clients.forEach(client => {
+            client.send(JSON.stringify(message));
+        });
+    }
+    
     validateMessage(data: RawData): ClientMessage {
         let parsedData = JSON.parse(data.toString());
         if(!parsedData.hasOwnProperty('route')){
@@ -41,6 +74,7 @@ export default class GameServer {
         return parsedData as ClientMessage;
     }
     
+
     handleMessage(id: number, ws: WebSocket, data: RawData) {
         let parsedData: ClientMessage;
         try {
@@ -64,13 +98,13 @@ export default class GameServer {
     handleNewConnection(id: number, ws: WebSocket) {
         this.game.addPlayer(id);
         const response = JSON.stringify({
-            "route": ServerToClientRoutes.NEWCONNECTION,
+            route: ServerToClientRoutes.NEWCONNECTION,
             data: {
                 id: id,
                 gamestate: this.game.inProgress,
                 leaderboard: this.game.getLeaderboard(),
                 player: this.game.getPlayerWithId(id),
-            }
+            } as FirstConnectionMessageData
         } as ServerMessage);
 
         ws.send(response);
@@ -81,16 +115,16 @@ export default class GameServer {
             console.log(`Recieved message in improper format.  Message: ${JSON.stringify(message)}`);
             return;
         }
-        let messageString = JSON.stringify({
+        let messageString = {
             route: ServerToClientRoutes.CHAT,
             data: {
-                message: message.message,
-                username: id
-            }
-        } as ServerMessage);
+                username: String(id),
+                message: String(message.message),
+            } as ChatMessage
+        } as ServerMessage;
         this.server.clients.forEach(client => {
             if(client.readyState === WebSocket.OPEN){
-                client.send(messageString);
+                client.send(JSON.stringify(messageString));
             }
         });
     }
@@ -118,22 +152,35 @@ export default class GameServer {
             console.log(e);
             return;
         }
+        
         this.game.handlePlayerClick(id, validatedData);
-        const response = JSON.stringify({
+        
+        const response = {
             route: ServerToClientRoutes.UPDATEPLAYER,
             data: {
-                "player": this.game.getPlayerWithId(id).clientifyData(),
-                "gamestate": this.game.inProgress
-            }
-        } as ServerMessage);
-        ws.send(response);
-        const leaderboard = JSON.stringify({
+                player: this.game.getPlayerWithId(id).clientifyData(),
+                gamestate: this.game.inProgress
+            } as UpdatePlayerMessageData
+        } as ServerMessage;
+
+        ws.send(JSON.stringify(response));
+        
+        const leaderboard = {
             route: ServerToClientRoutes.LEADERBOARD,
-            data: this.game.getLeaderboard()
-        } as ServerMessage);
+            data: {
+                leaderboard: this.game.getLeaderboard(),
+                gamestate: this.game.inProgress
+            } as LeaderboardMessage
+        } as ServerMessage;
         this.server.clients.forEach(client => {
-            client.send(leaderboard);
+            client.send(JSON.stringify(leaderboard));
         });
+
+        if(!this.game.inProgress){
+            setTimeout(() => {
+                this.createNewGame();
+            }, TIME_BETWEEN_GAMES_MS);
+        }
     }
 
     handleDisconnection(id: number){

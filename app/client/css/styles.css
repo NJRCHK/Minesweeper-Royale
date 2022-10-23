@@ -66,6 +66,7 @@ body {
     border-top: 2px solid white;
     border-right: 2px solid darkgray;
     border-bottom: 2px solid darkgray;
+    position:relative;
 }
 
 .singleplayer-game:hover{
@@ -247,4 +248,14 @@ body {
     display:flex;
     justify-content: center;
     align-items: center;
+}
+
+.game-over-display {
+    z-index: 2;
+    position: absolute;
+    width: 99%;
+    background-color: lightgray;
+    height: 60px;
+    border-top: 4px solid darkgray;
+    border-bottom: 4px solid darkgray;
 }

@@ -1,5 +1,5 @@
 import seedrandom from 'seedrandom';
-import { Point, Tile } from '../../shared/types';
+import { Point, Tile, TileValue } from '../../shared/types.js';
 
 export default class ServerSideBoard {
     height: number;
@@ -98,6 +98,11 @@ export default class ServerSideBoard {
             this.tiles[x][y] = this.board[x][y];
         }
         this.squaresRemaining = this.squaresRemaining - revealedValues.length;
+        revealedValues.forEach(value => {
+            if(value === TileValue.BOMB){
+                this.squaresRemaining++;
+            }
+        });
         return revealedValues;
     }
 

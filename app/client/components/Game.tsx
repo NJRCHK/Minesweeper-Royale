@@ -6,9 +6,11 @@ import Timer from './GameComponents/Timer';
 import BoardDisplay from './GameComponents/BoardDisplay';
 import Chat from './Chat';
 import Leaderboard from './GameComponents/Leaderboard';
+import GameOverDisplay from './GameComponents/GameOverDisplay';
 import { 
         ChatMessage, 
-        LeaderboardEntry, 
+        LeaderboardEntry,
+        LeaderboardMessage, 
         ServerMessage, 
         ServerToClientRoutes, 
         ClientMessage, 
@@ -16,7 +18,8 @@ import {
         FirstConnectionMessageData,
         Player,
         UpdatePlayerMessageData,
-        TileValue
+        TileValue,
+        NewGameMessageData
     } from '../../shared/types';
 
 export default function Game(){
@@ -25,7 +28,7 @@ export default function Game(){
 
     const [myPlayer, setMyPlayer] = useState({} as Player);
     const [leaderboard, setLeaderboard] = useState([] as LeaderboardEntry[]);
-
+    const [gameInProgress, setGameInProgress] = useState(false);
     const [chatMessages, setChatMessages] = useState([] as ChatMessage[]);
 
     useEffect(() => {
@@ -79,17 +82,33 @@ export default function Game(){
                 break;
             case ServerToClientRoutes.LEADERBOARD:
                 updateLeaderboard(message.data);
+                break;
+            case ServerToClientRoutes.NEWGAME:
+                handleNewGame(message.data);
+                break;
         }
+    }
+
+    function handleNewGame(data: any) {
+        let newGameData = data as NewGameMessageData;
+        setLeaderboard(newGameData.leaderboard);
+        setGameInProgress(newGameData.gamestate);
+        setMyPlayer(player => {
+            let clonedPlayer = {...player};
+            clonedPlayer.board = newGameData.board;
+            return clonedPlayer;
+        });
     }
 
     function verifyLeaderboardData(data: any){
         //TODO: verify that the data recieved matches the required structure
-        return data as LeaderboardEntry[];
+        return data as LeaderboardMessage;
     }
 
     function updateLeaderboard(data: any){
         const leaderboardData = verifyLeaderboardData(data);
-        setLeaderboard(leaderboardData);
+        setLeaderboard(leaderboardData.leaderboard);
+        setGameInProgress(data.gamestate);
     }
 
     function verifyPlayerData(data: any) {
@@ -105,6 +124,8 @@ export default function Game(){
                board: data.player.board
             }
         });
+        setGameInProgress(data.gamestate);
+        console.log(data.gamestate);
     }
 
     function verifyFirstConnectionData(message: any) {
@@ -133,6 +154,7 @@ export default function Game(){
             id: data.id,
             board: data.player.board,
         });
+        setGameInProgress(data.gamestate);
         setLeaderboard(data.leaderboard);
     }
 
@@ -193,6 +215,10 @@ export default function Game(){
     }
 
     function tileClicked(x: number, y: number) {
+        let tile = myPlayer.board.tiles[x][y];
+        if(![TileValue.BLANK, TileValue.QUESTIONMARK, TileValue.FLAG].includes(tile)){
+            return;
+        }        
         const data = {
             route: ClientToServerRoutes.CLICK,
             data: {
@@ -204,6 +230,9 @@ export default function Game(){
     }
 
     function tileRightClicked (x: number, y: number): void {
+        if(!gameInProgress || !myPlayer.alive){
+            return;
+        }
         let tile = myPlayer.board.tiles[x][y];
         //if tile is shown do nothing
         if(![TileValue.BLANK, TileValue.QUESTIONMARK, TileValue.FLAG].includes(tile)){
@@ -261,6 +290,7 @@ export default function Game(){
                     tileClicked={tileClicked}
                     tileRightClicked={tileRightClicked}
                 />
+                {!gameInProgress && <GameOverDisplay position={1} timeTaken={1} winner={"me"} />}
             </div>
 
 
