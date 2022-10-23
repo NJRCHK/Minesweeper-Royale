@@ -3,7 +3,7 @@ import { Point, TileValue } from '../../shared/types.js';
 
 export default class Player {
     board: ServerSideBoard;
-    id: Number;
+    id: number;
     alive: boolean;
 
     constructor (id: number, seed: number) {
