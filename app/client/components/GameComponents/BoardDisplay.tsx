@@ -25,4 +25,4 @@ export default function BoardDisplay(props: BoardDisplayProps) {
     return (
         <div className="game-board">{renderBoard()}</div>
     )
-}   
+}
