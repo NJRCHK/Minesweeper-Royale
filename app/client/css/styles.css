@@ -336,4 +336,20 @@ body, html{
     cursor: pointer;
 }
 
+.create-account-menu{
+    position:fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color:darkgray;
+    opacity: 0.5;
+    z-index:3;
+}
 
+.login-menu{
+    position:fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color:darkgray;
+    opacity: 0.5;
+    z-index:3;
+}

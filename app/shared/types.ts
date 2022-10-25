@@ -154,6 +154,12 @@ export enum TileValue {
     EIGHT = 8
 }
 
+export enum HeaderStates {
+    DEFAULT=0,
+    LOGIN = 1,
+    CREATEACCOUNT =2
+}
+
 export type GameOverDisplayProps = {
     position: number
     timeTaken: number;
