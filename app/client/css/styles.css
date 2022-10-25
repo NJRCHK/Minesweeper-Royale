@@ -1,20 +1,18 @@
-html {
+body, html{
+    margin:0;
+    padding:0;   
     font-family: Arial, Helvetica, sans-serif;
     width: 100%; 
     height: 100%;
 }
-
-body {
-    background-color: white;
-    width: 100%; 
-    height: 100%;
-}
-
 .main-menu{
+    margin-top:150px;
     display: flex;
+    font-size: 64px;
+    gap:25px;
+    font-weight: bold;
     flex-direction: column;
-    align-items: center;
-    width: 100%;
+    width: 50%;
     height: 100%;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -23,24 +21,11 @@ body {
     user-select: none;
 }
 
-.main-menu-header{
+.wrapper {
     display: flex;
-    flex-direction:column;
-}
-
-.main-menu-header{
-    cursor:default;
-}
-
-.main-menu-header-header{
-    font-size: 100px;
-    font-weight: 900;
-}
-
-.main-menu-header-subheader{
-    font-size: 50px;
-    display:flex;
-    justify-content: end;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
 }
 
 
@@ -279,3 +264,76 @@ body {
     font-size: 14px;
     gap: 20px;
 }
+
+.header{
+    width: 100%;
+    height: 80px;
+    background-color: white;
+    border-bottom: 4px solid lightgray;
+    display: flex;
+    justify-content: center;
+}
+
+.header-content-wrapper {
+    width: 60%;
+    align-items: center;
+    display: flex;
+}
+
+.header-content-rightjustified-wrapper {
+    display:flex;
+    width: 100%;
+    justify-content: right;
+    gap: 20px;
+}
+
+.game-title {
+    display: flex;
+    flex-direction: column;    
+}
+
+.game-title-minesweeper {
+    font-weight: bold;
+    font-size: 32px;
+}
+
+.game-title-royale {
+    font-size: 20px;
+    display:flex;
+    justify-content: end;
+}
+
+.login-button{
+    width: 90px;
+    height: 40px;
+    font-size: 16px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.login-button:hover{
+    cursor: pointer;
+}
+
+
+.create-account-button{
+    width: 90px;
+    height: 40px;
+    font-size: 16px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.create-account-button:hover{
+    cursor: pointer;
+}
+
+

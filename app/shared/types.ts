@@ -27,10 +27,6 @@ export type SinglePlayerGameProps = {
     config: Config;
 }
 
-export type LoginProps = {
-    handleClickBack: () => void;
-}
-
 export type ChatMessage = {
     username: String;
     message: String;
@@ -69,6 +65,13 @@ export enum ServerToClientRoutes {
 export enum ClientToServerRoutes {
     CLICK = 0,
     CHAT = 1,
+}
+
+export enum AppStates {
+    MAINMENU = 0,
+    MULTIPLAYERGAME = 1,
+    SINGLEPLAYERMENU = 2,
+    SINGLEPLAYERGAME = 3,
 }
 
 export type ClientMessage = {
@@ -115,7 +118,6 @@ export type SinglePlayerMenuButtonProps = {
 export type MainMenuProps = {
     handleClickMultiplayer: () => void;
     handleClickSingleplayer: () => void;
-    handleClickLogin: () => void;
     startSinglePlayerGame: (arg0: Config) => void;
 };
 
@@ -162,4 +164,8 @@ export type NewGameMessageData = {
     leaderboard: LeaderboardEntry[];
     board: BoardServerData;
     gamestate: boolean
+}
+
+export type HeaderProps = {
+    
 }

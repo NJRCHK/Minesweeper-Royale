@@ -3,8 +3,8 @@ import {useState} from 'react';
 import MainMenu from './Menus/MainMenu';
 import Game from '../components/Game';
 import SinglePlayerGame from '../components/SinglePlayerGame';
-import Login from './Login'
-import { Config } from '../../shared/types';
+import Header from './Header';
+import { Config, AppStates } from '../../shared/types';
 
 const defaultConfig: Config = {
     height: 20,
@@ -13,29 +13,24 @@ const defaultConfig: Config = {
 }
 
 export default function App() {
-    const [mode, setMode] = useState('MainMenu');
+    const [mode, setMode] = useState(AppStates.MAINMENU);
     const [config, setConfig] = useState(defaultConfig);
-    function renderSwitch(mode: string){
+    function renderSwitch(mode: AppStates){
         switch(mode){
-            case 'MainMenu':
+            case AppStates.MAINMENU:
                 return <MainMenu 
-                    handleClickMultiplayer={() => setMode('Game')} 
-                    handleClickSingleplayer={() => setMode('SinglePlayerMenu')}
-                    handleClickLogin={() => setMode('Login')}
+                    handleClickMultiplayer={() => setMode(AppStates.MULTIPLAYERGAME)} 
+                    handleClickSingleplayer={() => setMode(AppStates.MULTIPLAYERGAME)}
                     startSinglePlayerGame={config => {
                         setConfig(config);
-                        setMode('SinglePlayerGame');
+                        setMode(AppStates.SINGLEPLAYERMENU);
                     }}
                 />
-            case 'Game':
+            case AppStates.MULTIPLAYERGAME:
                 return <Game />
-            case 'SinglePlayerGame':
+            case AppStates.SINGLEPLAYERGAME:
                 return <SinglePlayerGame 
                     config={config}
-                />
-            case 'Login':
-                return <Login 
-                    handleClickBack={() => setMode('MainMenu')}
                 />
             default:
                 return <h1>An Error Occurred</h1>;
@@ -43,6 +38,9 @@ export default function App() {
     }
 
     return (
-        <div className='app-wrapper'>{renderSwitch(mode)}</div>
+        <div className='wrapper'>
+            <Header />
+            <div className='app-wrapper'>{renderSwitch(mode)}</div>
+        </div>
     );
 };

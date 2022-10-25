@@ -29,7 +29,7 @@ export default function SinglePlayerMenuButton(props: SinglePlayerMenuButtonProp
 
     return (
         <div>
-            <div onClick={showSubMenu}>Single Player</div>
+            <div onClick={showSubMenu}>Singleplayer</div>
             {optionsShown &&         
                 <div>
                 <button onClick={() => {props.startSinglePlayerGame(beginnerConfig)}}>Beginner</button>
