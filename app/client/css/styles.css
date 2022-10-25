@@ -87,12 +87,10 @@ body {
 }
 
 .game-tile-shown{
-    width: 15px;
-    height: 15px;
-    border-left: 2px solid #C0C0C0;
-    border-top: 2px solid #C0C0C0;
-    border-right: 2px solid #C0C0C0;
-    border-bottom: 2px solid #C0C0C0;
+    width: 18px;
+    height: 18px;
+    border-top: 1px solid darkgray;
+    border-left: 1px solid darkgray;
     background-color: #C0C0C0;
     padding: 0;
     text-align:center;

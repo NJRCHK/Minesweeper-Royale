@@ -18,6 +18,8 @@ export default function Tile(props: TileProps) {
                 return "";
             case TileValue.BOMB: 
                 return "B";
+            case TileValue.EMPTY:
+                return "";
             default:
                 return String(props.revealed);
         }
