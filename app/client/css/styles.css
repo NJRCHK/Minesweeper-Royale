@@ -259,3 +259,25 @@ body {
     border-top: 4px solid darkgray;
     border-bottom: 4px solid darkgray;
 }
+
+.game-over-display-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.game-over-display-text-heading {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.game-over-display-text-body {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 14px;
+    gap: 20px;
+}

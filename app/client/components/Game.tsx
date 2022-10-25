@@ -272,6 +272,15 @@ export default function Game(){
         }
     }
 
+    function getMyPosition() {
+        for(let i = 0; i < leaderboard.length; i++){
+            if(leaderboard[i].username === String(myPlayer.id)){
+                return i + 1;
+            }
+        }
+        throw (`player not present in leaderboard`);
+    }
+
     function renderBoard() {
         return (
             <div className="singleplayer-game" onContextMenu={contextMenu}>
@@ -290,7 +299,7 @@ export default function Game(){
                     tileClicked={tileClicked}
                     tileRightClicked={tileRightClicked}
                 />
-                {!gameInProgress && <GameOverDisplay position={1} timeTaken={1} winner={"me"} />}
+                {!gameInProgress && <GameOverDisplay position={getMyPosition()} timeTaken={1} winner={leaderboard[0].username} />}
             </div>
 
 
