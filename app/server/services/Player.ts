@@ -5,11 +5,13 @@ export default class Player {
     board: ServerSideBoard;
     id: number;
     alive: boolean;
+    username: string;
 
-    constructor (id: number, seed: number) {
+    constructor (username: string, id: number, seed: number) {
         this.board = new ServerSideBoard(40, 40, 10, seed);
         this.id = id;
         this.alive = true;
+        this.username = username;
     }
 
     clientifyData() {

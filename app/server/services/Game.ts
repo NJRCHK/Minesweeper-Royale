@@ -5,16 +5,19 @@ export default class Game {
     players: Player[];
     seed: number;
     inProgress: boolean;
+    guests: number;
+
     constructor(players ?: Player[]) {
         this.seed = this.generateSeed();
         this.inProgress = true;
         if(players !== undefined){
             this.players = players.map(player => {
-                return new Player(player.id, this.seed);
+                return new Player(player.username, player.id, this.seed);
             });
         } else {
             this.players = [];
         }
+        this.guests = 1;
     }
 
     getPlayerWithId(id: number): Player {
@@ -26,8 +29,13 @@ export default class Game {
         throw `Player does not exist with id ${id}`;
     }
 
+    getGuestName() {
+
+    }
+
     addPlayer(id: number) {
-        let newPlayer = new Player(id, this.seed);
+        let newPlayer = new Player(`Guest ${this.guests}`,id, this.seed);
+        this.guests++;
         this.players.push(newPlayer);
     }
 
@@ -67,7 +75,7 @@ export default class Game {
         let leaderboard = new Array<LeaderboardEntry>;
         leaderboard = this.players.map(player => {
             return ({
-                username: String(player.id),
+                username: player.username,
                 squaresRemaining: player.board.squaresRemaining,
                 percentage: (1 - (player.board.squaresRemaining/(player.board.area - player.board.mines)))*100,
             }) as LeaderboardEntry;

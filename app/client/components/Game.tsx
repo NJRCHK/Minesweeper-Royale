@@ -150,6 +150,7 @@ export default function Game(){
     function handleFirstConnection(message: Object) {
         const data = verifyFirstConnectionData(message);
         setMyPlayer({
+            username: data.player.username,
             alive: true,
             id: data.id,
             board: data.player.board,
@@ -274,7 +275,7 @@ export default function Game(){
 
     function getMyPosition() {
         for(let i = 0; i < leaderboard.length; i++){
-            if(leaderboard[i].username === String(myPlayer.id)){
+            if(leaderboard[i].username === myPlayer.username){
                 return i + 1;
             }
         }

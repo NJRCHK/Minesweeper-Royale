@@ -90,6 +90,7 @@ export type LeaderboardMessage = {
 
 export type Player = {
     id: number;
+    username: string;
     alive: boolean;
     board: BoardServerData;
 }
