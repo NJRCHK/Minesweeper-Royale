@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 import { ChatMessage, ChatMessageProps } from '../../shared/types';
 import { MAX_CHAT_MESSAGE_LENGTH } from '../../shared/constants';
 
