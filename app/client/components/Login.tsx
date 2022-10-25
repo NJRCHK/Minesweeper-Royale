@@ -1,8 +1,5 @@
 import * as React from 'react';
-
-type LoginProps = {
-    handleClickBack: () => void
-}
+import { LoginProps } from '../../shared/types';
 
 export default function Login(props: LoginProps){
     return (

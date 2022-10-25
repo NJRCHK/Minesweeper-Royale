@@ -54,6 +54,7 @@ body {
 }
 
 .singleplayer-game{
+    align-self:center;
     justify-content: center;
     display:flex;
     flex-direction:column;
@@ -65,6 +66,7 @@ body {
     border-top: 2px solid white;
     border-right: 2px solid darkgray;
     border-bottom: 2px solid darkgray;
+    position:relative;
 }
 
 .singleplayer-game:hover{
@@ -85,12 +87,10 @@ body {
 }
 
 .game-tile-shown{
-    width: 15px;
-    height: 15px;
-    border-left: 2px solid #C0C0C0;
-    border-top: 2px solid #C0C0C0;
-    border-right: 2px solid #C0C0C0;
-    border-bottom: 2px solid #C0C0C0;
+    width: 18px;
+    height: 18px;
+    border-top: 1px solid darkgray;
+    border-left: 1px solid darkgray;
     background-color: #C0C0C0;
     padding: 0;
     text-align:center;
@@ -144,4 +144,138 @@ body {
 
 .game-reset-button:hover{
     cursor: pointer;
+}
+
+.chatbox {
+    height: 40%;
+    background-color: gray;
+}
+
+.chatbox-message-display{
+    display:flex;
+    flex-direction:column;
+    height: 100%;
+    overflow-y: scroll;
+    width: 100%;
+}
+
+.chatbox-message-input{
+    width: 100%;
+}
+
+.chatbox-message-submit{
+    background-color: white;
+}
+
+.chatbox-message{
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.chatbox-message-username{
+    font-weight: bold;
+}
+
+.chatbox-message-content{
+    font-weight: normal;
+    margin-left: 8px;
+}
+
+.chatbox-form{
+    display: flex;
+    flex-direction: row;
+}
+
+.opponent-board-display-wrapper {
+    display: flex;
+    min-width: 300px;
+    min-height: 30px;
+    border: 1px solid black;
+}
+
+.leaderboard{
+    display: flex;
+    flex-direction: column;
+    height: 40%;
+    min-height: 200px;
+    border: 1px solid black;
+}
+
+.leaderboard-entry {
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    height: 20px;
+    justify-content: space-between;
+}
+
+.leaderboard-header {
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    height: 20px;
+    font-weight: bold;
+    justify-content: space-between;
+
+}
+
+.game-wrapper {
+    display: flex;
+    height: 850px;
+    flex-direction: row;
+}
+
+.leaderboard-chat-wrapper{
+    display: flex;
+    justify-content: space-around;
+    width: 600px;
+    height:100%;
+    padding-left: 40px;
+    padding-right:40px;
+    flex-direction: column;
+}
+
+#root{
+    height:100%;
+    width:100%;
+}
+.app-wrapper{
+    height:100%;
+    width:100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-over-display {
+    z-index: 2;
+    position: absolute;
+    width: 99%;
+    background-color: lightgray;
+    height: 60px;
+    border-top: 4px solid darkgray;
+    border-bottom: 4px solid darkgray;
+}
+
+.game-over-display-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.game-over-display-text-heading {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.game-over-display-text-body {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 14px;
+    gap: 20px;
 }

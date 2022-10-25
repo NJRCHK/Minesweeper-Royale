@@ -1,2 +1,6 @@
 node_modules/
 dist/
+app/server/*.js
+app/shared/*.js
+app/server/*.js.map
+app/shared/*.js.map

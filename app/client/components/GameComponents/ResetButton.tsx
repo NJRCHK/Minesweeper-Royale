@@ -1,9 +1,5 @@
 import * as React from 'react';
-
-type ResetButtonProps = {
-    clickEvent: () => void
-    gameState: string
-}
+import { ResetButtonProps } from '../../../shared/types';
 
 export default function ResetButton(props: ResetButtonProps) {
 
@@ -13,12 +9,12 @@ export default function ResetButton(props: ResetButtonProps) {
                 return ":(";
             case "gamewon":
                 return "8)";
-            case "inprogress":
+            default: 
                 return ":)";
-        }
-    }
+        };
+    };
 
     return (
         <div onClick={props.clickEvent} className="game-reset-button">{calculateSmile()}</div>
-    )
-}
+    );
+};

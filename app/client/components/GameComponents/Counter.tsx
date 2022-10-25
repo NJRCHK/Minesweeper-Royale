@@ -1,8 +1,5 @@
 import * as React from 'react';
-
-type CounterProps = {
-    mines: number
-}
+import { CounterProps } from '../../../shared/types';
 
 export default function Counter(props: CounterProps) {
     return (

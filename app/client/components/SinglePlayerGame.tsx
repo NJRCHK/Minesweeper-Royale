@@ -5,17 +5,7 @@ import ResetButton from './GameComponents/ResetButton';
 import Counter from './GameComponents/Counter';
 import BoardDisplay from './GameComponents/BoardDisplay';
 import Board from '../../shared/Board';
-
-type Config = {
-    height: number, 
-    width: number,
-    mines: number
-}
-
-type SinglePlayerGameProps = {
-    config: Config
-}
-
+import { SinglePlayerGameProps, TileValue } from '../../shared/types';
 
 export default function(props: SinglePlayerGameProps): JSX.Element {
 
@@ -37,7 +27,7 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
         for(let i = 0; i < height; i++){
             let row = new Array<number>(width);
             for(let j = 0; j < width; j++){
-                row[j]=-2;
+                row[j]=TileValue.BLANK;
             }
             tilesRows[i] = row;
         }
@@ -48,7 +38,8 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
         if(board.gameState !== "inprogress"){
             return;
         }
-        if(board.tiles[x][y] > -2){
+        //if the tile has been clicked (ie it is not blank, flag or question mark) then return
+        if(![TileValue.BLANK, TileValue.QUESTIONMARK, TileValue.FLAG].includes(board.tiles[x][y])){
             return;
         }
 
@@ -68,7 +59,7 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
                 return temp;
             });
         }
-        if(values[0].value === -1){
+        if(values[0].value === TileValue.BOMB){
             setBoard(prevBoard => {
                 return {
                     ...prevBoard,
@@ -84,38 +75,38 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
         }
         let tile = board.tiles[x][y];
         //if tile is shown do nothing
-        if(tile > 0){
+        if(![TileValue.BLANK, TileValue.QUESTIONMARK, TileValue.FLAG].includes(tile)){
             return;
         }
         //if tile is covered put a flag on it and decrement the mines counter
-        else if(tile === -2){
+        else if(tile === TileValue.BLANK){
             setBoard(prevBoard => {
                 let temp = {
                     ...prevBoard
                 };
-                temp.tiles[x][y] = -3;
+                temp.tiles[x][y] = TileValue.FLAG;
                 temp.minesRemaining--;
                 return temp;
             });
         }
         // if tile has flag put a question mark on it and increment the mines counter
-        else if(tile === -3){
+        else if(tile === TileValue.FLAG){
             setBoard(prevBoard => {
                 let temp = {
                     ...prevBoard
                 };
-                temp.tiles[x][y] = -4;
+                temp.tiles[x][y] = TileValue.QUESTIONMARK;
                 temp.minesRemaining++;
                 return temp;
             });
         }
         //if tile has question mark on it remove it 
-        else if(tile === -4){
+        else if(tile === TileValue.QUESTIONMARK){
             setBoard(prevBoard => {
                 let temp = {
                     ...prevBoard
                 };
-                temp.tiles[x][y] = -2;
+                temp.tiles[x][y] = TileValue.BLANK;
                 return temp;
             });
         }

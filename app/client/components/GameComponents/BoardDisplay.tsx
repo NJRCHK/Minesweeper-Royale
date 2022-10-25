@@ -1,13 +1,6 @@
 import * as React from 'react';
 import Tile from './Tile';
-
-type BoardDisplayProps = {
-    height: number,
-    width: number,
-    tiles: number[][],
-    tileClicked: (x: number, y: number) => void
-    tileRightClicked: (x: number, y: number) => void
-}
+import { BoardDisplayProps } from '../../../shared/types.js';
 
 export default function BoardDisplay(props: BoardDisplayProps) {
 
@@ -32,4 +25,4 @@ export default function BoardDisplay(props: BoardDisplayProps) {
     return (
         <div className="game-board">{renderBoard()}</div>
     )
-}   
+}

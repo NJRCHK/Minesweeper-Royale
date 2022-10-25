@@ -1,22 +1,41 @@
 import seedrandom from 'seedrandom';
-import { Point, Tile } from '../shared/types';
+import { Point, Tile, TileValue } from '../../shared/types.js';
 
-export default class Board{
-
+export default class ServerSideBoard {
     height: number;
     width: number;
     mines: number;
+    minesRemaining: number;
+    squaresRemaining: number;
     seed: number;
+    tiles: number[][];
+    board: number[][];
 
-    constructor(height: number, width: number, mines: number , seed?: number){
+    constructor(height: number, width: number, mines: number , seed: number){
         this.height = height;
         this.width = width;
         this.mines = mines;
-        this.seed = (seed === undefined) ? Board.generateSeed() : seed;
+        this.seed = seed;
+        this.squaresRemaining = (height * width) - mines;
+        this.minesRemaining = mines;
+        this.tiles = this.createTiles(height, width);
+        this.board = this.generateBoard();
     }
 
     get area(): number {
         return this.width * this.height;
+    }
+
+    createTiles(height: number, width: number) {
+        let tilesRows = new Array<number[]>(height)
+        for(let i = 0; i < height; i++){
+            let row = new Array<number>(width);
+            for(let j = 0; j < width; j++){
+                row[j]=-2;
+            }
+            tilesRows[i] = row;
+        }
+        return tilesRows;
     }
 
     isVisited(x: number, y: number, visited: Point[]): boolean {
@@ -66,8 +85,25 @@ export default class Board{
     }
 
     checkCoordinates(x: number, y: number): Tile[] {
-        let board = this.generateBoard();
-        return this.getCoordinatesToReveal(x, y, board);
+        return this.getCoordinatesToReveal(x, y, this.board);
+    }
+
+    revealTiles(point: Point) {
+        let pointsToReveal = this.checkCoordinates(point.x, point.y);
+        let revealedValues: number[] = [];
+        for(let i = 0; i < pointsToReveal.length; i++){
+            let x = pointsToReveal[i].x;
+            let y = pointsToReveal[i].y;
+            revealedValues.push(this.board[x][y]);
+            this.tiles[x][y] = this.board[x][y];
+        }
+        this.squaresRemaining = this.squaresRemaining - revealedValues.length;
+        revealedValues.forEach(value => {
+            if(value === TileValue.BOMB){
+                this.squaresRemaining++;
+            }
+        });
+        return revealedValues;
     }
 
     generateBoard(): number[][] {
@@ -142,12 +178,5 @@ export default class Board{
             }
         }
         return arr1;
-    }
-
-    static generateSeed(): number {
-        let randomNumber = Math.random();
-        randomNumber = randomNumber* Math.pow(10, 8);
-        randomNumber = Math.trunc(randomNumber); 
-        return randomNumber;
     }
 }
