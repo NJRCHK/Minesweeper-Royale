@@ -175,3 +175,7 @@ export type NewGameMessageData = {
 export type HeaderProps = {
     
 }
+
+export type CreateAccountMenuProps = {
+    
+}
