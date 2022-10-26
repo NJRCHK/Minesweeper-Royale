@@ -177,5 +177,5 @@ export type HeaderProps = {
 }
 
 export type CreateAccountMenuProps = {
-    
+
 }

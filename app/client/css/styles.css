@@ -361,7 +361,6 @@ body, html{
 }
 
 .create-account-form {
-    height: 100%;
     width: 100%;
     gap: 10px;
     display:flex;
@@ -374,9 +373,10 @@ body, html{
     flex-direction: row;
 }
 
-.flex-column{
+.flex-column-create-account{
     display:flex;
     flex-direction: column;
+    width: 208px;
 }
 
 .create-account-input-box{
@@ -388,7 +388,7 @@ body, html{
     width: 208px;
     height: 60px;
     font-size: 24px;
-    margin-top:25px;
+    margin-top:5px;
     background-color: blue;
     border-radius: 5px;
     color: white;
@@ -416,4 +416,15 @@ body, html{
     font-weight: bold;
     font-size: 32px;
     margin-top: 20px;
+}
+
+.create-account-error-text{
+    color: red;
+    margin-top: -8px;
+}
+
+.create-account-password-subtext{
+    font-size: 13px;
+    color: gray;
+    text-align: center;
 }
