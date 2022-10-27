@@ -87,7 +87,6 @@ export default class AccountManager {
         req.session.destroy((err) => {
             console.log(err);
         });
-        console.log("test");
         res.sendStatus(200);
     }
 
