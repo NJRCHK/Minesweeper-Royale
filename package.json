@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "npx webpack build && npx tsc && node dist/server/server.js",
+    "server": "npx tsc && node dist/server/server.js",
     "build": "webpack"
   },
   "repository": {
@@ -48,6 +49,7 @@
     "@types/seedrandom": "^3.0.2",
     "@types/ws": "^8.5.3",
     "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
     "express-session": "^1.17.3",
     "mysql2": "^2.3.3",
     "react": "^18.2.0",

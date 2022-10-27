@@ -3,14 +3,14 @@ import * as url from 'url';
 import path from 'path';
 import GameServer from './services/GameServer.js';
 import AccountManager from './services/AccountManager.js';
-
-new GameServer();
-const accountManager = new AccountManager();
+import dotenv from 'dotenv';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+dotenv.config({path: path.resolve(__dirname + '../../.env')});
 
 const app = express();
-
+const accountManager = new AccountManager();
+new GameServer();
 
 app.get('/', (__req, res) => {
     res.sendFile(path.resolve(__dirname + '../../dist/index.html'));
