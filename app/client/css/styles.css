@@ -304,9 +304,12 @@ body, html{
 }
 
 .login-button{
-    width: 90px;
-    height: 40px;
-    font-size: 16px;
+    width: 100px;
+    height: 50px;
+    font-size: 20px;
+    border-radius: 5px;
+    background-color: blue;
+    color: white;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -321,9 +324,11 @@ body, html{
 
 
 .create-account-button{
-    width: 90px;
-    height: 40px;
-    font-size: 16px;
+    width: 100px;
+    height: 50px;
+    font-size: 20px;
+    border-radius: 5px;
+    background-color: white;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -428,3 +433,18 @@ body, html{
     color: gray;
     text-align: center;
 }
+
+.create-account-close-menu-button{
+    color: gray;
+    background-color: none;
+    font-size: 24px;
+    border: none;
+    margin-bottom: -55px;
+    margin-top: 4px;
+    margin-left: -260px;
+}
+
+.create-account-close-menu-button:hover{
+    cursor: pointer;
+}
+

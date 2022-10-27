@@ -1,3 +1,5 @@
+import React, { SyntheticEvent } from "react";
+
 export type Point = {
     x: number;
     y: number;
@@ -176,6 +178,8 @@ export type HeaderProps = {
     
 }
 
-export type CreateAccountMenuProps = {
-
+export type AccountMenuProps = {
+    closeView: (event: React.SyntheticEvent) => void;
 }
+
+

@@ -16,8 +16,14 @@ export default function (props: HeaderProps) {
         setShownScreen(HeaderStates.CREATEACCOUNT);
     }
 
-    function closeOpenView() {
-        
+    function closeView(event: React.SyntheticEvent) {
+        let eventClassName = (event.target as HTMLElement).className;
+        let backgroundClass = 'create-account-menu-wrapper';
+        let closeButtonClass = 'create-account-close-menu-button';
+        //Only close the view if the close button or the background was clicked
+        if([backgroundClass, closeButtonClass].includes(eventClassName)){
+            setShownScreen(HeaderStates.DEFAULT);
+        }
     }
 
     return(
@@ -40,8 +46,8 @@ export default function (props: HeaderProps) {
                     </button>
                 </div>
             </div>
-            {(shownScreen === HeaderStates.CREATEACCOUNT) && <CreateAccountMenu />}
-            {(shownScreen === HeaderStates.LOGIN) && <LoginMenu />}
+            {(shownScreen === HeaderStates.CREATEACCOUNT) && <CreateAccountMenu closeView={closeView}/>}
+            {(shownScreen === HeaderStates.LOGIN) && <LoginMenu closeView={closeView}/>}
         </div>
     );
 }

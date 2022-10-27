@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { useState, useRef } from 'react'; 
-import { CreateAccountMenuProps } from '../../../shared/types';
+import { AccountMenuProps } from '../../../shared/types';
 
 
 
-export default function CreateAccountMenu(props: CreateAccountMenuProps) {
+export default function CreateAccountMenu(props: AccountMenuProps) {
 
     const usernameContainer = useRef<HTMLInputElement>(null);;
     const passwordContainer = useRef<HTMLInputElement>(null);
@@ -47,11 +47,10 @@ export default function CreateAccountMenu(props: CreateAccountMenuProps) {
             return;
         }
         else if (password.length < 8 || !hasLetter(password) || !hasNumber(password)){
-            console.log(password);
-            console.log(hasNumber(password));
             setErrorMessage("Password does not match requirements");
             return;
         }
+        
         const data = {
             username: username,
             password: password,
@@ -71,10 +70,10 @@ export default function CreateAccountMenu(props: CreateAccountMenuProps) {
         }
     }
     
-    console.log(props);
     return (
-        <div className='create-account-menu-wrapper'>
+        <div className='create-account-menu-wrapper' onClick={props.closeView}>
             <div className='create-account-menu'>
+                <button className='create-account-close-menu-button'>X</button>
                 <div className='create-account-header'>Sign Up</div>
                 <form className='create-account-form' onSubmit={onSubmit}>
                     <div className='flex-column-create-account'>
