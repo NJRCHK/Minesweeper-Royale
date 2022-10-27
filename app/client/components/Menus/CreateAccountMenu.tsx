@@ -71,29 +71,29 @@ export default function CreateAccountMenu(props: AccountMenuProps) {
     }
     
     return (
-        <div className='create-account-menu-wrapper' onClick={props.closeView}>
-            <div className='create-account-menu'>
-                <button className='create-account-close-menu-button'>X</button>
-                <div className='create-account-header'>Sign Up</div>
-                <form className='create-account-form' onSubmit={onSubmit}>
-                    <div className='flex-column-create-account'>
+        <div className='account-menu-wrapper' onClick={props.closeView}>
+            <div className='account-menu'>
+                <button className='account-close-menu-button'>X</button>
+                <div className='account-header'>Sign Up</div>
+                <form className='account-form' onSubmit={onSubmit}>
+                    <div className='flex-column-account'>
                         <label className='bold-text'>Username:</label>
-                        <input type="text" name="username"className='create-account-input-box' ref={usernameContainer}/>
+                        <input type="text" name="username"className='account-input-box' ref={usernameContainer}/>
                     </div>
-                    <div className='flex-column-create-account'>
-                        <div className='flex-column-create-account'>
+                    <div className='flex-column-account'>
+                        <div className='flex-column-account'>
                             <label className='bold-text'>Password:</label>
-                            <input type="password" name="password"className='create-account-input-box' ref={passwordContainer}/>
+                            <input type="password" name="password"className='account-input-box' ref={passwordContainer}/>
                         </div>
-                        <div className='create-account-password-subtext'>Password must contain at least 8 characters, 1 number and 1 letter</div>
+                        <div className='account-password-subtext'>Password must contain at least 8 characters, 1 number and 1 letter</div>
                     </div>
-                    <div className='flex-column-create-account'>
+                    <div className='flex-column-account'>
                         <label className='bold-text'>Confirm Password:</label>
-                        <input type="password" name="confirmpassword" className='create-account-input-box' ref={confirmPasswordContainer}/>
+                        <input type="password" name="confirmpassword" className='account-input-box' ref={confirmPasswordContainer}/>
                     </div>
-                    <input type="submit" value="Submit" className='create-account-form-submit-button'/>
+                    <input type="submit" value="Submit" className='account-form-submit-button'/>
                 </form>
-                <div className='create-account-error-text'>{errorMessage}</div>
+                <div className='account-error-text'>{errorMessage}</div>
             </div>
         </div>
     )

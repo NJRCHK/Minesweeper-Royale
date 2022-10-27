@@ -341,7 +341,7 @@ body, html{
     cursor: pointer;
 }
 
-.create-account-menu-wrapper{
+.account-menu-wrapper{
     position:fixed;
     width: 100vw;
     height: 100vh;
@@ -352,9 +352,8 @@ body, html{
     justify-content: center;
 }
 
-.create-account-menu{
+.account-menu{
     width: 300px;
-    height: 400px;
     background-color: white;
     opacity: 1;
     gap: 20px;
@@ -365,7 +364,7 @@ body, html{
     border-radius: 5px;
 }
 
-.create-account-form {
+.account-form {
     width: 100%;
     gap: 10px;
     display:flex;
@@ -378,30 +377,30 @@ body, html{
     flex-direction: row;
 }
 
-.flex-column-create-account{
+.flex-column-account{
     display:flex;
     flex-direction: column;
     width: 208px;
 }
 
-.create-account-input-box{
+.account-input-box{
     width: 200px;
     height: 30px;
 }
 
-.create-account-form-submit-button {
+.account-form-submit-button {
     width: 208px;
     height: 60px;
     font-size: 24px;
     margin-top:5px;
     background-color: blue;
+    margin-bottom: 25px;
     border-radius: 5px;
     color: white;
 }
 
-.create-account-form-submit-button:hover {
+.account-form-submit-button:hover {
     cursor: pointer;
-    background-color: #2979FF;
 }
 
 .bold-text{ 
@@ -417,24 +416,24 @@ body, html{
     z-index:3;
 }
 
-.create-account-header{
+.account-header{
     font-weight: bold;
     font-size: 32px;
     margin-top: 20px;
 }
 
-.create-account-error-text{
+.account-error-text{
     color: red;
     margin-top: -8px;
 }
 
-.create-account-password-subtext{
+.account-password-subtext{
     font-size: 13px;
     color: gray;
     text-align: center;
 }
 
-.create-account-close-menu-button{
+.account-close-menu-button{
     color: gray;
     background: white;
     font-size: 24px;
@@ -444,7 +443,7 @@ body, html{
     margin-left: -260px;
 }
 
-.create-account-close-menu-button:hover{
+.account-close-menu-button:hover{
     cursor: pointer;
 }
 

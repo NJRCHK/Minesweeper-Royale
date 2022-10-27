@@ -23,8 +23,8 @@ export default function (props: HeaderProps) {
         }
 
         let eventClassName = (event.target as HTMLElement).className;
-        let backgroundClass = 'create-account-menu-wrapper';
-        let closeButtonClass = 'create-account-close-menu-button';
+        let backgroundClass = 'account-menu-wrapper';
+        let closeButtonClass = 'account-close-menu-button';
         //Only close the view if the close button or the background was clicked
         if([backgroundClass, closeButtonClass].includes(eventClassName)){
             setShownScreen(HeaderStates.DEFAULT);
