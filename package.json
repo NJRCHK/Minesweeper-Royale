@@ -48,6 +48,7 @@
     "@types/seedrandom": "^3.0.2",
     "@types/ws": "^8.5.3",
     "bcrypt": "^5.1.0",
+    "express-session": "^1.17.3",
     "mysql2": "^2.3.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

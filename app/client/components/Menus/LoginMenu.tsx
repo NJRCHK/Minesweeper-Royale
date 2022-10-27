@@ -39,8 +39,9 @@ export default function CreateAccountMenu(props: AccountMenuProps) {
             password: password,
         }
 
-        const response = await fetch('./api/createAccount', {
+        const response = await fetch('./api/login', {
             credentials: 'same-origin',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/JSON'
             },
