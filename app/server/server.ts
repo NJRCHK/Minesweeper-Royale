@@ -29,7 +29,6 @@ const databaseOptions = {
 let sessionStore = new (expressMySqlSession(session))(databaseOptions);
 
 const sessionOptions = {
-    key: process.env.SESSIONSTORE_KEY,
     secret: process.env.SESSIONSTORE_SECRET,
     store: sessionStore,
     resave: true,
