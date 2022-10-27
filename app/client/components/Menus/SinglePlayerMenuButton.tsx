@@ -24,6 +24,9 @@ export default function SinglePlayerMenuButton(props: SinglePlayerMenuButtonProp
         mines: 99,
     };
     function showSubMenu(): void {
+        if(optionsShown === true){
+            return;
+        }
         setOptionsShown(optionsShown => !optionsShown);
     }
     function hideSubMenu() {
