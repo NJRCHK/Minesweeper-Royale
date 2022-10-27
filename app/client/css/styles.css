@@ -7,19 +7,46 @@ body, html{
 }
 
 .main-menu{
-    margin-top:150px;
+    width: 100%;
+    height: 100%;
     display: flex;
     font-size: 64px;
-    gap:25px;
     font-weight: bold;
-    flex-direction: column;
-    width: 50%;
-    height: 100%;
+    flex-direction: row;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: -moz-none;
     -o-user-select: none;
     user-select: none;
+}
+
+.main-menu-subitem{
+    width: 50%;
+    height: 100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-menu-subitem:hover{
+    background-color: lightgray;
+    font-size: 72px;
+}
+
+.main-menu-divider {
+    width:2px;
+    height:100%;
+    background-color: lightgray;
+}
+
+.singleplayer-submenu-button {
+    background-color: lightgray;
+    border:none;
+    font-size: 48px;
+}
+
+.singleplayer-submenu-button:hover{
+    font-size: 64px;
 }
 
 .wrapper {
@@ -228,6 +255,7 @@ body, html{
 }
 .app-wrapper{
     width:100%;
+    height:100%;
     display:flex;
     justify-content: center;
     align-items: center;
