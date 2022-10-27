@@ -51,6 +51,7 @@ export default function CreateAccountMenu(props: AccountMenuProps) {
             setErrorMessage("An error occurred. Please try again.");
             return;
         }
+        props.closeView();
     }
     
     return (

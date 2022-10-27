@@ -7,7 +7,14 @@ import expressMySqlSession from 'express-mysql-session';
 import GameServer from './services/GameServer.js';
 import AccountManager from './services/AccountManager.js';
 import dotenv from 'dotenv';
+import { UserSession } from '../shared/types.js';
 const app = express();
+
+declare module 'express-session' {
+    interface SessionData {
+        user: UserSession;
+    }
+}
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 dotenv.config({path: path.resolve(__dirname + '../../.env')});
