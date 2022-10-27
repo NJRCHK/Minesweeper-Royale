@@ -175,10 +175,12 @@ export type NewGameMessageData = {
 }
 
 export type HeaderProps = {
-    
+     updateAccountStatus: (loggedIn: boolean, username: string) => void; 
+     loggedIn: boolean;  
 }
 
 export type AccountMenuProps = {
+    updateAccountStatus: (loggedIn: boolean, username: string) => void;   
     closeView: (event?: React.SyntheticEvent) => void;
 }
 
@@ -186,3 +188,4 @@ export class UserSession {
     loggedIn: boolean = false;
     username: string = "";
 }
+

@@ -31,6 +31,33 @@ export default function (props: HeaderProps) {
         }
     }
 
+    function renderLoginAndCreateAccountButtons() {
+        return (
+            <div className='header-content-rightjustified-wrapper'>
+                <button className='login-button' onClick={renderLoginScreen}>
+                    Login
+                </button>
+                <button className='create-account-button' onClick={renderCreateAccountScreen}>
+                    Sign Up
+                </button>
+            </div>
+        )
+    }
+
+    function signOut() {
+        props.updateAccountStatus(false, "");
+    }
+
+    function renderSignOutButton () {
+        return (
+            <div className='header-content-rightjustified-wrapper'>
+                <button className='create-account-button' onClick={signOut}>
+                    Sign Out
+                </button>
+            </div>
+        );
+    }
+
     return(
         <div className='header'>
             <div className='header-content-wrapper'>
@@ -42,17 +69,10 @@ export default function (props: HeaderProps) {
                         Royale
                     </div>
                 </div>
-                <div className='header-content-rightjustified-wrapper'>
-                    <button className='login-button' onClick={renderLoginScreen}>
-                        Login
-                    </button>
-                    <button className='create-account-button' onClick={renderCreateAccountScreen}>
-                        Sign Up
-                    </button>
-                </div>
+                {props.loggedIn ? renderSignOutButton() : renderLoginAndCreateAccountButtons()}                    
             </div>
-            {(shownScreen === HeaderStates.CREATEACCOUNT) && <CreateAccountMenu closeView={closeView}/>}
-            {(shownScreen === HeaderStates.LOGIN) && <LoginMenu closeView={closeView}/>}
+            {(shownScreen === HeaderStates.CREATEACCOUNT) && <CreateAccountMenu updateAccountStatus={props.updateAccountStatus} closeView={closeView}/>}
+            {(shownScreen === HeaderStates.LOGIN) && <LoginMenu updateAccountStatus={props.updateAccountStatus} closeView={closeView}/>}
         </div>
     );
 }
