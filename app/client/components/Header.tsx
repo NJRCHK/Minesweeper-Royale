@@ -16,7 +16,12 @@ export default function (props: HeaderProps) {
         setShownScreen(HeaderStates.CREATEACCOUNT);
     }
 
-    function closeView(event: React.SyntheticEvent) {
+    function closeView(event?: React.SyntheticEvent) {
+        if(event === undefined){
+            setShownScreen(HeaderStates.DEFAULT);
+            return;
+        }
+
         let eventClassName = (event.target as HTMLElement).className;
         let backgroundClass = 'create-account-menu-wrapper';
         let closeButtonClass = 'create-account-close-menu-button';

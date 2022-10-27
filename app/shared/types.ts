@@ -179,7 +179,7 @@ export type HeaderProps = {
 }
 
 export type AccountMenuProps = {
-    closeView: (event: React.SyntheticEvent) => void;
+    closeView: (event?: React.SyntheticEvent) => void;
 }
 
 
