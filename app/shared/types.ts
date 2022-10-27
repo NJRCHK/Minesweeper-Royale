@@ -1,3 +1,5 @@
+import React, { SyntheticEvent } from "react";
+
 export type Point = {
     x: number;
     y: number;
@@ -25,10 +27,6 @@ export type BoardDisplayProps = {
 
 export type SinglePlayerGameProps = {
     config: Config;
-}
-
-export type LoginProps = {
-    handleClickBack: () => void;
 }
 
 export type ChatMessage = {
@@ -69,6 +67,13 @@ export enum ServerToClientRoutes {
 export enum ClientToServerRoutes {
     CLICK = 0,
     CHAT = 1,
+}
+
+export enum AppStates {
+    MAINMENU = 0,
+    MULTIPLAYERGAME = 1,
+    SINGLEPLAYERMENU = 2,
+    SINGLEPLAYERGAME = 3,
 }
 
 export type ClientMessage = {
@@ -115,7 +120,6 @@ export type SinglePlayerMenuButtonProps = {
 export type MainMenuProps = {
     handleClickMultiplayer: () => void;
     handleClickSingleplayer: () => void;
-    handleClickLogin: () => void;
     startSinglePlayerGame: (arg0: Config) => void;
 };
 
@@ -152,6 +156,12 @@ export enum TileValue {
     EIGHT = 8
 }
 
+export enum HeaderStates {
+    DEFAULT=0,
+    LOGIN = 1,
+    CREATEACCOUNT =2
+}
+
 export type GameOverDisplayProps = {
     position: number
     timeTaken: number;
@@ -163,3 +173,13 @@ export type NewGameMessageData = {
     board: BoardServerData;
     gamestate: boolean
 }
+
+export type HeaderProps = {
+    
+}
+
+export type AccountMenuProps = {
+    closeView: (event?: React.SyntheticEvent) => void;
+}
+
+

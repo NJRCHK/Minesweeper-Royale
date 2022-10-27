@@ -1,20 +1,19 @@
-html {
+body, html{
+    margin:0;
+    padding:0;   
     font-family: Arial, Helvetica, sans-serif;
     width: 100%; 
     height: 100%;
 }
 
-body {
-    background-color: white;
-    width: 100%; 
-    height: 100%;
-}
-
 .main-menu{
+    margin-top:150px;
     display: flex;
+    font-size: 64px;
+    gap:25px;
+    font-weight: bold;
     flex-direction: column;
-    align-items: center;
-    width: 100%;
+    width: 50%;
     height: 100%;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -23,24 +22,11 @@ body {
     user-select: none;
 }
 
-.main-menu-header{
+.wrapper {
     display: flex;
-    flex-direction:column;
-}
-
-.main-menu-header{
-    cursor:default;
-}
-
-.main-menu-header-header{
-    font-size: 100px;
-    font-weight: 900;
-}
-
-.main-menu-header-subheader{
-    font-size: 50px;
-    display:flex;
-    justify-content: end;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
 }
 
 
@@ -241,7 +227,6 @@ body {
     width:100%;
 }
 .app-wrapper{
-    height:100%;
     width:100%;
     display:flex;
     justify-content: center;
@@ -279,3 +264,186 @@ body {
     font-size: 14px;
     gap: 20px;
 }
+
+.header{
+    width: 100%;
+    height: 80px;
+    background-color: white;
+    border-bottom: 4px solid lightgray;
+    display: flex;
+    justify-content: center;
+}
+
+.header-content-wrapper {
+    width: 60%;
+    align-items: center;
+    display: flex;
+}
+
+.header-content-rightjustified-wrapper {
+    display:flex;
+    width: 100%;
+    justify-content: right;
+    gap: 20px;
+}
+
+.game-title {
+    display: flex;
+    flex-direction: column;    
+}
+
+.game-title-minesweeper {
+    font-weight: bold;
+    font-size: 32px;
+}
+
+.game-title-royale {
+    font-size: 20px;
+    display:flex;
+    justify-content: end;
+}
+
+.login-button{
+    width: 100px;
+    height: 50px;
+    font-size: 20px;
+    border-radius: 5px;
+    background-color: blue;
+    color: white;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.login-button:hover{
+    cursor: pointer;
+}
+
+
+.create-account-button{
+    width: 100px;
+    height: 50px;
+    font-size: 20px;
+    border-radius: 5px;
+    background-color: white;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.create-account-button:hover{
+    cursor: pointer;
+}
+
+.account-menu-wrapper{
+    position:fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color:	rgb(105,105,105, 0.5);
+    z-index:3;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.account-menu{
+    width: 300px;
+    background-color: white;
+    opacity: 1;
+    gap: 20px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.15),0 2px 2px rgba(0,0,0,0.15),0 4px 4px rgba(0,0,0,0.15),0 8px 8px rgba(0,0,0,0.15);
+    border-radius: 5px;
+}
+
+.account-form {
+    width: 100%;
+    gap: 10px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flex-row{
+    display:flex;
+    flex-direction: row;
+}
+
+.flex-column-account{
+    display:flex;
+    flex-direction: column;
+    width: 208px;
+}
+
+.account-input-box{
+    width: 200px;
+    height: 30px;
+}
+
+.account-form-submit-button {
+    width: 208px;
+    height: 60px;
+    font-size: 24px;
+    margin-top:5px;
+    background-color: blue;
+    border-radius: 5px;
+    color: white;
+}
+
+.account-form-submit-button:hover {
+    cursor: pointer;
+}
+
+.bold-text{ 
+    font-weight:bold;
+}
+
+.login-menu-wrapper{
+    position:fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color:darkgray;
+    opacity: 0.5;
+    z-index:3;
+}
+
+.account-header{
+    font-weight: bold;
+    font-size: 32px;
+    margin-top: 20px;
+}
+
+.account-error-text{
+    color: red;
+    height: 20px;
+    margin-bottom: 16px;
+}
+
+.account-password-subtext{
+    font-size: 13px;
+    color: gray;
+    text-align: center;
+}
+
+.account-close-menu-button{
+    color: gray;
+    background: white;
+    font-size: 24px;
+    border: none;
+    margin-bottom: -55px;
+    margin-top: 4px;
+    margin-left: -260px;
+}
+
+.account-close-menu-button:hover{
+    cursor: pointer;
+}
+
