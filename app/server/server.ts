@@ -33,7 +33,11 @@ const sessionOptions = {
     secret: process.env.SESSIONSTORE_SECRET,
     store: sessionStore,
     resave: true,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: false,
+        maxAge:28_800_000
+    }
 } as session.SessionOptions;
 
 app.use(session.default(sessionOptions));
