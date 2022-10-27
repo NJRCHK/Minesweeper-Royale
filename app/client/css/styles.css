@@ -320,6 +320,10 @@ body, html{
     flex-direction: column;    
 }
 
+.game-title:hover {
+    cursor: pointer;
+}
+
 .game-title-minesweeper {
     font-weight: bold;
     font-size: 32px;
@@ -474,4 +478,3 @@ body, html{
 .account-close-menu-button:hover{
     cursor: pointer;
 }
-

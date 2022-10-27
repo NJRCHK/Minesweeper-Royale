@@ -50,9 +50,18 @@ export default function App() {
         }
     }
 
+    function returnToHomeScreen() {
+        if(mode === AppStates.MAINMENU){
+            window.location.reload();
+        }
+        else {
+            setMode(AppStates.MAINMENU);            
+        }
+    }
+
     return (
         <div className='wrapper'>
-            <Header updateAccountStatus={updateAccountStatus} loggedIn={accountDetails.loggedIn}/>
+            <Header returnToHomeScreen={returnToHomeScreen} updateAccountStatus={updateAccountStatus} loggedIn={accountDetails.loggedIn}/>
             <div className='app-wrapper'>{renderSwitch(mode)}</div>
         </div>
     );

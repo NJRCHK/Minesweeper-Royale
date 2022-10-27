@@ -63,7 +63,7 @@ export default function (props: HeaderProps) {
     return(
         <div className='header'>
             <div className='header-content-wrapper'>
-                <div className='game-title'>
+                <div className='game-title' onClick={props.returnToHomeScreen}>
                     <div className='game-title-minesweeper'>
                         Minesweeper
                     </div>

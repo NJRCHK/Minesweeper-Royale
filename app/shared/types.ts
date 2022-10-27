@@ -176,6 +176,7 @@ export type NewGameMessageData = {
 
 export type HeaderProps = {
      updateAccountStatus: (loggedIn: boolean, username: string) => void; 
+     returnToHomeScreen: () => void;
      loggedIn: boolean;  
 }
 
