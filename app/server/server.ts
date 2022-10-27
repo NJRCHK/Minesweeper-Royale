@@ -1,4 +1,5 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import * as url from 'url';
 import path from 'path';
 import GameServer from './services/GameServer.js';
@@ -11,6 +12,8 @@ dotenv.config({path: path.resolve(__dirname + '../../.env')});
 const app = express();
 const accountManager = new AccountManager();
 new GameServer();
+
+app.use(bodyParser.json());
 
 app.get('/', (__req, res) => {
     res.sendFile(path.resolve(__dirname + '../../dist/index.html'));
