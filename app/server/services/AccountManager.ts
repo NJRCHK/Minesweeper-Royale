@@ -76,6 +76,10 @@ export default class AccountManager {
             res.sendStatus(200);
             return;
         }
+        //@ts-ignore
+        req.session.loggedIn = true;
+        //@ts-ignore
+        req.session.username = username;
         res.sendStatus(400);
     }
 
@@ -102,6 +106,10 @@ export default class AccountManager {
         const hashedPassword = await bcrypt.hash(password, this.saltrounds);
         connection = await this.pool.getConnection();
         await connection.execute("INSERT INTO users (name, password) VALUES(?, ?)", [username, hashedPassword]);
+        //@ts-ignore
+        req.session.loggedIn = true;
+        //@ts-ignore
+        req.session.username = username;
         res.sendStatus(200);
     }   
 }
