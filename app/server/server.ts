@@ -48,7 +48,7 @@ app.get('/', (__req, res) => {
 });
 
 app.post('/api/createAccount', (req, res) => accountManager.createAccount(req, res));
-
+app.post('/api/signOut', (req,res) => accountManager.signOut(req,res));
 app.post('/api/login', (req, res) => accountManager.login(req, res));
 
 app.get('/main.js', (__req, res) => {

@@ -7,7 +7,6 @@ import LoginMenu from './Menus/LoginMenu';
 export default function (props: HeaderProps) {
     const [shownScreen, setShownScreen] = useState(HeaderStates.DEFAULT);
 
-    console.log(props);
     function renderLoginScreen() {
         setShownScreen(HeaderStates.LOGIN);
     }
@@ -44,7 +43,10 @@ export default function (props: HeaderProps) {
         )
     }
 
-    function signOut() {
+    async function signOut() {
+        await fetch("/api/signOut", {
+            method: "POST",
+        });
         props.updateAccountStatus(false, "");
     }
 
