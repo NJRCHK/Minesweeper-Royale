@@ -182,4 +182,7 @@ export type AccountMenuProps = {
     closeView: (event?: React.SyntheticEvent) => void;
 }
 
-
+export class UserSession {
+    loggedIn: boolean = false;
+    username: string = "";
+}
