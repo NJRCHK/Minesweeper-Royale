@@ -74,6 +74,7 @@ export default class AccountManager {
         let result = await bcrypt.compare(password, rows[0].password);
         if(result){
             res.sendStatus(200);
+            return;
         }
         res.sendStatus(400);
     }
