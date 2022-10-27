@@ -394,7 +394,6 @@ body, html{
     font-size: 24px;
     margin-top:5px;
     background-color: blue;
-    margin-bottom: 25px;
     border-radius: 5px;
     color: white;
 }
@@ -424,7 +423,8 @@ body, html{
 
 .account-error-text{
     color: red;
-    margin-top: -8px;
+    height: 20px;
+    margin-bottom: 16px;
 }
 
 .account-password-subtext{
