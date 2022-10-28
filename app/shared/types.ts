@@ -66,6 +66,7 @@ export enum ServerToClientRoutes {
     UPDATEPLAYER = 2,
     LEADERBOARD = 3,
     NEWGAME = 4,
+    TIMER = 5,
 }
 
 export enum ClientToServerRoutes {
@@ -91,6 +92,7 @@ export type FirstConnectionMessageData = {
     gamestate: boolean;
     player: Player;
     leaderboard: LeaderboardEntry[];
+    time: number;
 }
 
 export type LeaderboardMessage = {

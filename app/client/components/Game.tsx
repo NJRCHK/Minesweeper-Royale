@@ -30,6 +30,7 @@ export default function Game(){
     const [leaderboard, setLeaderboard] = useState([] as LeaderboardEntry[]);
     const [gameInProgress, setGameInProgress] = useState(false);
     const [chatMessages, setChatMessages] = useState([] as ChatMessage[]);
+    const [time, setTime] = useState(0);
 
     useEffect(() => {
         const newSocket = new WebSocket('ws://localhost:8080');
@@ -92,7 +93,14 @@ export default function Game(){
             case ServerToClientRoutes.NEWGAME:
                 handleNewGame(message.data);
                 break;
+            case ServerToClientRoutes.TIMER:
+                handleTimerMessage(message.data);
         }
+    }
+
+    function handleTimerMessage(data: any) {
+        let time = data.time;
+        setTime(time);
     }
 
     function handleNewGame(data: any) {
@@ -134,7 +142,7 @@ export default function Game(){
     }
 
     function verifyFirstConnectionData(message: any) {
-        if(Object.keys(message).length !== 4){
+        if(Object.keys(message).length !== 5){
             throw `Error: Message doesn't contain the correct number of properties.  Properties required: 2 Message: ${JSON.stringify(message)}`;
         }
         if(!('gamestate' in message)){
@@ -162,6 +170,7 @@ export default function Game(){
         });
         setGameInProgress(data.gamestate);
         setLeaderboard(data.leaderboard);
+        setTime(data.time);
     }
 
     function validateChatMessage(message: Object) {
@@ -296,7 +305,7 @@ export default function Game(){
                         clickEvent={() => {return}}
                         gameState="gamewon"
                     />
-                    <Timer time={0}/>
+                    <Timer time={time}/>
                 </div>
                 <BoardDisplay 
                     height={myPlayer.board.height}
@@ -305,7 +314,7 @@ export default function Game(){
                     tileClicked={tileClicked}
                     tileRightClicked={tileRightClicked}
                 />
-                {!gameInProgress && <GameOverDisplay position={getMyPosition()} timeTaken={1} winner={leaderboard[0].username} />}
+                {!gameInProgress && <GameOverDisplay position={getMyPosition()} timeTaken={time} winner={leaderboard[0].username} />}
             </div>
 
 

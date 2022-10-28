@@ -10,7 +10,7 @@ export default function GameOverDisplay (props: GameOverDisplayProps) {
                 </div>
                 <div className='game-over-display-text-body'>
                     <div>
-                        Time Taken: {props.timeTaken} {props.timeTaken > 1 ? "second" : "seconds"}
+                        Time Taken: {props.timeTaken} {props.timeTaken > 1 ? "seconds" : "second"}
                     </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@ export default function GameOverDisplay (props: GameOverDisplayProps) {
                         You placed: {props.position}
                     </div>
                     <div>
-                        Time Taken: {props.timeTaken} {props.timeTaken > 1 ? "second" : "seconds"}
+                        Time Taken: {props.timeTaken} {props.timeTaken > 1 ? "seconds" : "second"}
                     </div>
                 </div>
             </div>

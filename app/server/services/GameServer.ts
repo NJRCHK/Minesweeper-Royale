@@ -21,11 +21,15 @@ export default class GameServer {
     server: WebSocketServer;
     game: Game;
     sessionStore: MySQLStore;
+    time: number;
+    timer: NodeJS.Timer;
 
     constructor(sessionStore: MySQLStore) {
         this.server = new WebSocketServer({port: 8080});
         this.game = new Game();
         this.sessionStore = sessionStore;
+        this.time = 0;
+        this.timer = setInterval(() => this.incrementTime(), 1000);
         this.startServer();
 
     }
@@ -42,9 +46,27 @@ export default class GameServer {
         });
     }
 
+    incrementTime() {
+        if(this.game.players.length === 0){
+            this.time = 0;
+        } else if (this.game.inProgress){
+            this.time++;
+        }
+        this.server.clients.forEach(client => {
+            const data = {
+                route: ServerToClientRoutes.TIMER,
+                data: {
+                    time: this.time
+                }
+            }
+            client.send(JSON.stringify(data));
+        })
+    }
+
     createNewGame(){
         const newGame = new Game(this.game.players);
         this.game = newGame;
+        this.time=0;
         if(this.game.players.length === 0){
             return;
         }
@@ -144,6 +166,7 @@ export default class GameServer {
                 gamestate: this.game.inProgress,
                 leaderboard: this.game.getLeaderboard(),
                 player: this.game.getPlayerWithId(id),
+                time: this.time,
             } as FirstConnectionMessageData
         } as ServerMessage);
 
