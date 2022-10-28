@@ -73,6 +73,7 @@ export enum ClientToServerRoutes {
     CLICK = 0,
     CHAT = 1,
     CONNECT = 2,
+    NAMECHANGE = 3,
 }
 
 export enum AppStates {
@@ -201,4 +202,6 @@ export class UserSession {
     username: string = "";
 }
 
-
+export type GameProps = {
+    account: UserSession
+}

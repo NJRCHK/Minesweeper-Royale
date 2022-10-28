@@ -19,10 +19,11 @@ import {
         Player,
         UpdatePlayerMessageData,
         TileValue,
-        NewGameMessageData
+        NewGameMessageData,
+        GameProps
     } from '../../shared/types';
 
-export default function Game(){
+export default function Game(props: GameProps){
 
     const [socket, setSocket] = useState({} as WebSocket);
 
@@ -75,6 +76,30 @@ export default function Game(){
             socket.removeEventListener("message", messageEventListener);
         }
     }, [myPlayer, leaderboard, socket, chatMessages]);
+
+    useEffect(() => {
+        updateUsername();
+    }, [props.account]);
+
+    function updateUsername() {
+        if(! props.account.loggedIn){
+            return;
+        }
+        if(socket.readyState === undefined){
+            return;
+        }
+        if(socket.readyState !== socket.OPEN){
+            return;
+        }
+        const data = {
+            route: ClientToServerRoutes.NAMECHANGE,
+            data: {
+                cookie: document.cookie
+            }
+        }
+
+        socket.send(JSON.stringify(data));
+    }
 
     function handleMessage(message: ServerMessage) {
         switch(message.route){

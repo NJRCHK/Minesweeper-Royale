@@ -128,6 +128,24 @@ export default class GameServer {
         });
     }
 
+    async handleNameChange(id: number, ws: WebSocket, data: any) {
+        let isValid = await this.verifyClient(id, ws, data);
+        if(isValid === ""){
+            return;
+        }
+        this.game.getPlayerWithId(id).username = isValid;
+        const leaderboard = JSON.stringify({
+            route: ServerToClientRoutes.LEADERBOARD,
+            data: {
+                leaderboard: this.game.getLeaderboard(),
+                gamestate: this.game.inProgress
+            } as LeaderboardMessage
+        } as ServerMessage);
+        this.server.clients.forEach(client => {
+            client.send(leaderboard);
+        });
+    }
+
     handleMessage(id: number, ws: WebSocket, data: RawData) {
         let parsedData: ClientMessage;
         try {
@@ -148,6 +166,8 @@ export default class GameServer {
             case ClientToServerRoutes.CONNECT:
                 this.handleNewConnection(id, ws, parsedData.data);
                 break;
+            case ClientToServerRoutes.NAMECHANGE:
+                this.handleNameChange(id, ws, parsedData.data);
         }
     }
 

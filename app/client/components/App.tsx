@@ -55,7 +55,7 @@ export default function App() {
                     }}
                 />
             case AppStates.MULTIPLAYERGAME:
-                return <Game />
+                return <Game account={accountDetails}/>
             case AppStates.SINGLEPLAYERGAME:
                 return <SinglePlayerGame 
                     config={config}

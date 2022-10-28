@@ -85,7 +85,9 @@ export default class AccountManager {
 
     async signOut(req: Request, res: Response) {
         req.session.destroy((err) => {
-            console.log(err);
+            if(err){
+                console.log(err);
+            }
         });
         res.sendStatus(200);
     }
