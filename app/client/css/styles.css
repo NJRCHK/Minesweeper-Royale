@@ -478,3 +478,15 @@ body, html{
 .account-close-menu-button:hover{
     cursor: pointer;
 }
+
+.blue-text{
+    color:blue;
+}
+
+.red-text{
+    color:red;
+}
+
+.green-text{
+    color: green;
+}

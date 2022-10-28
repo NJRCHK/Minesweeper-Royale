@@ -39,9 +39,9 @@ export default function SinglePlayerMenuButton(props: SinglePlayerMenuButtonProp
                 {!optionsShown && <div>Singleplayer</div>}
                 {optionsShown &&         
                 <div>
-                    <button className='singleplayer-submenu-button' onClick={() => {props.startSinglePlayerGame(beginnerConfig)}}>Beginner</button>
-                    <button className='singleplayer-submenu-button' onClick={() => {props.startSinglePlayerGame(intermediateConfig)}}>Intermediate</button>
-                    <button className='singleplayer-submenu-button' onClick={() => {props.startSinglePlayerGame(expertConfig)}}>Expert</button>
+                    <button className='singleplayer-submenu-button blue-text' onClick={() => {props.startSinglePlayerGame(beginnerConfig)}}>Beginner</button>
+                    <button className='singleplayer-submenu-button green-text' onClick={() => {props.startSinglePlayerGame(intermediateConfig)}}>Intermediate</button>
+                    <button className='singleplayer-submenu-button red-text' onClick={() => {props.startSinglePlayerGame(expertConfig)}}>Expert</button>
                 </div>
                 }
             </div>
