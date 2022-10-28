@@ -36,7 +36,7 @@ export default function App() {
                     handleClickSingleplayer={() => setMode(AppStates.MULTIPLAYERGAME)}
                     startSinglePlayerGame={config => {
                         setConfig(config);
-                        setMode(AppStates.SINGLEPLAYERMENU);
+                        setMode(AppStates.SINGLEPLAYERGAME);
                     }}
                 />
             case AppStates.MULTIPLAYERGAME:
