@@ -19,7 +19,6 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
         squaresRemaining: (props.config.height * props.config.width) - props.config.mines,
         tiles: createTiles(props.config.height, props.config.width),
     }
-
     const [board, setBoard] = useState(boardStartState);
     const [time, setTime] = useState(0);
     const [timerTracker, setTimerTracker] = useState(new Array<NodeJS.Timer>);
@@ -31,7 +30,6 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
             setTimerTracker([setInterval(() => setTime(time => time + 1), 1000)]);
         } else {
             timerTracker.forEach(timer => {
-                console.log("clearing interval");
                 clearInterval(timer);
             });
             setTimerTracker([]);
@@ -63,13 +61,11 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
         let values = tempBoard.checkCoordinates(x, y);
 
         for(let i = 0; i < values.length; i++){
-            console.log(values);
             setBoard(prevBoard => {
                 let temp = {...prevBoard}
-                if(values[i].value !== TileValue.BOMB){
+                if(values[i].value !== TileValue.BOMB && temp.tiles[values[i].x][values[i].y] === TileValue.BLANK){
                     temp.squaresRemaining = temp.squaresRemaining - 1;
                 }
-                console.log(temp.squaresRemaining);
                 temp.tiles[values[i].x][values[i].y] = values[i].value;
                 if(temp.squaresRemaining === 0){
                     temp.gameState ="gamewon";
