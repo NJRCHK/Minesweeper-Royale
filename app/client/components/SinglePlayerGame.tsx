@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Timer from './GameComponents/Timer';
 import ResetButton from './GameComponents/ResetButton';
 import Counter from './GameComponents/Counter';
@@ -19,8 +19,22 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
         squaresRemaining: (props.config.height * props.config.width) - props.config.mines,
         tiles: createTiles(props.config.height, props.config.width),
     }
-
     const [board, setBoard] = useState(boardStartState);
+    const [time, setTime] = useState(0);
+    const [timerTracker, setTimerTracker] = useState(new Array<NodeJS.Timer>);
+
+    //messy bad way to do it but i couldnt think of anything else :(
+    useEffect(() => {
+        if(board.gameState === "inprogress"){
+            setTime(0);
+            setTimerTracker([setInterval(() => setTime(time => time + 1), 1000)]);
+        } else {
+            timerTracker.forEach(timer => {
+                clearInterval(timer);
+            });
+            setTimerTracker([]);
+        }
+    }, [board.gameState]);
 
     function createTiles(height: number, width: number): number[][] {
         let tilesRows = new Array<number[]>(height)
@@ -48,9 +62,9 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
 
         for(let i = 0; i < values.length; i++){
             setBoard(prevBoard => {
-                let temp = {
-                    ...prevBoard,
-                    squaresRemaining: prevBoard.squaresRemaining- 1,
+                let temp = {...prevBoard}
+                if(values[i].value !== TileValue.BOMB && temp.tiles[values[i].x][values[i].y] === TileValue.BLANK){
+                    temp.squaresRemaining = temp.squaresRemaining - 1;
                 }
                 temp.tiles[values[i].x][values[i].y] = values[i].value;
                 if(temp.squaresRemaining === 0){
@@ -128,7 +142,7 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
                     clickEvent={restartGame}
                     gameState={board.gameState}
                 />
-                <Timer />
+                <Timer time={time}/>
             </div>
             <BoardDisplay 
                 height={board.height}

@@ -296,7 +296,7 @@ export default function Game(){
                         clickEvent={() => {return}}
                         gameState="gamewon"
                     />
-                    <Timer />
+                    <Timer time={0}/>
                 </div>
                 <BoardDisplay 
                     height={myPlayer.board.height}
