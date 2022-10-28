@@ -4,7 +4,7 @@ import MainMenu from './Menus/MainMenu';
 import Game from '../components/Game';
 import SinglePlayerGame from '../components/SinglePlayerGame';
 import Header from './Header';
-import { Config, AppStates } from '../../shared/types';
+import { Config, AppStates, UserSession } from '../../shared/types';
 
 const defaultConfig: Config = {
     height: 20,
@@ -13,8 +13,21 @@ const defaultConfig: Config = {
 }
 
 export default function App() {
+    const [accountDetails, setAccountDetails] = useState({
+        username: "",
+        loggedIn: false,
+    } as UserSession);
+
     const [mode, setMode] = useState(AppStates.MAINMENU);
     const [config, setConfig] = useState(defaultConfig);
+
+    function updateAccountStatus(loggedIn: boolean, username: string) {
+        setAccountDetails({
+            loggedIn: loggedIn,
+            username: username
+        } as UserSession);
+    }
+
     function renderSwitch(mode: AppStates){
         switch(mode){
             case AppStates.MAINMENU:
@@ -23,7 +36,7 @@ export default function App() {
                     handleClickSingleplayer={() => setMode(AppStates.MULTIPLAYERGAME)}
                     startSinglePlayerGame={config => {
                         setConfig(config);
-                        setMode(AppStates.SINGLEPLAYERMENU);
+                        setMode(AppStates.SINGLEPLAYERGAME);
                     }}
                 />
             case AppStates.MULTIPLAYERGAME:
@@ -37,9 +50,18 @@ export default function App() {
         }
     }
 
+    function returnToHomeScreen() {
+        if(mode === AppStates.MAINMENU){
+            window.location.reload();
+        }
+        else {
+            setMode(AppStates.MAINMENU);            
+        }
+    }
+
     return (
         <div className='wrapper'>
-            <Header />
+            <Header returnToHomeScreen={returnToHomeScreen} updateAccountStatus={updateAccountStatus} loggedIn={accountDetails.loggedIn}/>
             <div className='app-wrapper'>{renderSwitch(mode)}</div>
         </div>
     );

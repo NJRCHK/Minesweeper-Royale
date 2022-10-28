@@ -2,8 +2,6 @@ import * as React from 'react';
 import { GameOverDisplayProps } from '../../../shared/types';
 
 export default function GameOverDisplay (props: GameOverDisplayProps) {
-    console.log(props);
-
     function renderWinnerDisplay() {
         return (
             <div className='game-over-display-text'>

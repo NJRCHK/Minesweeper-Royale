@@ -29,17 +29,20 @@ const databaseOptions = {
 let sessionStore = new (expressMySqlSession(session))(databaseOptions);
 
 const sessionOptions = {
-    key: process.env.SESSIONSTORE_KEY,
     secret: process.env.SESSIONSTORE_SECRET,
     store: sessionStore,
     resave: true,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: false,
+        maxAge:28_800_000
+    }
 } as session.SessionOptions;
 
 app.use(session.default(sessionOptions));
 
 const accountManager = new AccountManager();
-new GameServer();
+new GameServer(sessionStore);
 
 app.use(bodyParser.json());
 
@@ -48,7 +51,7 @@ app.get('/', (__req, res) => {
 });
 
 app.post('/api/createAccount', (req, res) => accountManager.createAccount(req, res));
-
+app.post('/api/signOut', (req,res) => accountManager.signOut(req,res));
 app.post('/api/login', (req, res) => accountManager.login(req, res));
 
 app.get('/main.js', (__req, res) => {

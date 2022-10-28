@@ -39,7 +39,7 @@ export default function CreateAccountMenu(props: AccountMenuProps) {
             password: password,
         }
 
-        const response = await fetch('./api/login', {
+        const response = await fetch('/api/login', {
             credentials: 'same-origin',
             method: 'POST',
             headers: {
@@ -51,6 +51,7 @@ export default function CreateAccountMenu(props: AccountMenuProps) {
             setErrorMessage("An error occurred. Please try again.");
             return;
         }
+        props.updateAccountStatus(true, username);
         props.closeView();
     }
     

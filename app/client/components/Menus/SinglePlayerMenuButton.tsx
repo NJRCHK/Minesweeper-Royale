@@ -24,18 +24,27 @@ export default function SinglePlayerMenuButton(props: SinglePlayerMenuButtonProp
         mines: 99,
     };
     function showSubMenu(): void {
+        if(optionsShown === true){
+            return;
+        }
         setOptionsShown(optionsShown => !optionsShown);
+    }
+    function hideSubMenu() {
+        setOptionsShown(false);
     }
 
     return (
-        <div>
-            <div onClick={showSubMenu}>Singleplayer</div>
-            {optionsShown &&         
+        <div onClick={showSubMenu} onMouseLeave={hideSubMenu} className='main-menu-subitem'>
+            <div>
+                {!optionsShown && <div>Singleplayer</div>}
+                {optionsShown &&         
                 <div>
-                <button onClick={() => {props.startSinglePlayerGame(beginnerConfig)}}>Beginner</button>
-                <button onClick={() => {props.startSinglePlayerGame(intermediateConfig)}}>Intermediate</button>
-                <button onClick={() => {props.startSinglePlayerGame(expertConfig)}}>Expert</button>
-            </div>}
+                    <button className='singleplayer-submenu-button blue-text' onClick={() => {props.startSinglePlayerGame(beginnerConfig)}}>Beginner</button>
+                    <button className='singleplayer-submenu-button green-text' onClick={() => {props.startSinglePlayerGame(intermediateConfig)}}>Intermediate</button>
+                    <button className='singleplayer-submenu-button red-text' onClick={() => {props.startSinglePlayerGame(expertConfig)}}>Expert</button>
+                </div>
+                }
+            </div>
         </div>
     )
 }

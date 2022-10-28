@@ -1,6 +1,9 @@
 import {WebSocket, WebSocketServer, RawData, Server} from 'ws';
+import * as util from 'util';
 import Game from './Game.js';
+import cookieParser from 'cookie-parser';
 import { TIME_BETWEEN_GAMES_MS } from '../../shared/constants.js';
+import { MySQLStore } from 'express-mysql-session';
 import {
         ClientToServerRoutes, 
         ChatMessage, 
@@ -17,17 +20,19 @@ import {
 export default class GameServer {
     server: WebSocketServer;
     game: Game;
+    sessionStore: MySQLStore;
 
-    constructor() {
+    constructor(sessionStore: MySQLStore) {
         this.server = new WebSocketServer({port: 8080});
         this.game = new Game();
+        this.sessionStore = sessionStore;
         this.startServer();
+
     }
 
     startServer() {
         this.server.on('connection', ws => {
             const id = this.generateId();
-            this.handleNewConnection(id, ws);
             ws.on('message', data => {
                 this.handleMessage(id,ws, data);
             });
@@ -74,6 +79,32 @@ export default class GameServer {
         return parsedData as ClientMessage;
     }
     
+    async verifyClient(_id: number, _ws: WebSocket, message: any): Promise<string> {
+        let cookie = message.cookie;
+        cookie = decodeURIComponent(cookie);
+        if(process.env.SESSIONSTORE_SECRET === undefined){
+            throw `Environment variables not configured correctly`;
+        }
+        cookie = cookie.replace("connect.sid=","");
+        let signedCookie = cookieParser.signedCookie(cookie, process.env.SESSIONSTORE_SECRET);
+        if(signedCookie === false){
+            return "";
+        }
+        return new Promise((resolve, _reject) => {
+            this.sessionStore.get(signedCookie as string, (err, sess) => {
+                if(err){
+                    resolve("");
+                } else if (sess === null || sess.user === null){
+                    resolve("");
+                }
+                else if (sess.user.loggedIn === true){
+                    resolve(sess.user.username);
+                } else {
+                    resolve("");
+                }
+            });
+        });
+    }
 
     handleMessage(id: number, ws: WebSocket, data: RawData) {
         let parsedData: ClientMessage;
@@ -92,11 +123,20 @@ export default class GameServer {
             case ClientToServerRoutes.CLICK:
                 this.handleClick(id, ws, parsedData.data);
                 break;
+            case ClientToServerRoutes.CONNECT:
+                this.handleNewConnection(id, ws, parsedData.data);
+                break;
         }
     }
 
-    handleNewConnection(id: number, ws: WebSocket) {
-        this.game.addPlayer(id);
+    async handleNewConnection(id: number, ws: WebSocket, data: any) {
+        let result = await this.verifyClient(id, ws, data);
+        if(result !== ""){
+            this.game.addPlayer(id, result);
+        } 
+        else {
+            this.game.addPlayer(id);
+        }
         const response = JSON.stringify({
             route: ServerToClientRoutes.NEWCONNECTION,
             data: {
@@ -118,7 +158,7 @@ export default class GameServer {
         let messageString = {
             route: ServerToClientRoutes.CHAT,
             data: {
-                username: String(id),
+                username: this.game.getPlayerWithId(id).username,
                 message: String(message.message),
             } as ChatMessage
         } as ServerMessage;

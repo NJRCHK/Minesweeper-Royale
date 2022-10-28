@@ -7,7 +7,6 @@ import LoginMenu from './Menus/LoginMenu';
 export default function (props: HeaderProps) {
     const [shownScreen, setShownScreen] = useState(HeaderStates.DEFAULT);
 
-    console.log(props);
     function renderLoginScreen() {
         setShownScreen(HeaderStates.LOGIN);
     }
@@ -31,10 +30,41 @@ export default function (props: HeaderProps) {
         }
     }
 
+    function renderLoginAndCreateAccountButtons() {
+        return (
+            <div className='header-content-rightjustified-wrapper'>
+                <button className='login-button' onClick={renderLoginScreen}>
+                    Login
+                </button>
+                <button className='create-account-button' onClick={renderCreateAccountScreen}>
+                    Sign Up
+                </button>
+            </div>
+        )
+    }
+
+    async function signOut() {
+        await fetch("/api/signOut", {
+            method: "POST",
+        });
+        props.updateAccountStatus(false, "");
+        props.returnToHomeScreen();
+    }
+
+    function renderSignOutButton () {
+        return (
+            <div className='header-content-rightjustified-wrapper'>
+                <button className='create-account-button' onClick={signOut}>
+                    Sign Out
+                </button>
+            </div>
+        );
+    }
+
     return(
         <div className='header'>
             <div className='header-content-wrapper'>
-                <div className='game-title'>
+                <div className='game-title' onClick={props.returnToHomeScreen}>
                     <div className='game-title-minesweeper'>
                         Minesweeper
                     </div>
@@ -42,17 +72,10 @@ export default function (props: HeaderProps) {
                         Royale
                     </div>
                 </div>
-                <div className='header-content-rightjustified-wrapper'>
-                    <button className='login-button' onClick={renderLoginScreen}>
-                        Login
-                    </button>
-                    <button className='create-account-button' onClick={renderCreateAccountScreen}>
-                        Sign Up
-                    </button>
-                </div>
+                {props.loggedIn ? renderSignOutButton() : renderLoginAndCreateAccountButtons()}                    
             </div>
-            {(shownScreen === HeaderStates.CREATEACCOUNT) && <CreateAccountMenu closeView={closeView}/>}
-            {(shownScreen === HeaderStates.LOGIN) && <LoginMenu closeView={closeView}/>}
+            {(shownScreen === HeaderStates.CREATEACCOUNT) && <CreateAccountMenu updateAccountStatus={props.updateAccountStatus} closeView={closeView}/>}
+            {(shownScreen === HeaderStates.LOGIN) && <LoginMenu updateAccountStatus={props.updateAccountStatus} closeView={closeView}/>}
         </div>
     );
 }

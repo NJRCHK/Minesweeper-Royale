@@ -83,6 +83,13 @@ export default class AccountManager {
         res.sendStatus(400);
     }
 
+    async signOut(req: Request, res: Response) {
+        req.session.destroy((err) => {
+            console.log(err);
+        });
+        res.sendStatus(200);
+    }
+
     async createAccount(req: Request, res: Response) {
         const username = req.body.username;
         const password = req.body.password;
