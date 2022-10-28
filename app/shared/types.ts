@@ -128,6 +128,10 @@ export type MainMenuProps = {
     startSinglePlayerGame: (arg0: Config) => void;
 };
 
+export type TimerProps = {
+    time: number;
+}
+
 export type TileProps = {
     x: number,
     y: number, 
