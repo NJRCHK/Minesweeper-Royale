@@ -42,7 +42,7 @@ const sessionOptions = {
 app.use(session.default(sessionOptions));
 
 const accountManager = new AccountManager();
-new GameServer();
+new GameServer(sessionStore);
 
 app.use(bodyParser.json());
 

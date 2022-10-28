@@ -33,9 +33,15 @@ export default class Game {
 
     }
 
-    addPlayer(id: number) {
-        let newPlayer = new Player(`Guest ${this.guests}`,id, this.seed);
-        this.guests++;
+    addPlayer(id: number, username?: string) {
+        let newPlayer;
+        if(username === undefined){
+            newPlayer = new Player(`Guest ${this.guests}`,id, this.seed);
+            this.guests++;
+        }
+        else {
+            newPlayer = new Player(username, id, this.seed);
+        }
         this.players.push(newPlayer);
     }
 

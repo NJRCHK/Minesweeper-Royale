@@ -41,6 +41,12 @@ export default function Game(){
 
     useEffect(() => {
         const openEventListener = () => {
+            socket.send(JSON.stringify({
+                route: ClientToServerRoutes.CONNECT,
+                data: {
+                    cookie: document.cookie
+                }
+            } as ClientMessage))
             console.log("Connected to server");
         }
 
@@ -125,7 +131,6 @@ export default function Game(){
             }
         });
         setGameInProgress(data.gamestate);
-        console.log(data.gamestate);
     }
 
     function verifyFirstConnectionData(message: any) {

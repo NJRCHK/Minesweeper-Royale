@@ -34,6 +34,10 @@ export type ChatMessage = {
     message: String;
 }
 
+export type ConnectData = {
+    cookie: string;
+}
+
 export type ChatMessageProps = {
     messages: ChatMessage[];
     sendChatMessage: (message: string) => void;
@@ -67,6 +71,7 @@ export enum ServerToClientRoutes {
 export enum ClientToServerRoutes {
     CLICK = 0,
     CHAT = 1,
+    CONNECT = 2,
 }
 
 export enum AppStates {
@@ -189,4 +194,5 @@ export class UserSession {
     loggedIn: boolean = false;
     username: string = "";
 }
+
 
