@@ -48,6 +48,7 @@ export default function (props: HeaderProps) {
             method: "POST",
         });
         props.updateAccountStatus(false, "");
+        props.returnToHomeScreen();
     }
 
     function renderSignOutButton () {

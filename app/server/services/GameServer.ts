@@ -90,11 +90,14 @@ export default class GameServer {
         if(signedCookie === false){
             return "";
         }
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, _reject) => {
             this.sessionStore.get(signedCookie as string, (err, sess) => {
                 if(err){
-                    reject("");
-                } else if (sess.user.loggedIn === true){
+                    resolve("");
+                } else if (sess === null || sess.user === null){
+                    resolve("");
+                }
+                else if (sess.user.loggedIn === true){
                     resolve(sess.user.username);
                 } else {
                     resolve("");
