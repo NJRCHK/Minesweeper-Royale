@@ -90,6 +90,24 @@ export default class AccountManager {
         res.sendStatus(200);
     }
 
+    isLoggedIn(req: Request, res: Response){
+        try{
+            if(!req.session.user){
+                res.sendStatus(401);
+                return;
+            }
+            let data = {
+                loggedIn: true,
+                username: req.session.user.username
+            }
+            res.send(JSON.stringify(data));
+            return;
+        }
+        catch {
+            res.sendStatus(401);
+        }
+    }
+
     async createAccount(req: Request, res: Response) {
         const username = req.body.username;
         const password = req.body.password;

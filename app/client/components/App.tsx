@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import MainMenu from './Menus/MainMenu';
 import Game from '../components/Game';
 import SinglePlayerGame from '../components/SinglePlayerGame';
@@ -20,6 +20,21 @@ export default function App() {
 
     const [mode, setMode] = useState(AppStates.MAINMENU);
     const [config, setConfig] = useState(defaultConfig);
+
+    useEffect(() => {
+        fetch("/api/isLoggedIn")
+            .then((response) => response.json())
+            .then(data => setAccountDetails({
+                username: data.username,
+                loggedIn: true
+            }))
+            .catch(() => {
+                setAccountDetails({
+                    username: "",
+                    loggedIn: false
+                });
+            });
+    }, []);
 
     function updateAccountStatus(loggedIn: boolean, username: string) {
         setAccountDetails({
