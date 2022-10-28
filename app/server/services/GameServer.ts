@@ -1,5 +1,6 @@
 import {WebSocket, WebSocketServer, RawData, Server} from 'ws';
 import * as util from 'util';
+import Filter from 'bad-words';
 import Game from './Game.js';
 import cookieParser from 'cookie-parser';
 import { TIME_BETWEEN_GAMES_MS } from '../../shared/constants.js';
@@ -23,6 +24,7 @@ export default class GameServer {
     sessionStore: MySQLStore;
     time: number;
     timer: NodeJS.Timer;
+    filter: Filter;
 
     constructor(sessionStore: MySQLStore) {
         this.server = new WebSocketServer({port: 8080});
@@ -30,6 +32,7 @@ export default class GameServer {
         this.sessionStore = sessionStore;
         this.time = 0;
         this.timer = setInterval(() => this.incrementTime(), 1000);
+        this.filter = new Filter();
         this.startServer();
 
     }
@@ -202,7 +205,7 @@ export default class GameServer {
             route: ServerToClientRoutes.CHAT,
             data: {
                 username: this.game.getPlayerWithId(id).username,
-                message: String(message.message),
+                message: this.filter.clean(String(message.message)),
             } as ChatMessage
         } as ServerMessage;
         this.server.clients.forEach(client => {
