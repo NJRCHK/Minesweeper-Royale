@@ -212,25 +212,57 @@ body, html{
     flex-direction: column;
     height: 40%;
     min-height: 200px;
-    border: 1px solid black;
+    background-color: lightgray;
+    border-left: 2px solid white;
+    border-top: 2px solid white;
+    border-bottom: 2px solid darkgray;
+    border-bottom: 2px solid darkgray;
+}
+
+.leaderboard-entries {
+    flex-grow: 2;
+    margin: 5px;
+    border-left: 2px solid darkgray;
+    border-bottom:2px solid white;
+    border-top: 2px solid darkgray;
+    border-right:2px solid white;
 }
 
 .leaderboard-entry {
     display:flex;
     flex-direction: row;
     width: 100%;
-    height: 20px;
     justify-content: space-between;
 }
 
 .leaderboard-header {
+    margin: 5px;
+    border-left: 2px solid darkgray;
+    border-bottom:2px solid white;
+    border-top: 2px solid darkgray;
+    border-right:2px solid white;
     display:flex;
     flex-direction: row;
-    width: 100%;
     height: 20px;
     font-weight: bold;
     justify-content: space-between;
 
+}
+
+.leaderboard-entry-1{
+    width: 32px;
+}
+
+.leaderboard-entry-2{
+    width: 80px;
+}
+
+.leaderboard-entry-3{
+    width: 120px;
+}
+
+.leaderboard-entry-4{
+    width: 94px;
 }
 
 .game-wrapper {

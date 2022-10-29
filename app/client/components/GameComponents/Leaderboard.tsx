@@ -7,26 +7,28 @@ export default function Leaderboard(props: LeaderboardProps) {
         const leaderboardData = props.leaderboardData;
         let jsxLeaderboard = leaderboardData.map((leaderboardEntry, index) => {
             return (
-                <div className='leaderboard-entry' key={index}>
-                    <div>{`${index+1} ${leaderboardEntry.username}`}</div>
-                    <div>{leaderboardEntry.squaresRemaining}</div>
-                    <div>{leaderboardEntry.percentage}%</div>
-                </div>
+                <tr className='leaderboard-entry' key={index}>
+                    <td className='leaderboard-entry-1'>{index+1}</td>
+                    <td className='leaderboard-entry-2'>{leaderboardEntry.username}</td>
+                    <td className='leaderboard-entry-3'>{leaderboardEntry.squaresRemaining}</td>
+                    <td className='leaderboard-entry-4'>{(Math.round(leaderboardEntry.percentage * 100) / 100).toFixed(2)}%</td>
+                </tr>
             );
         });
-        jsxLeaderboard.unshift((
-            <div className='leaderboard-header' key={leaderboardData.length + 1}>
-                <div>Username</div>
-                <div>Tiles remaining</div>
-                <div>% Complete</div>
-            </div>
-        ));
         return jsxLeaderboard;
     }
 
     return (
-        <div className='leaderboard'>
-            {renderLeaderboard()}
-        </div>  
+        <table className='leaderboard'>
+            <tr className='leaderboard-header'>
+                <th>Pos</th>
+                <th>Username</th>
+                <th>Tiles remaining</th>
+                <th>% Complete</th>
+            </tr>
+            <div className='leaderboard-entries'>
+                {renderLeaderboard()}
+            </div>
+        </table>  
     );  
 }
