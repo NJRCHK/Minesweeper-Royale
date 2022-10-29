@@ -21,7 +21,7 @@ export default function Leaderboard(props: LeaderboardProps) {
     return (
         <table className='leaderboard'>
             <thead className='leaderboard-header'>
-                <tr>
+                <tr className='leaderboard-entry'>
                     <th>Pos</th>
                     <th>Username</th>
                     <th>Tiles remaining</th>

@@ -319,7 +319,6 @@ export default function Game(props: GameProps){
     }
 
     function getMyPosition() {
-        console.log(leaderboard);
         for(let i = 0; i < leaderboard.length; i++){
             if(leaderboard[i].username === myPlayer.username){
                 return i + 1;
