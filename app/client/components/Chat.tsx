@@ -37,7 +37,7 @@ export default function Chat (props: ChatMessageProps) {
             </div>
             <form onSubmit={validateAndSendMessage} className='chatbox-form'>
                 <input className='chatbox-message-input' onChange={handleMessageChange} value={myMessage}/>
-                <input type="submit" value="Send" />
+                <input className='chatbox-submit' type="submit" value="Send" />
             </form>
         </div>
 

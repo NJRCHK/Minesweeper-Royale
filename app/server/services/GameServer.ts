@@ -201,6 +201,15 @@ export default class GameServer {
             console.log(`Recieved message in improper format.  Message: ${JSON.stringify(message)}`);
             return;
         }
+        let chatMessage = String(message.message);
+        if(chatMessage === ""){
+            return;
+        }
+        try{
+            chatMessage = this.filter.clean(chatMessage);
+        } catch (e) {
+            console.log(e);
+        }
         let messageString = {
             route: ServerToClientRoutes.CHAT,
             data: {
