@@ -20,15 +20,17 @@ export default function Leaderboard(props: LeaderboardProps) {
 
     return (
         <table className='leaderboard'>
-            <tr className='leaderboard-header'>
-                <th>Pos</th>
-                <th>Username</th>
-                <th>Tiles remaining</th>
-                <th>% Complete</th>
-            </tr>
-            <div className='leaderboard-entries'>
+            <thead className='leaderboard-header'>
+                <tr>
+                    <th>Pos</th>
+                    <th>Username</th>
+                    <th>Tiles remaining</th>
+                    <th>% Complete</th>
+                </tr>
+            </thead>
+            <tbody className='leaderboard-entries'>
                 {renderLeaderboard()}
-            </div>
+            </tbody>
         </table>  
     );  
 }
