@@ -38,8 +38,8 @@ export default function Tile(props: TileProps) {
         setMiddleClickDown(false);
         if(props.held){
             props.leftClickHeld(false, props.x, props.y);
-            props.middleClickHeld(false, props.x, props.y);
         }
+        props.middleClickHeld(false, props.x, props.y);
     }
 
     function getValueToDisplay(): string{
