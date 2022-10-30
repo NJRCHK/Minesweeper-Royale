@@ -66,10 +66,7 @@ export default function (props: HeaderProps) {
             <div className='header-content-wrapper'>
                 <div className='game-title' onClick={props.returnToHomeScreen}>
                     <div className='game-title-minesweeper'>
-                        Minesweeper
-                    </div>
-                    <div className='game-title-royale'>
-                        Royale
+                        chksweeper.com
                     </div>
                 </div>
                 {props.loggedIn ? renderSignOutButton() : renderLoginAndCreateAccountButtons()}                    
