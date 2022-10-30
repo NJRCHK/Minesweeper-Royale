@@ -20,7 +20,8 @@ import {
         UpdatePlayerMessageData,
         TileValue,
         NewGameMessageData,
-        GameProps
+        GameProps,
+        BoardServerData
     } from '../../shared/types';
 
 export default function Game(props: GameProps){
@@ -160,13 +161,40 @@ export default function Game(props: GameProps){
         //TODO: verify that the data recieved matches the required structure
         return data as UpdatePlayerMessageData;
     }
+    //because flags and question marks are stored client side, they must be re added to the
+    //board when tile is clicked
+    function updateBoard(oldBoard: BoardServerData, newBoard: BoardServerData) {
+        let numFlags: number = 0;
+        for(let i = 0; i < oldBoard.tiles.length; i++){
+            for(let j = 0; j < oldBoard.tiles[i].length; j++){
+                let oldValue = oldBoard.tiles[i][j];
+                let newValue = newBoard.tiles[i][j]
+                if(newValue === TileValue.BLANK && oldValue !== TileValue.BLANK){
+                    newBoard.tiles[i][j] = oldValue;
+                    if(oldValue === TileValue.FLAG){
+                        numFlags++;
+                    }
+                }
+            }
+        }
+        setMyPlayer(prevPlayer => {
+            return {
+                ...prevPlayer,
+                board: {
+                    ...prevPlayer.board,
+                    minesRemaining: prevPlayer.board.mines - numFlags
+                }
+            }
+        });
+        return newBoard;
+    }
 
     function updatePlayer(message: any) {
         const data = verifyPlayerData(message);
         setMyPlayer(oldState => {
             return {
                 ...oldState,
-               board: data.player.board
+               board: updateBoard(oldState.board, data.player.board)
             }
         });
         setGameInProgress(data.gamestate);
