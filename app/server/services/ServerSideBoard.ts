@@ -88,6 +88,22 @@ export default class ServerSideBoard {
         return this.getCoordinatesToReveal(x, y, this.board);
     }
 
+    isRevealed(x: number, y: number) {
+        return ![TileValue.BLANK, TileValue.FLAG, TileValue.QUESTIONMARK].includes(this.tiles[x][y]);
+    }
+
+    calculateSquaresRemaining() {
+        let squaresRemaining = this.height * this.width - this.mines;
+        for(let i = 0; i < this.tiles.length; i++){
+            for(let j = 0; j < this.tiles[i].length; j++){
+                if(this.isRevealed(i, j) && (this.tiles[i][j] !== TileValue.BOMB)){
+                    squaresRemaining--;
+                }
+            }
+        }    
+        this.squaresRemaining = squaresRemaining;
+    }
+
     revealTiles(point: Point) {
         let pointsToReveal = this.checkCoordinates(point.x, point.y);
         let revealedValues: number[] = [];
@@ -97,12 +113,8 @@ export default class ServerSideBoard {
             revealedValues.push(this.board[x][y]);
             this.tiles[x][y] = this.board[x][y];
         }
-        this.squaresRemaining = this.squaresRemaining - revealedValues.length;
-        revealedValues.forEach(value => {
-            if(value === TileValue.BOMB){
-                this.squaresRemaining++;
-            }
-        });
+        this.calculateSquaresRemaining();
+
         return revealedValues;
     }
 

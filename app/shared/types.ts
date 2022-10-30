@@ -141,9 +141,12 @@ export type TileProps = {
     x: number,
     y: number, 
     revealed: number,
+    held: boolean,
     tileClicked: (x: number, y: number) => void,
     tileRightClicked: (x: number, y: number) => void,
-    tileMiddleClicked: (x: number, y: number) => void
+    tileMiddleClicked: (x: number, y: number) => void,
+    middleClickHeld: (held: boolean, x: number, y: number) => void,
+    leftClickHeld: (held: boolean, x: number, y: number) => void,
 }
 
 export type ResetButtonProps = {

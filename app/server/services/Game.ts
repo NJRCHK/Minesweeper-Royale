@@ -24,7 +24,7 @@ export default class Game {
 
     generateRandomDifficulty() {
         let difficulty = Math.floor(Math.random() * (GameDifficulty.EXPERT - GameDifficulty.BEGINNER + 1) + GameDifficulty.BEGINNER);
-        return difficulty;
+        return difficulty as GameDifficulty;
     }
 
     resetPlayer(id: number) {

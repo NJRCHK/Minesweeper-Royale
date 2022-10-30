@@ -32,6 +32,7 @@ export default class Player {
 
     resetPlayer() {
         this.board = new ServerSideBoard(this.config.height,this.config.width, this.config.mines, this.seed);
+        console.log(this.board.squaresRemaining);
         this.alive = true;
     }
 

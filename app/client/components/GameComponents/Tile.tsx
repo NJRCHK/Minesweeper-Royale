@@ -6,27 +6,40 @@ export default function Tile(props: TileProps) {
     const [middleClickDown, setMiddleClickDown] = React.useState(false);
 
     function getClassName(): string{
+        if(props.held){
+            return 'game-tile-shown';
+        }
+
         return props.revealed < -1 ? "game-tile-hidden" : "game-tile-shown";
     }
 
     function mouseUp(event: React.MouseEvent<HTMLDivElement>) {
-        if(event.button !== MIDDLECLICK_EVENT_BUTTON){
-            return;
-        }
-        if(middleClickDown){
+        if(event.button === MIDDLECLICK_EVENT_BUTTON && middleClickDown){
             props.tileMiddleClicked(props.x, props.y);
+            props.middleClickHeld(false, props.x, props.y);
             setMiddleClickDown(false);
+        }
+        if(props.held && event.button === 0){
+            props.leftClickHeld(false, props.x, props.y);
         }
     }
 
     function mouseDown(event: React.MouseEvent<HTMLDivElement>) {
         if(event.button === MIDDLECLICK_EVENT_BUTTON){
+            props.middleClickHeld(true, props.x, props.y);
             setMiddleClickDown(true);
+        }
+        if(event.button === 0){
+            props.leftClickHeld(true, props.x, props.y);
         }
     }
 
     function mouseLeft() {
         setMiddleClickDown(false);
+        if(props.held){
+            props.leftClickHeld(false, props.x, props.y);
+            props.middleClickHeld(false, props.x, props.y);
+        }
     }
 
     function getValueToDisplay(): string{

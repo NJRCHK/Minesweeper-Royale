@@ -189,15 +189,7 @@ export default function Game(props: GameProps){
                 }
             }
         }
-        setMyPlayer(prevPlayer => {
-            return {
-                ...prevPlayer,
-                board: {
-                    ...prevPlayer.board,
-                    minesRemaining: prevPlayer.board.mines - numFlags
-                }
-            }
-        });
+        newBoard.minesRemaining = newBoard.mines - numFlags;
         return newBoard;
     }
 
@@ -456,8 +448,6 @@ export default function Game(props: GameProps){
                 />
                 {!gameInProgress && <GameOverDisplay position={getMyPosition()} timeTaken={time} winner={leaderboard[0].username} />}
             </div>
-
-
         )
     }
     return(
