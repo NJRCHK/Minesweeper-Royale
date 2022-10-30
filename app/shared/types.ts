@@ -205,3 +205,9 @@ export class UserSession {
 export type GameProps = {
     account: UserSession
 }
+
+export enum GameDifficulty  {
+    BEGINNER=1,
+    INTERMEDIATE=2,
+    EXPERT=3,
+}

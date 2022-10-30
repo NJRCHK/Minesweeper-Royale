@@ -7,9 +7,9 @@ import Header from './Header';
 import { Config, AppStates, UserSession } from '../../shared/types';
 
 const defaultConfig: Config = {
-    height: 20,
-    width: 20,
-    mines: 20,
+    height: 16,
+    width: 16,
+    mines: 40,
 }
 
 export default function App() {
