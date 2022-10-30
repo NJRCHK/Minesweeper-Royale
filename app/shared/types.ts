@@ -74,6 +74,7 @@ export enum ClientToServerRoutes {
     CHAT = 1,
     CONNECT = 2,
     NAMECHANGE = 3,
+    RESETPLAYER = 4,
 }
 
 export enum AppStates {

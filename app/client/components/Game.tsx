@@ -165,6 +165,17 @@ export default function Game(props: GameProps){
     //board when tile is clicked
     function updateBoard(oldBoard: BoardServerData, newBoard: BoardServerData) {
         let numFlags: number = 0;
+        let resetBoard = true;
+        for(let i = 0; i < newBoard.tiles.length; i++){
+            for(let j = 0; j < newBoard.tiles[i].length; j++){
+                if(newBoard.tiles[i][j] !== TileValue.BLANK){
+                    resetBoard = false;
+                }
+            }
+        }
+        if(resetBoard){
+            return newBoard;
+        }
         for(let i = 0; i < oldBoard.tiles.length; i++){
             for(let j = 0; j < oldBoard.tiles[i].length; j++){
                 let oldValue = oldBoard.tiles[i][j];
@@ -356,13 +367,24 @@ export default function Game(props: GameProps){
         throw (`player not present in leaderboard`);
     }
 
+    function resetBoard() {
+        if(!gameInProgress){
+            return;
+        }
+        const data = {
+            route: ClientToServerRoutes.RESETPLAYER,
+            data: "",
+        } as ClientMessage;
+        socket.send(JSON.stringify(data));
+    }
+
     function renderBoard() {
         return (
             <div className="singleplayer-game" onContextMenu={contextMenu}>
                 <div className="game-bar">
                     <Counter mines={myPlayer.board.minesRemaining}/>
                     <ResetButton 
-                        clickEvent={() => {return}}
+                        clickEvent={resetBoard}
                         multiplayer={true}
                         isAlive={myPlayer.alive}
                         inProgress={gameInProgress}

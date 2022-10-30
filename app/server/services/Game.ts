@@ -27,6 +27,11 @@ export default class Game {
         return difficulty;
     }
 
+    resetPlayer(id: number) {
+        let player = this.getPlayerWithId(id);
+        player.resetPlayer();
+    }
+
     getPlayerWithId(id: number): Player {
         for(let i = 0; i < this.players.length; i++){
             if(this.players[i].id === id){

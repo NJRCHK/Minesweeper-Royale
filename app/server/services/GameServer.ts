@@ -171,7 +171,41 @@ export default class GameServer {
                 break;
             case ClientToServerRoutes.NAMECHANGE:
                 this.handleNameChange(id, ws, parsedData.data);
-        }
+                break;
+            case ClientToServerRoutes.RESETPLAYER:
+                this.handlePlayerReset(id, ws);
+                break;
+            }
+    }
+
+    sendPlayerUpdate(id: number, ws: WebSocket) {
+        const response = {
+            route: ServerToClientRoutes.UPDATEPLAYER,
+            data: {
+                player: this.game.getPlayerWithId(id).clientifyData(),
+                gamestate: this.game.inProgress
+            } as UpdatePlayerMessageData
+        } as ServerMessage;
+        ws.send(JSON.stringify(response));
+    }
+
+    sendLeaderboard() {
+        const leaderboard = JSON.stringify({
+            route: ServerToClientRoutes.LEADERBOARD,
+            data: {
+                leaderboard: this.game.getLeaderboard(),
+                gamestate: this.game.inProgress
+            } as LeaderboardMessage
+        } as ServerMessage);
+        this.server.clients.forEach(client => {
+            client.send(JSON.stringify(leaderboard));
+        });
+    }
+
+    handlePlayerReset(id: number, ws: WebSocket) {
+        this.game.resetPlayer(id);
+        this.sendPlayerUpdate(id, ws);
+        this.sendLeaderboard();
     }
 
     async handleNewConnection(id: number, ws: WebSocket, data: any) {
@@ -247,30 +281,9 @@ export default class GameServer {
             console.log(e);
             return;
         }
-        
         this.game.handlePlayerClick(id, validatedData);
-        
-        const response = {
-            route: ServerToClientRoutes.UPDATEPLAYER,
-            data: {
-                player: this.game.getPlayerWithId(id).clientifyData(),
-                gamestate: this.game.inProgress
-            } as UpdatePlayerMessageData
-        } as ServerMessage;
-
-        ws.send(JSON.stringify(response));
-        
-        const leaderboard = {
-            route: ServerToClientRoutes.LEADERBOARD,
-            data: {
-                leaderboard: this.game.getLeaderboard(),
-                gamestate: this.game.inProgress
-            } as LeaderboardMessage
-        } as ServerMessage;
-        this.server.clients.forEach(client => {
-            client.send(JSON.stringify(leaderboard));
-        });
-
+        this.sendPlayerUpdate(id, ws);
+        this.sendLeaderboard();
         if(!this.game.inProgress){
             setTimeout(() => {
                 this.createNewGame();
