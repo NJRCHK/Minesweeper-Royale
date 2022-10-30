@@ -140,6 +140,7 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
                 <Counter mines={board.minesRemaining}/>
                 <ResetButton 
                     clickEvent={restartGame}
+                    multiplayer={false}
                     gameState={board.gameState}
                 />
                 <Timer time={time}/>

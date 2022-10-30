@@ -16,12 +16,12 @@ import {
         ClientMessage, 
         ClientToServerRoutes, 
         FirstConnectionMessageData,
-        Player,
         UpdatePlayerMessageData,
         TileValue,
         NewGameMessageData,
         GameProps,
-        BoardServerData
+        BoardServerData,
+        Player
     } from '../../shared/types';
 
 export default function Game(props: GameProps){
@@ -194,7 +194,8 @@ export default function Game(props: GameProps){
         setMyPlayer(oldState => {
             return {
                 ...oldState,
-               board: updateBoard(oldState.board, data.player.board)
+                alive:data.player.alive,
+                board: updateBoard(oldState.board, data.player.board)
             }
         });
         setGameInProgress(data.gamestate);
@@ -362,7 +363,10 @@ export default function Game(props: GameProps){
                     <Counter mines={myPlayer.board.minesRemaining}/>
                     <ResetButton 
                         clickEvent={() => {return}}
-                        gameState="gamewon"
+                        multiplayer={true}
+                        isAlive={myPlayer.alive}
+                        inProgress={gameInProgress}
+                        isWinning={leaderboard[0].username === myPlayer.username ? true : false}
                     />
                     <Timer time={time}/>
                 </div>

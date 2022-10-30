@@ -13,7 +13,7 @@ export const INTERMEDIATECONFIG ={
     mines: 40
 } as Config;
 export const EXPERTCONFIG ={
-    height: 30,
-    width: 16,
+    height: 16,
+    width: 30,
     mines: 99
 } as Config;

@@ -144,8 +144,12 @@ export type TileProps = {
 }
 
 export type ResetButtonProps = {
-    clickEvent: () => void
-    gameState: string
+    clickEvent: () => void;
+    multiplayer: boolean;
+    gameState?: string;
+    isAlive?: boolean;
+    inProgress?: boolean;
+    isWinning?: boolean;
 }
 
 export type CounterProps = {
