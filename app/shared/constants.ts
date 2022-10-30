@@ -1,5 +1,5 @@
 import { Config } from "./types";
-
+export const MIDDLECLICK_EVENT_BUTTON = 1;
 export const MAX_CHAT_MESSAGE_LENGTH = 256;
 export const TIME_BETWEEN_GAMES_MS = 1000 * 10;
 export const BEGINNERCONFIG ={

@@ -83,6 +83,10 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
         }
     }
 
+    function tileMiddleClicked(_x: number, _y: number) {
+
+    }
+
     function tileRightClicked (x: number, y: number): void {
         if(board.gameState !== "inprogress"){
             return;
@@ -151,6 +155,7 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
                 tiles={board.tiles}
                 tileClicked={tileClicked}
                 tileRightClicked={tileRightClicked}
+                tileMiddleClicked={tileMiddleClicked}
             />
         </div>                
     );

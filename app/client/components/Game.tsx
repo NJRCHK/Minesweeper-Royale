@@ -23,6 +23,7 @@ import {
         BoardServerData,
         Player
     } from '../../shared/types';
+import Tile from './GameComponents/Tile';
 
 export default function Game(props: GameProps){
 
@@ -300,11 +301,16 @@ export default function Game(props: GameProps){
         e.preventDefault();
     }
 
+    function isClicked(x: number, y: number) {
+        let tile = myPlayer.board.tiles[x][y];
+        return ![TileValue.BLANK, TileValue.QUESTIONMARK, TileValue.FLAG].includes(tile);
+    }
+
     function tileClicked(x: number, y: number) {
         let tile = myPlayer.board.tiles[x][y];
-        if(![TileValue.BLANK, TileValue.QUESTIONMARK, TileValue.FLAG].includes(tile)){
+        if(isClicked(x, y)){
             return;
-        }        
+        }
         const data = {
             route: ClientToServerRoutes.CLICK,
             data: {
@@ -315,13 +321,61 @@ export default function Game(props: GameProps){
         socket.send(JSON.stringify(data));
     }
 
+    function isValidTile(x:number, y:number){
+        if(x < 0 || x >= myPlayer.board.width){
+            return false;
+        }
+        else if (y < 0 || y >= myPlayer.board.height){
+            return false;
+        }
+        return true;
+    }
+
+    function isFlagged(x: number, y: number){
+        if(!isValidTile(x, y)){
+            return false;
+        }
+        return myPlayer.board.tiles[x][y] === TileValue.FLAG;
+    }
+
+    function allMinesFlaggedAroundTile(x: number, y: number){
+        let tileValue = myPlayer.board.tiles[x][y];
+        isFlagged(x+1, y+1) && tileValue--;
+        isFlagged(x-1, y+1) && tileValue--;
+        isFlagged(x,   y+1) && tileValue--;
+        isFlagged(x-1, y)   && tileValue--;
+        isFlagged(x+1, y)   && tileValue--;
+        isFlagged(x, y-1)   && tileValue--;
+        isFlagged(x+1,y-1)  && tileValue--;
+        isFlagged(x-1,y-1)  && tileValue--;
+        return tileValue === 0;
+    }
+
+    function tileMiddleClicked(x: number, y: number) {
+        if(!isClicked(x, y)){
+            tileClicked(x, y);
+            return;
+        }
+        if(!allMinesFlaggedAroundTile(x,y)){
+            return;
+        }
+        isValidTile(x+1,y+1) && !isFlagged(x+1, y+1) && tileClicked(x+1,y+1);
+        isValidTile(x-1,y+1) && !isFlagged(x-1, y+1) && tileClicked(x-1,y+1);
+        isValidTile(x,y+1) && !isFlagged(x,   y+1) && tileClicked(x,y+1);
+        isValidTile(x-1,y) && !isFlagged(x-1, y)   && tileClicked(x-1,y);
+        isValidTile(x+1,y) && !isFlagged(x+1, y)   && tileClicked(x+1,y);
+        isValidTile(x,y-1) && !isFlagged(x, y-1)   && tileClicked(x,y-1);
+        isValidTile(x+1,y-1) && !isFlagged(x+1,y-1)  && tileClicked(x+1,y-1);        
+        isValidTile(x-1,y-1) && !isFlagged(x-1,y-1)  && tileClicked(x-1,y-1);
+    }
+
     function tileRightClicked (x: number, y: number): void {
         if(!gameInProgress || !myPlayer.alive){
             return;
         }
         let tile = myPlayer.board.tiles[x][y];
         //if tile is shown do nothing
-        if(![TileValue.BLANK, TileValue.QUESTIONMARK, TileValue.FLAG].includes(tile)){
+        if(isClicked(x, y)){
             return;
         }
         //if tile is covered put a flag on it and decrement the mines counter
@@ -398,6 +452,7 @@ export default function Game(props: GameProps){
                     tiles={myPlayer.board.tiles}
                     tileClicked={tileClicked}
                     tileRightClicked={tileRightClicked}
+                    tileMiddleClicked={tileMiddleClicked}
                 />
                 {!gameInProgress && <GameOverDisplay position={getMyPosition()} timeTaken={time} winner={leaderboard[0].username} />}
             </div>

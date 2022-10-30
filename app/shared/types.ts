@@ -18,11 +18,12 @@ export type Config = {
 }
 
 export type BoardDisplayProps = {
-    height: number,
-    width: number,
-    tiles: TileValue[][],
-    tileClicked: (x: number, y: number) => void
-    tileRightClicked: (x: number, y: number) => void
+    height: number;
+    width: number;
+    tiles: TileValue[][];
+    tileClicked: (x: number, y: number) => void;
+    tileRightClicked: (x: number, y: number) => void;
+    tileMiddleClicked: (x: number, y: number) => void;
 }
 
 export type SinglePlayerGameProps = {
@@ -142,6 +143,7 @@ export type TileProps = {
     revealed: number,
     tileClicked: (x: number, y: number) => void,
     tileRightClicked: (x: number, y: number) => void,
+    tileMiddleClicked: (x: number, y: number) => void
 }
 
 export type ResetButtonProps = {

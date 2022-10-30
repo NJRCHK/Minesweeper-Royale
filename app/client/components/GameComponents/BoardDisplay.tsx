@@ -13,6 +13,7 @@ export default function BoardDisplay(props: BoardDisplayProps) {
                             revealed={props.tiles[i][j]} 
                             tileClicked={props.tileClicked} 
                             tileRightClicked={props.tileRightClicked} 
+                            tileMiddleClicked={props.tileMiddleClicked}
                             key={Number(String(i) + j)} 
                             x={i}y={j}
                             />
