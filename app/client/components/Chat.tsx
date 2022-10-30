@@ -27,7 +27,7 @@ export default function Chat (props: ChatMessageProps) {
                     <div className='chatbox-message-content'>{message.message}</div>
                 </div>
             )
-        });
+        }).reverse();
     }
 
     return (
