@@ -1,23 +1,35 @@
 import Player from './Player.js';
-import { Point , LeaderboardEntry } from '../../shared/types.js';
+import { Point , LeaderboardEntry, GameDifficulty } from '../../shared/types.js';
 
 export default class Game {
     players: Player[];
     seed: number;
     inProgress: boolean;
     guests: number;
+    difficulty: GameDifficulty;
 
     constructor(players ?: Player[]) {
         this.seed = this.generateSeed();
         this.inProgress = true;
+        this.difficulty = this.generateRandomDifficulty();
         if(players !== undefined){
             this.players = players.map(player => {
-                return new Player(player.username, player.id, this.seed);
+                return new Player(player.username, player.id, this.seed, this.difficulty);
             });
         } else {
             this.players = [];
         }
         this.guests = 1;
+    }
+
+    generateRandomDifficulty() {
+        let difficulty = Math.floor(Math.random() * (GameDifficulty.EXPERT - GameDifficulty.BEGINNER + 1) + GameDifficulty.BEGINNER);
+        return difficulty as GameDifficulty;
+    }
+
+    resetPlayer(id: number) {
+        let player = this.getPlayerWithId(id);
+        player.resetPlayer();
     }
 
     getPlayerWithId(id: number): Player {
@@ -29,18 +41,14 @@ export default class Game {
         throw `Player does not exist with id ${id}`;
     }
 
-    getGuestName() {
-
-    }
-
     addPlayer(id: number, username?: string) {
         let newPlayer;
         if(username === undefined){
-            newPlayer = new Player(`Guest ${this.guests}`,id, this.seed);
+            newPlayer = new Player(`Guest ${this.guests}`,id, this.seed, this.difficulty);
             this.guests++;
         }
         else {
-            newPlayer = new Player(username, id, this.seed);
+            newPlayer = new Player(username, id, this.seed, this.difficulty);
         }
         this.players.push(newPlayer);
     }

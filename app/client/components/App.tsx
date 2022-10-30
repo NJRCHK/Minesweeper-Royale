@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import MainMenu from './Menus/MainMenu';
 import Game from '../components/Game';
 import SinglePlayerGame from '../components/SinglePlayerGame';
@@ -7,9 +7,9 @@ import Header from './Header';
 import { Config, AppStates, UserSession } from '../../shared/types';
 
 const defaultConfig: Config = {
-    height: 20,
-    width: 20,
-    mines: 20,
+    height: 16,
+    width: 16,
+    mines: 40,
 }
 
 export default function App() {
@@ -20,6 +20,21 @@ export default function App() {
 
     const [mode, setMode] = useState(AppStates.MAINMENU);
     const [config, setConfig] = useState(defaultConfig);
+
+    useEffect(() => {
+        fetch("/api/isLoggedIn")
+            .then((response) => response.json())
+            .then(data => setAccountDetails({
+                username: data.username,
+                loggedIn: true
+            }))
+            .catch(() => {
+                setAccountDetails({
+                    username: "",
+                    loggedIn: false
+                });
+            });
+    }, []);
 
     function updateAccountStatus(loggedIn: boolean, username: string) {
         setAccountDetails({
@@ -40,7 +55,7 @@ export default function App() {
                     }}
                 />
             case AppStates.MULTIPLAYERGAME:
-                return <Game />
+                return <Game account={accountDetails}/>
             case AppStates.SINGLEPLAYERGAME:
                 return <SinglePlayerGame 
                     config={config}

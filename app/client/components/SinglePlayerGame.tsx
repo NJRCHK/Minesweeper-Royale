@@ -82,6 +82,58 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
             });
         }
     }
+    function isValidTile(x:number, y:number){
+        if(x < 0 || x >= board.width){
+            return false;
+        }
+        else if (y < 0 || y >= board.height){
+            return false;
+        }
+        return true;
+    }
+
+    function isFlagged(x: number, y: number){
+        if(!isValidTile(x, y)){
+            return false;
+        }
+        return board.tiles[x][y] === TileValue.FLAG;
+    }
+
+    function isClicked(x: number, y: number) {
+        let tile = board.tiles[x][y];
+        return ![TileValue.BLANK, TileValue.QUESTIONMARK, TileValue.FLAG].includes(tile);
+    }
+
+    function allMinesFlaggedAroundTile(x: number, y: number){
+        let tileValue = board.tiles[x][y];
+        isFlagged(x+1, y+1) && tileValue--;
+        isFlagged(x-1, y+1) && tileValue--;
+        isFlagged(x,   y+1) && tileValue--;
+        isFlagged(x-1, y)   && tileValue--;
+        isFlagged(x+1, y)   && tileValue--;
+        isFlagged(x, y-1)   && tileValue--;
+        isFlagged(x+1,y-1)  && tileValue--;
+        isFlagged(x-1,y-1)  && tileValue--;
+        return tileValue === 0;
+    }
+
+    function tileMiddleClicked(x: number, y: number) {
+        if(!isClicked(x, y)){
+            tileClicked(x, y);
+            return;
+        }
+        if(!allMinesFlaggedAroundTile(x,y)){
+            return;
+        }
+        isValidTile(x+1,y+1) && !isFlagged(x+1, y+1) && tileClicked(x+1,y+1);
+        isValidTile(x-1,y+1) && !isFlagged(x-1, y+1) && tileClicked(x-1,y+1);
+        isValidTile(x,y+1) && !isFlagged(x,   y+1) && tileClicked(x,y+1);
+        isValidTile(x-1,y) && !isFlagged(x-1, y)   && tileClicked(x-1,y);
+        isValidTile(x+1,y) && !isFlagged(x+1, y)   && tileClicked(x+1,y);
+        isValidTile(x,y-1) && !isFlagged(x, y-1)   && tileClicked(x,y-1);
+        isValidTile(x+1,y-1) && !isFlagged(x+1,y-1)  && tileClicked(x+1,y-1);        
+        isValidTile(x-1,y-1) && !isFlagged(x-1,y-1)  && tileClicked(x-1,y-1);
+    }
 
     function tileRightClicked (x: number, y: number): void {
         if(board.gameState !== "inprogress"){
@@ -140,6 +192,7 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
                 <Counter mines={board.minesRemaining}/>
                 <ResetButton 
                     clickEvent={restartGame}
+                    multiplayer={false}
                     gameState={board.gameState}
                 />
                 <Timer time={time}/>
@@ -150,6 +203,7 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
                 tiles={board.tiles}
                 tileClicked={tileClicked}
                 tileRightClicked={tileRightClicked}
+                tileMiddleClicked={tileMiddleClicked}
             />
         </div>                
     );

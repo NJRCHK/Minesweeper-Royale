@@ -1,5 +1,6 @@
 import {WebSocket, WebSocketServer, RawData, Server} from 'ws';
 import * as util from 'util';
+import Filter from 'bad-words';
 import Game from './Game.js';
 import cookieParser from 'cookie-parser';
 import { TIME_BETWEEN_GAMES_MS } from '../../shared/constants.js';
@@ -21,11 +22,17 @@ export default class GameServer {
     server: WebSocketServer;
     game: Game;
     sessionStore: MySQLStore;
+    time: number;
+    timer: NodeJS.Timer;
+    filter: Filter;
 
     constructor(sessionStore: MySQLStore) {
         this.server = new WebSocketServer({port: 8080});
         this.game = new Game();
         this.sessionStore = sessionStore;
+        this.time = 0;
+        this.timer = setInterval(() => this.incrementTime(), 1000);
+        this.filter = new Filter();
         this.startServer();
 
     }
@@ -42,9 +49,27 @@ export default class GameServer {
         });
     }
 
+    incrementTime() {
+        if(this.game.players.length === 0){
+            this.time = 0;
+        } else if (this.game.inProgress){
+            this.time++;
+        }
+        this.server.clients.forEach(client => {
+            const data = {
+                route: ServerToClientRoutes.TIMER,
+                data: {
+                    time: this.time
+                }
+            }
+            client.send(JSON.stringify(data));
+        })
+    }
+
     createNewGame(){
         const newGame = new Game(this.game.players);
         this.game = newGame;
+        this.time=0;
         if(this.game.players.length === 0){
             return;
         }
@@ -106,6 +131,24 @@ export default class GameServer {
         });
     }
 
+    async handleNameChange(id: number, ws: WebSocket, data: any) {
+        let isValid = await this.verifyClient(id, ws, data);
+        if(isValid === ""){
+            return;
+        }
+        this.game.getPlayerWithId(id).username = isValid;
+        const leaderboard = JSON.stringify({
+            route: ServerToClientRoutes.LEADERBOARD,
+            data: {
+                leaderboard: this.game.getLeaderboard(),
+                gamestate: this.game.inProgress
+            } as LeaderboardMessage
+        } as ServerMessage);
+        this.server.clients.forEach(client => {
+            client.send(leaderboard);
+        });
+    }
+
     handleMessage(id: number, ws: WebSocket, data: RawData) {
         let parsedData: ClientMessage;
         try {
@@ -126,7 +169,43 @@ export default class GameServer {
             case ClientToServerRoutes.CONNECT:
                 this.handleNewConnection(id, ws, parsedData.data);
                 break;
-        }
+            case ClientToServerRoutes.NAMECHANGE:
+                this.handleNameChange(id, ws, parsedData.data);
+                break;
+            case ClientToServerRoutes.RESETPLAYER:
+                this.handlePlayerReset(id, ws);
+                break;
+            }
+    }
+
+    sendPlayerUpdate(id: number, ws: WebSocket) {
+        const response = {
+            route: ServerToClientRoutes.UPDATEPLAYER,
+            data: {
+                player: this.game.getPlayerWithId(id).clientifyData(),
+                gamestate: this.game.inProgress
+            } as UpdatePlayerMessageData
+        } as ServerMessage;
+        ws.send(JSON.stringify(response));
+    }
+
+    sendLeaderboard() {
+        const leaderboard = JSON.stringify({
+            route: ServerToClientRoutes.LEADERBOARD,
+            data: {
+                leaderboard: this.game.getLeaderboard(),
+                gamestate: this.game.inProgress
+            } as LeaderboardMessage
+        } as ServerMessage);
+        this.server.clients.forEach(client => {
+            client.send(JSON.stringify(leaderboard));
+        });
+    }
+
+    handlePlayerReset(id: number, ws: WebSocket) {
+        this.game.resetPlayer(id);
+        this.sendPlayerUpdate(id, ws);
+        this.sendLeaderboard();
     }
 
     async handleNewConnection(id: number, ws: WebSocket, data: any) {
@@ -144,6 +223,7 @@ export default class GameServer {
                 gamestate: this.game.inProgress,
                 leaderboard: this.game.getLeaderboard(),
                 player: this.game.getPlayerWithId(id),
+                time: this.time,
             } as FirstConnectionMessageData
         } as ServerMessage);
 
@@ -155,11 +235,20 @@ export default class GameServer {
             console.log(`Recieved message in improper format.  Message: ${JSON.stringify(message)}`);
             return;
         }
+        let chatMessage = String(message.message);
+        if(chatMessage === ""){
+            return;
+        }
+        try{
+            chatMessage = this.filter.clean(chatMessage);
+        } catch (e) {
+            console.log(e);
+        }
         let messageString = {
             route: ServerToClientRoutes.CHAT,
             data: {
                 username: this.game.getPlayerWithId(id).username,
-                message: String(message.message),
+                message: this.filter.clean(String(message.message)),
             } as ChatMessage
         } as ServerMessage;
         this.server.clients.forEach(client => {
@@ -192,30 +281,9 @@ export default class GameServer {
             console.log(e);
             return;
         }
-        
         this.game.handlePlayerClick(id, validatedData);
-        
-        const response = {
-            route: ServerToClientRoutes.UPDATEPLAYER,
-            data: {
-                player: this.game.getPlayerWithId(id).clientifyData(),
-                gamestate: this.game.inProgress
-            } as UpdatePlayerMessageData
-        } as ServerMessage;
-
-        ws.send(JSON.stringify(response));
-        
-        const leaderboard = {
-            route: ServerToClientRoutes.LEADERBOARD,
-            data: {
-                leaderboard: this.game.getLeaderboard(),
-                gamestate: this.game.inProgress
-            } as LeaderboardMessage
-        } as ServerMessage;
-        this.server.clients.forEach(client => {
-            client.send(JSON.stringify(leaderboard));
-        });
-
+        this.sendPlayerUpdate(id, ws);
+        this.sendLeaderboard();
         if(!this.game.inProgress){
             setTimeout(() => {
                 this.createNewGame();

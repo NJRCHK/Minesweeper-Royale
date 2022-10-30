@@ -18,11 +18,12 @@ export type Config = {
 }
 
 export type BoardDisplayProps = {
-    height: number,
-    width: number,
-    tiles: TileValue[][],
-    tileClicked: (x: number, y: number) => void
-    tileRightClicked: (x: number, y: number) => void
+    height: number;
+    width: number;
+    tiles: TileValue[][];
+    tileClicked: (x: number, y: number) => void;
+    tileRightClicked: (x: number, y: number) => void;
+    tileMiddleClicked: (x: number, y: number) => void;
 }
 
 export type SinglePlayerGameProps = {
@@ -66,12 +67,15 @@ export enum ServerToClientRoutes {
     UPDATEPLAYER = 2,
     LEADERBOARD = 3,
     NEWGAME = 4,
+    TIMER = 5,
 }
 
 export enum ClientToServerRoutes {
     CLICK = 0,
     CHAT = 1,
     CONNECT = 2,
+    NAMECHANGE = 3,
+    RESETPLAYER = 4,
 }
 
 export enum AppStates {
@@ -91,6 +95,7 @@ export type FirstConnectionMessageData = {
     gamestate: boolean;
     player: Player;
     leaderboard: LeaderboardEntry[];
+    time: number;
 }
 
 export type LeaderboardMessage = {
@@ -136,13 +141,21 @@ export type TileProps = {
     x: number,
     y: number, 
     revealed: number,
+    held: boolean,
     tileClicked: (x: number, y: number) => void,
     tileRightClicked: (x: number, y: number) => void,
+    tileMiddleClicked: (x: number, y: number) => void,
+    middleClickHeld: (held: boolean, x: number, y: number) => void,
+    leftClickHeld: (held: boolean, x: number, y: number) => void,
 }
 
 export type ResetButtonProps = {
-    clickEvent: () => void
-    gameState: string
+    clickEvent: () => void;
+    multiplayer: boolean;
+    gameState?: string;
+    isAlive?: boolean;
+    inProgress?: boolean;
+    isWinning?: boolean;
 }
 
 export type CounterProps = {
@@ -199,4 +212,12 @@ export class UserSession {
     username: string = "";
 }
 
+export type GameProps = {
+    account: UserSession
+}
 
+export enum GameDifficulty  {
+    BEGINNER=1,
+    INTERMEDIATE=2,
+    EXPERT=3,
+}

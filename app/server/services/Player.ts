@@ -1,17 +1,38 @@
 import ServerSideBoard from './ServerSideBoard.js';
-import { Point, TileValue } from '../../shared/types.js';
+import { Config, GameDifficulty, Point, TileValue } from '../../shared/types.js';
+import { BEGINNERCONFIG, INTERMEDIATECONFIG, EXPERTCONFIG } from '../../shared/constants.js';
 
 export default class Player {
     board: ServerSideBoard;
     id: number;
     alive: boolean;
     username: string;
+    config: Config;
+    seed: number;
 
-    constructor (username: string, id: number, seed: number) {
-        this.board = new ServerSideBoard(40, 40, 10, seed);
+    constructor (username: string, id: number, seed: number, difficulty: GameDifficulty) {
+        this.config = this.getConfig(difficulty);
+        this.board = new ServerSideBoard(this.config.height,this.config.width, this.config.mines, seed);
         this.id = id;
         this.alive = true;
         this.username = username;
+        this.seed = seed;
+    }
+
+    getConfig(difficulty: GameDifficulty) {
+        switch(difficulty){
+            case GameDifficulty.BEGINNER:
+                return BEGINNERCONFIG;
+            case GameDifficulty.INTERMEDIATE:
+                return INTERMEDIATECONFIG;
+            case GameDifficulty.EXPERT:
+                return EXPERTCONFIG;
+        }
+    }
+
+    resetPlayer() {
+        this.board = new ServerSideBoard(this.config.height,this.config.width, this.config.mines, this.seed);
+        this.alive = true;
     }
 
     clientifyData() {
