@@ -17,3 +17,4 @@ export const EXPERTCONFIG ={
     width: 30,
     mines: 99
 } as Config;
+export const SOCKET_ADDRESS = 'ws://chksweeper.com:8080';
