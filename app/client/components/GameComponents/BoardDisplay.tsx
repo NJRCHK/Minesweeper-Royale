@@ -39,7 +39,7 @@ export default function BoardDisplay(props: BoardDisplayProps) {
             leftClickHeld(held, x, y);
             return;
         }
-
+        
         setHeldTiles(prevHeld => {
             let temp = JSON.parse(JSON.stringify(prevHeld));
             isValidTile(x+1,y+1) && !isFlagged(x+1, y+1)&& (temp[x+1][y+1] = held);
@@ -64,7 +64,7 @@ export default function BoardDisplay(props: BoardDisplayProps) {
 
     function renderBoard() {
         if((props.height !== heldTiles.length) || (props.width !== heldTiles[0].length)){
-            setHeldTiles(setupHeldTileUI);
+            setHeldTiles(setupHeldTileUI());
         }
         let rows = new Array<JSX.Element>(props.height);
         for(let i = 0; i < rows.length; i++){
