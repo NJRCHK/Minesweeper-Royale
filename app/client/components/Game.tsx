@@ -313,10 +313,10 @@ export default function Game(props: GameProps){
     }
 
     function isValidTile(x:number, y:number){
-        if(x < 0 || x >= myPlayer.board.width){
+        if(x < 0 || x >= myPlayer.board.height){
             return false;
         }
-        else if (y < 0 || y >= myPlayer.board.height){
+        else if (y < 0 || y >= myPlayer.board.width){
             return false;
         }
         return true;
@@ -331,6 +331,7 @@ export default function Game(props: GameProps){
 
     function allMinesFlaggedAroundTile(x: number, y: number){
         let tileValue = myPlayer.board.tiles[x][y];
+        let board = myPlayer.board.tiles;
         isFlagged(x+1, y+1) && tileValue--;
         isFlagged(x-1, y+1) && tileValue--;
         isFlagged(x,   y+1) && tileValue--;
@@ -339,7 +340,7 @@ export default function Game(props: GameProps){
         isFlagged(x, y-1)   && tileValue--;
         isFlagged(x+1,y-1)  && tileValue--;
         isFlagged(x-1,y-1)  && tileValue--;
-        return tileValue === 0;
+        return tileValue <= 0;
     }
 
     function tileMiddleClicked(x: number, y: number) {

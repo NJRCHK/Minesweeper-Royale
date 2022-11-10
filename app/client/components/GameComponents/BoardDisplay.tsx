@@ -25,10 +25,10 @@ export default function BoardDisplay(props: BoardDisplayProps) {
     }
 
     function isValidTile(x:number, y:number){
-        if(x < 0 || x >= props.width){
+        if(x < 0 || x >= props.height){
             return false;
         }
-        else if (y < 0 || y >= props.height){
+        else if (y < 0 || y >= props.width){
             return false;
         }
         return true;
@@ -39,7 +39,7 @@ export default function BoardDisplay(props: BoardDisplayProps) {
             leftClickHeld(held, x, y);
             return;
         }
-        
+
         setHeldTiles(prevHeld => {
             let temp = JSON.parse(JSON.stringify(prevHeld));
             isValidTile(x+1,y+1) && !isFlagged(x+1, y+1)&& (temp[x+1][y+1] = held);
