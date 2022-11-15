@@ -566,7 +566,15 @@ body, html{
     width: 13px;
     height: 13px;
     image-rendering: pixelated;
+}
+
+.tile-image-bomb-wrapper {
+    width: 100%;
+    height: 100%;
     background-color: red;
+    display:flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .timer-image{

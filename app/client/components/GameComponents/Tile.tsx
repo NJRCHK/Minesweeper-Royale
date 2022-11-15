@@ -51,7 +51,7 @@ export default function Tile(props: TileProps) {
             case TileValue.BLANK:
                 return "";
             case TileValue.BOMB: 
-            return (<img src="http://localhost:3000/img/BOMB.png" className="tile-image-bomb"/>);
+            return (<div className="tile-image-bomb-wrapper"><img src="http://localhost:3000/img/BOMB.png" className="tile-image-bomb"/></div>);
             case TileValue.EMPTY:
                 return "";
             default:
