@@ -102,7 +102,7 @@
   },
   "exclude": [
     "dist",
-    "src/client",
+    "app/client",
     "node_modules",
   ],
 }
