@@ -294,7 +294,7 @@ export default function Game(props: GameProps){
 
     function isClicked(x: number, y: number) {
         let tile = myPlayer.board.tiles[x][y];
-        return ![TileValue.BLANK, TileValue.QUESTIONMARK, TileValue.FLAG].includes(tile);
+        return ![TileValue.BLANK, TileValue.FLAG].includes(tile);
     }
 
     function tileClicked(x: number, y: number) {
@@ -381,24 +381,13 @@ export default function Game(props: GameProps){
                 return temp;
             });
         }
-        // if tile has flag put a question mark on it and increment the mines counter
         else if(tile === TileValue.FLAG){
             setMyPlayer(prevState => {
                 let temp = {
                     ...prevState
                 };
-                temp.board.tiles[x][y] = TileValue.QUESTIONMARK;
-                temp.board.minesRemaining++;
-                return temp;
-            });
-        }
-        //if tile has question mark on it remove it 
-        else if(tile === TileValue.QUESTIONMARK){
-            setMyPlayer(prevState => {
-                let temp = {
-                    ...prevState
-                };
                 temp.board.tiles[x][y] = TileValue.BLANK;
+                temp.board.minesRemaining++;
                 return temp;
             });
         }

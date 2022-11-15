@@ -89,7 +89,7 @@ export default class ServerSideBoard {
     }
 
     isRevealed(x: number, y: number) {
-        return ![TileValue.BLANK, TileValue.FLAG, TileValue.QUESTIONMARK].includes(this.tiles[x][y]);
+        return ![TileValue.BLANK, TileValue.FLAG].includes(this.tiles[x][y]);
     }
 
     calculateSquaresRemaining() {

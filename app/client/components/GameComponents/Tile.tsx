@@ -44,8 +44,6 @@ export default function Tile(props: TileProps) {
 
     function getValueToDisplay(){
         switch(props.revealed){
-            case TileValue.QUESTIONMARK: 
-                return "?";
             case TileValue.FLAG:
                 return (<img src="http://localhost:3000/img/FLAG.png" className="tile-image"/>);
             case TileValue.BLANK:

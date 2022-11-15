@@ -167,7 +167,6 @@ export enum TileValue {
     BOMB = -1,
     BLANK = -2, 
     FLAG = -3,
-    QUESTIONMARK = -4,
     ONE = 1,
     TWO = 2,
     THREE = 3,
