@@ -45,6 +45,7 @@ const accountManager = new AccountManager();
 new GameServer(sessionStore);
 
 app.use(bodyParser.json());
+app.use(express.static('public'));
 
 app.get('/', (__req, res) => {
     res.sendFile(path.resolve(__dirname + '../../dist/index.html'));

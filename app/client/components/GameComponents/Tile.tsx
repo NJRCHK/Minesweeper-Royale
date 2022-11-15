@@ -42,20 +42,20 @@ export default function Tile(props: TileProps) {
         props.middleClickHeld(false, props.x, props.y);
     }
 
-    function getValueToDisplay(): string{
+    function getValueToDisplay(){
         switch(props.revealed){
             case TileValue.QUESTIONMARK: 
                 return "?";
             case TileValue.FLAG:
-                return "F";
+                return (<img src="http://localhost:3000/img/FLAG.png" className="tile-image"/>);
             case TileValue.BLANK:
                 return "";
             case TileValue.BOMB: 
-                return "B";
+            return (<img src="http://localhost:3000/img/BOMB.png" className="tile-image-bomb"/>);
             case TileValue.EMPTY:
                 return "";
             default:
-                return String(props.revealed);
+                return (<img src={`http://localhost:3000/img/${props.revealed}.png`} className="tile-image"/>);
         }
     }
 

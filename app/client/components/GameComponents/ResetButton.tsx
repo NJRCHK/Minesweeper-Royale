@@ -8,12 +8,12 @@ export default function ResetButton(props: ResetButtonProps) {
             throw `Invalid prop format`;
         }
         if(props.gameState === "inprogress"){
-            return ":)";
+            return <img className="reset-button" src="http://localhost:3000/img/SMILE.png"/>;
         }
         else if (props.gameState === "gameover"){
-            return ":(";
+            return <img className="reset-button" src="http://localhost:3000/img/FROWN.png"/>;
         }
-        return "8)";
+        return <img className="reset-button" src="http://localhost:3000/img/SUNGLASSES.png"/>;
     }
 
     function calculateSmileMultiplayer() {
@@ -21,16 +21,17 @@ export default function ResetButton(props: ResetButtonProps) {
             throw `Invalid prop format`;
         }
         if(props.isAlive && props.inProgress){
-            return ":)";
+            return <img className="reset-button" src="http://localhost:3000/img/SMILE.png"/>;
         }
         else if (props.inProgress){
-            return ":(";
+            return <img className="reset-button" src="http://localhost:3000/img/FROWN.png"/>;
         }
         else if (!props.inProgress && props.isWinning) {
-            return "8)";
+            
+            return <img className="reset-button" src="http://localhost:3000/img/SUNGLASSES.png"/>;
         }
         else {
-            return ":(";
+            return <img className="reset-button" src="http://localhost:3000/img/FROWN.png"/>;
         }
     }
     
