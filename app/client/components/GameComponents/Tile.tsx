@@ -1,6 +1,18 @@
 import * as React from 'react';
 import { TileProps, TileValue } from '../../../shared/types';
 import { MIDDLECLICK_EVENT_BUTTON } from '../../../shared/constants';
+import TILE1 from '../../../../public/img/1.png';
+import TILE2 from '../../../../public/img/2.png';
+import TILE3 from '../../../../public/img/3.png';
+import TILE4 from '../../../../public/img/4.png';
+import TILE5 from '../../../../public/img/5.png';
+import TILE6 from '../../../../public/img/6.png';
+import TILE7 from '../../../../public/img/7.png';
+import TILE8 from '../../../../public/img/8.png';
+import FLAG from '../../../../public/img/FLAG.png';
+import BOMB from '../../../../public/img/BOMB.png';
+
+const tileArray = [TILE1, TILE2, TILE3, TILE4, TILE5, TILE6, TILE7, TILE8];
 
 export default function Tile(props: TileProps) {
     const [middleClickDown, setMiddleClickDown] = React.useState(false);
@@ -9,7 +21,6 @@ export default function Tile(props: TileProps) {
         if(props.held){
             return 'game-tile-shown';
         }
-
         return props.revealed < -1 ? "game-tile-hidden" : "game-tile-shown";
     }
 
@@ -45,15 +56,15 @@ export default function Tile(props: TileProps) {
     function getValueToDisplay(){
         switch(props.revealed){
             case TileValue.FLAG:
-                return (<img src="http://localhost:3000/img/FLAG.png" className="tile-image"/>);
+                return (<img src={FLAG} className="tile-image"/>);
             case TileValue.BLANK:
                 return "";
             case TileValue.BOMB: 
-            return (<div className="tile-image-bomb-wrapper"><img src="http://localhost:3000/img/BOMB.png" className="tile-image-bomb"/></div>);
+            return (<div className="tile-image-bomb-wrapper"><img src={BOMB} className="tile-image-bomb"/></div>);
             case TileValue.EMPTY:
                 return "";
             default:
-                return (<img src={`http://localhost:3000/img/${props.revealed}.png`} className="tile-image"/>);
+                return (<img src={tileArray[props.revealed - 1]} className="tile-image"/>);
         }
     }
 

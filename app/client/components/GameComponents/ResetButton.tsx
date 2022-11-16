@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { ResetButtonProps } from '../../../shared/types';
+import SMILEIMAGE from '../../../../public/img/SMILE.png';
+import FROWNIMAGE from '../../../../public/img/FROWN.png';
+import SUNGLASSESIMAGE from '../../../../public/img/SUNGLASSES.png';
 
 export default function ResetButton(props: ResetButtonProps) {
     
@@ -8,12 +11,12 @@ export default function ResetButton(props: ResetButtonProps) {
             throw `Invalid prop format`;
         }
         if(props.gameState === "inprogress"){
-            return <img className="reset-button" src="http://localhost:3000/img/SMILE.png"/>;
+            return <img className="reset-button" src={SMILEIMAGE}/>;
         }
         else if (props.gameState === "gameover"){
-            return <img className="reset-button" src="http://localhost:3000/img/FROWN.png"/>;
+            return <img className="reset-button" src={FROWNIMAGE}/>;
         }
-        return <img className="reset-button" src="http://localhost:3000/img/SUNGLASSES.png"/>;
+        return <img className="reset-button" src={SUNGLASSESIMAGE}/>;
     }
 
     function calculateSmileMultiplayer() {
@@ -21,17 +24,17 @@ export default function ResetButton(props: ResetButtonProps) {
             throw `Invalid prop format`;
         }
         if(props.isAlive && props.inProgress){
-            return <img className="reset-button" src="http://localhost:3000/img/SMILE.png"/>;
+            return <img className="reset-button" src={SMILEIMAGE}/>;
         }
         else if (props.inProgress){
-            return <img className="reset-button" src="http://localhost:3000/img/FROWN.png"/>;
+            return <img className="reset-button" src={FROWNIMAGE}/>;
         }
         else if (!props.inProgress && props.isWinning) {
             
-            return <img className="reset-button" src="http://localhost:3000/img/SUNGLASSES.png"/>;
+            return <img className="reset-button" src={SUNGLASSESIMAGE}/>;
         }
         else {
-            return <img className="reset-button" src="http://localhost:3000/img/FROWN.png"/>;
+            return <img className="reset-button" src={FROWNIMAGE}/>;
         }
     }
     
