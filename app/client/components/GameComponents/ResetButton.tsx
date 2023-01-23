@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { ResetButtonProps } from '../../../shared/types';
+import SMILEIMAGE from '../../../../public/img/SMILE.png';
+import FROWNIMAGE from '../../../../public/img/FROWN.png';
+import SUNGLASSESIMAGE from '../../../../public/img/SUNGLASSES.png';
 
 export default function ResetButton(props: ResetButtonProps) {
     
@@ -8,12 +11,12 @@ export default function ResetButton(props: ResetButtonProps) {
             throw `Invalid prop format`;
         }
         if(props.gameState === "inprogress"){
-            return ":)";
+            return <img className="reset-button" src={SMILEIMAGE}/>;
         }
         else if (props.gameState === "gameover"){
-            return ":(";
+            return <img className="reset-button" src={FROWNIMAGE}/>;
         }
-        return "8)";
+        return <img className="reset-button" src={SUNGLASSESIMAGE}/>;
     }
 
     function calculateSmileMultiplayer() {
@@ -21,16 +24,17 @@ export default function ResetButton(props: ResetButtonProps) {
             throw `Invalid prop format`;
         }
         if(props.isAlive && props.inProgress){
-            return ":)";
+            return <img className="reset-button" src={SMILEIMAGE}/>;
         }
         else if (props.inProgress){
-            return ":(";
+            return <img className="reset-button" src={FROWNIMAGE}/>;
         }
         else if (!props.inProgress && props.isWinning) {
-            return "8)";
+            
+            return <img className="reset-button" src={SUNGLASSESIMAGE}/>;
         }
         else {
-            return ":(";
+            return <img className="reset-button" src={FROWNIMAGE}/>;
         }
     }
     

@@ -10,7 +10,7 @@ const config = {
     entry: path.join(__dirname, "app/client/", "index.tsx"),
     mode: 'development',
     output: {
-        path:path.resolve(__dirname, "dist"),
+        path:path.resolve(__dirname, "dist/frontend"),
     },
     module: {
         rules: [
@@ -31,16 +31,15 @@ const config = {
                     'css-loader'
                 ]
             },
+            {
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: 'asset/resource',
+            }
         ]
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".jsx", "..."]
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: path.join(__dirname, "app/client/", "index.html"),
-        }),
-    ],
 }
 
 export default config;

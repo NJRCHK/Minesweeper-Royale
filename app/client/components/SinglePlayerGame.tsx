@@ -53,7 +53,7 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
             return;
         }
         //if the tile has been clicked (ie it is not blank, flag or question mark) then return
-        if(![TileValue.BLANK, TileValue.QUESTIONMARK, TileValue.FLAG].includes(board.tiles[x][y])){
+        if(![TileValue.BLANK, TileValue.FLAG].includes(board.tiles[x][y])){
             return;
         }
 
@@ -101,7 +101,7 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
 
     function isClicked(x: number, y: number) {
         let tile = board.tiles[x][y];
-        return ![TileValue.BLANK, TileValue.QUESTIONMARK, TileValue.FLAG].includes(tile);
+        return ![TileValue.BLANK, TileValue.FLAG].includes(tile);
     }
 
     function allMinesFlaggedAroundTile(x: number, y: number){
@@ -141,7 +141,7 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
         }
         let tile = board.tiles[x][y];
         //if tile is shown do nothing
-        if(![TileValue.BLANK, TileValue.QUESTIONMARK, TileValue.FLAG].includes(tile)){
+        if(![TileValue.BLANK, TileValue.FLAG].includes(tile)){
             return;
         }
         //if tile is covered put a flag on it and decrement the mines counter
@@ -155,24 +155,13 @@ export default function(props: SinglePlayerGameProps): JSX.Element {
                 return temp;
             });
         }
-        // if tile has flag put a question mark on it and increment the mines counter
         else if(tile === TileValue.FLAG){
             setBoard(prevBoard => {
                 let temp = {
                     ...prevBoard
                 };
-                temp.tiles[x][y] = TileValue.QUESTIONMARK;
-                temp.minesRemaining++;
-                return temp;
-            });
-        }
-        //if tile has question mark on it remove it 
-        else if(tile === TileValue.QUESTIONMARK){
-            setBoard(prevBoard => {
-                let temp = {
-                    ...prevBoard
-                };
                 temp.tiles[x][y] = TileValue.BLANK;
+                temp.minesRemaining++;
                 return temp;
             });
         }

@@ -25,10 +25,10 @@ export default function BoardDisplay(props: BoardDisplayProps) {
     }
 
     function isValidTile(x:number, y:number){
-        if(x < 0 || x >= props.width){
+        if(x < 0 || x >= props.height){
             return false;
         }
-        else if (y < 0 || y >= props.height){
+        else if (y < 0 || y >= props.width){
             return false;
         }
         return true;
@@ -64,7 +64,7 @@ export default function BoardDisplay(props: BoardDisplayProps) {
 
     function renderBoard() {
         if((props.height !== heldTiles.length) || (props.width !== heldTiles[0].length)){
-            setHeldTiles(setupHeldTileUI);
+            setHeldTiles(setupHeldTileUI());
         }
         let rows = new Array<JSX.Element>(props.height);
         for(let i = 0; i < rows.length; i++){

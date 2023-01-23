@@ -21,9 +21,29 @@ export default class AccountManager {
         }
         this.saltrounds = Number(process.env.SALTROUNDS);
         this.pool = mysql.createPool(this.connectionOptions)
-        setTimeout(() => {
-            this.testConnection();
-        }, 2500);
+        this.verifyTableFormats();
+    }
+
+    async verifyTableFormats() {
+        const userTableExists = await this.usersTableExists();
+        if(!userTableExists){
+            this.createUsersTable();
+        }
+    }
+
+    async createUsersTable() {
+        const connection = await this.pool.getConnection();
+        await connection.execute(
+            `CREATE TABLE users 
+            (name VARCHAR(255), 
+            password VARCHAR(255));`
+        );
+    }
+
+    async usersTableExists() {
+        const connection = await this.pool.getConnection();
+        const [rows, fields] = await connection.execute(`SELECT * FROM information_schema.TABLES WHERE (TABLE_SCHEMA=?) AND (TABLE_NAME = 'users')`, [process.env.DB_DEV_NAME]);
+        return ((rows as mysql.RowDataPacket[]).length > 0);
     }
 
     async testConnection() {
@@ -110,6 +130,16 @@ export default class AccountManager {
         }
     }
 
+    async isUsernameTaken(username: String) {
+        let connection = await this.pool.getConnection();
+        let [rows, fields] = await connection.execute("SELECT name, password FROM users WHERE name=?", [username]);
+        rows = rows as mysql.RowDataPacket[]
+        if(rows.length !== 0){
+            return true;
+        }
+        return false;
+    }
+
     async createAccount(req: Request, res: Response) {
         const username = req.body.username;
         const password = req.body.password;
@@ -123,15 +153,14 @@ export default class AccountManager {
             return;
         }
 
-        let connection = await this.pool.getConnection();
-        let [rows, fields] = await connection.execute("SELECT name, password FROM users WHERE name=?", [username]);
-        rows = rows as mysql.RowDataPacket[]
-        if(rows.length !== 0){
+        const usernameTaken = await this.isUsernameTaken(username);
+        if(usernameTaken){
             res.sendStatus(400);
             return;
         }
+
         const hashedPassword = await bcrypt.hash(password, this.saltrounds);
-        connection = await this.pool.getConnection();
+        const connection = await this.pool.getConnection();
         await connection.execute("INSERT INTO users (name, password) VALUES(?, ?)", [username, hashedPassword]);
         req.session.user = {
             loggedIn:true,

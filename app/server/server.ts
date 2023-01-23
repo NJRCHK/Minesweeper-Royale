@@ -45,9 +45,10 @@ const accountManager = new AccountManager();
 new GameServer(sessionStore);
 
 app.use(bodyParser.json());
+app.use(express.static('dist/frontend'));
 
 app.get('/', (__req, res) => {
-    res.sendFile(path.resolve(__dirname + '../../dist/index.html'));
+    res.sendFile(path.resolve(__dirname + '../../app/client/index.html'));
 });
 
 app.post('/api/createAccount', (req, res) => accountManager.createAccount(req, res));
@@ -55,8 +56,9 @@ app.post('/api/signOut', (req,res) => accountManager.signOut(req,res));
 app.post('/api/login', (req, res) => accountManager.login(req, res));
 app.get('/api/isLoggedIn', (req, res) => accountManager.isLoggedIn(req, res));
 
+app.get('/img/BOMB', (__req, res) => res.sendFile(path.resolve(__dirname + '../../public/img/BOMB.png')));
 app.get('/main.js', (__req, res) => {
-    res.sendFile(path.resolve(__dirname + '../../dist/main.js'));
+    res.sendFile(path.resolve(__dirname + '../../dist/frontend/main.js'));
 });
 
 app.listen(process.env.PORT, () => {
