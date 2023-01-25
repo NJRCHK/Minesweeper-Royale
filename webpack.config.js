@@ -1,14 +1,18 @@
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import Dotenv from 'dotenv-webpack';
+
 import {fileURLToPath} from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
-
 const config = {
     entry: path.join(__dirname, "app/client/", "index.tsx"),
     mode: 'development',
+    plugins: [
+        new Dotenv(),
+    ],
     output: {
         path:path.resolve(__dirname, "dist/frontend"),
     },

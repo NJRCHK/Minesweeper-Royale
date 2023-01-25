@@ -5,9 +5,9 @@
   "main": "server/server.js",
   "type": "module",
   "scripts": {
-    "dev": "npx webpack build && npx tsc && node dist/server/server.js",
+    "dev": "npx webpack && npx tsc && node dist/server/server.js",
     "server": "npx tsc && node dist/server/server.js",
-    "build": "webpack"
+    "build": "npx webpack && npx tsc"
   },
   "repository": {
     "type": "git",
@@ -33,6 +33,7 @@
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.2",
+    "dotenv-webpack": "^8.0.1",
     "eslint": "^8.23.0",
     "eslint-config-standard-with-typescript": "^22.0.0",
     "eslint-plugin-import": "^2.26.0",
@@ -51,6 +52,7 @@
   },
   "dependencies": {
     "@types/bad-words": "^3.0.1",
+    "@types/dotenv-webpack": "^7.0.3",
     "@types/seedrandom": "^3.0.2",
     "@types/ws": "^8.5.3",
     "bad-words": "^3.0.4",
