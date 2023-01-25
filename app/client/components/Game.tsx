@@ -35,7 +35,7 @@ export default function Game(props: GameProps){
     const [time, setTime] = useState(0);
 
     useEffect(() => {
-        const newSocket = new WebSocket('ws://chksweeper.com:8080');
+        const newSocket = new WebSocket(process.env.SOCKET || "https://chksweeper.com/ws");
         setSocket(newSocket);
         return () => {
             newSocket.close();
